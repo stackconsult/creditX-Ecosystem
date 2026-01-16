@@ -1,0 +1,52 @@
+apiVersion: spaceship/v1
+kind: Service
+metadata:
+  name: creditx-service
+  namespace: ecosystem-prod
+spec:
+  source:
+    repo: git@github.com:stackconsult/creditX-Ecosystem.git
+    branch: main
+    dockerfile: ./Dockerfile
+  image:
+    repository: spaceship.registry.io/ecosystem/creditx-service
+    tag: v2.0.0-dragonfly
+  replicas:
+    min: 3
+    max: 10
+    target_cpu_utilization: 70
+  env:
+    - name: SPACES_ENV
+      value: "production"
+    - name: DATABASE_URL
+      valueFrom:
+        secretRef:
+          name: ecosystem-db
+          key: DATABASE_URL
+    - name: CACHE_HOST
+      value: "dragonfly-cache.internal"
+    - name: CACHE_PORT
+      value: "6379"
+    - name: CACHE_DB
+      value: "0"
+    - name: CACHE_KEY_PREFIX
+      value: "creditx:"
+    - name: CACHE_MAX_POOL_SIZE
+      value: "50"
+  health_checks:
+    liveness:
+      http_get:
+        path: /health/live
+        port: 8000
+    readiness:
+      http_get:
+        path: /health/ready
+        port: 8000
+  update_strategy:
+    type: rolling_update
+    max_surge: 1
+    max_unavailable: 0
+  guards:
+    error_rate_threshold: 0.01
+    latency_p95_ms_threshold: 2000
+    auto_rollback: true
