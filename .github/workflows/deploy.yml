@@ -1,0 +1,242 @@
+# ============================================================================
+# CreditX Ecosystem - CI/CD Pipeline
+# GitHub Actions -> Spaceship Hyperlift Deployment
+# ============================================================================
+
+name: Production Deploy to Spaceship
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: registry.spaceship.com
+  IMAGE_NAME: creditx-ecosystem
+
+jobs:
+  # ==========================================================================
+  # TEST STAGE
+  # ==========================================================================
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      dragonfly:
+        image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r services/creditx-service/requirements.txt
+          pip install pytest pytest-cov pytest-asyncio bandit ruff
+      
+      - name: Lint with Ruff
+        run: |
+          ruff check services/ --output-format=github
+      
+      - name: Security scan with Bandit
+        run: |
+          bandit -r services/ -ll -ii
+      
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+          CACHE_HOST: localhost
+          CACHE_PORT: 6379
+        run: |
+          pytest tests/ -v --cov=services --cov-report=xml --cov-report=term
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  # ==========================================================================
+  # BUILD STAGE
+  # ==========================================================================
+  build:
+    name: Build Docker Image
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to Spaceship Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.SPACESHIP_USERNAME }}
+          password: ${{ secrets.SPACESHIP_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            GIT_COMMIT=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+
+  # ==========================================================================
+  # SECURITY SCAN STAGE
+  # ==========================================================================
+  security:
+    name: Security Scan
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ==========================================================================
+  # DEPLOY STAGE
+  # ==========================================================================
+  deploy:
+    name: Deploy to Spaceship Hyperlift
+    needs: [build, security]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    environment:
+      name: production
+      url: https://ecosystem.ai
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to Hyperlift
+        run: |
+          curl -X POST https://hyperlift.spaceship.com/v1/deploy \
+            -H "Authorization: Bearer ${{ secrets.HYPERLIFT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "project": "creditx-ecosystem",
+              "environment": "production",
+              "image": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}",
+              "strategy": "blue-green",
+              "healthCheck": {
+                "path": "/health/ready",
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3
+              },
+              "rollback": {
+                "enabled": true,
+                "errorRateThreshold": 5,
+                "latencyThreshold": 2000
+              }
+            }'
+      
+      - name: Wait for deployment
+        run: |
+          echo "Waiting for deployment to complete..."
+          sleep 60
+          
+          # Check deployment status
+          STATUS=$(curl -s -H "Authorization: Bearer ${{ secrets.HYPERLIFT_TOKEN }}" \
+            https://hyperlift.spaceship.com/v1/deployments/creditx-ecosystem/production | jq -r '.status')
+          
+          if [ "$STATUS" != "deployed" ]; then
+            echo "Deployment failed with status: $STATUS"
+            exit 1
+          fi
+          
+          echo "Deployment successful!"
+      
+      - name: Smoke tests
+        run: |
+          # Wait for service to be ready
+          sleep 30
+          
+          # Test health endpoints
+          curl -f https://ecosystem.ai/health/live || exit 1
+          curl -f https://ecosystem.ai/health/ready || exit 1
+          
+          echo "Smoke tests passed!"
+      
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "✅ Deployment to production completed successfully"
+          echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed"
+          # Add Slack/Discord notification here if needed

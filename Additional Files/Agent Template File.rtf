@@ -1,0 +1,58 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww33100\viewh19580\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 create agent [__\} agent for a production liv build using the provided template. Tailor the template to agent [__]'s design function and purpose for a production live build of enterprise grade quality designed for the creditx platform: # AGENT [X]: [AGENT NAME]\
+\
+## Document Control\
+**Version:** [X.0.0]-production  \
+**Status:** Production Ready | In Development | Deprecated  \
+**Owner:** [Team Name]  \
+**Last Updated:** YYYY-MM-DD  \
+**Review Required By:** Engineering Lead, Security Architect, SRE Lead\
+\
+---\
+\
+## [__]. AGENT [Name] [Agent Type]\
+\
+```sql\
+INSERT INTO agent_registry (\
+    agent_id,\
+    name,\
+    version,\
+    engine,\
+    faces,\
+    agent_type,\
+    scope,\
+    input_entities,\
+    output_entities,\
+    required_tools,\
+    risk_level,\
+    requires_human_review,\
+    max_auto_actions,\
+    status,\
+    milestone,\
+    config_json,\
+    owner_team\
+) VALUES (\
+    '[engine].[name].v[X]',\
+    '[Human-readable Name]',\
+    '[X.0.0]',\
+    '[engine_name]',\
+    ARRAY['[face1]', '[face2]'],\
+    '[assistant|operator|ambassador]',\
+    '[Brief description of agent responsibility]',\
+    ARRAY['[InputEntity1]', '[InputEntity2]'],\
+    ARRAY['[OutputEntity1]', '[OutputEntity2]'],\
+    ARRAY['[tool1]', '[tool2]'],\
+    '[low|medium|high]',\
+    [true|false],\
+    [NULL|number],\
+    'active',\
+    '[M0-M5]',\
+    '\{[config_json]\}'::jsonb,\
+    '[team-name]'\
+);}

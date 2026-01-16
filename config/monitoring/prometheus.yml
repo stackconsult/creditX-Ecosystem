@@ -1,0 +1,72 @@
+# ============================================================================
+# CreditX Ecosystem - Prometheus Configuration
+# Metrics collection for all microservices
+# ============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'creditx-ecosystem'
+    env: 'production'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # CreditX Service
+  - job_name: 'creditx-service'
+    static_configs:
+      - targets: ['creditx-service:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Threat Service
+  - job_name: 'threat-service'
+    static_configs:
+      - targets: ['threat-service:8001']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Guardian Service
+  - job_name: 'guardian-service'
+    static_configs:
+      - targets: ['guardian-service:8002']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Apps Service
+  - job_name: 'apps-service'
+    static_configs:
+      - targets: ['apps-service:8003']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Phones Service
+  - job_name: 'phones-service'
+    static_configs:
+      - targets: ['phones-service:8004']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Dragonfly (Redis-compatible)
+  - job_name: 'dragonfly'
+    static_configs:
+      - targets: ['dragonfly:6379']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # PostgreSQL (via pg_exporter if deployed)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 30s

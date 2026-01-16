@@ -1,0 +1,1589 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 AppleColorEmoji;\f1\froman\fcharset0 Times-Bold;\f2\froman\fcharset0 Times-Roman;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fnil\fcharset0 HelveticaNeue;\f5\fmodern\fcharset0 Courier;
+\f6\fmodern\fcharset0 Courier-Oblique;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red60\green60\blue59;
+\red95\green124\blue3;\red117\green66\blue151;\red123\green126\blue121;\red52\green92\blue158;\red240\green115\blue25;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c0\c84706;\cssrgb\c30196\c30196\c29804;
+\cssrgb\c44314\c54902\c0;\cssrgb\c53725\c34902\c65882;\cssrgb\c55686\c56471\c54902;\cssrgb\c25882\c44314\c68235;\cssrgb\c96078\c52941\c12157;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\sa321\partightenfactor0
+
+\f0\fs48 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u55357 \u56960 
+\f1\b  CREDITX ECOSYSTEM - PRODUCTION CODE (CONTINUED)\
+\pard\pardeftab720\partightenfactor0
+
+\f2\b0\fs24 \cf0 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55358 \u56598 
+\f1\b  AGENT BACKEND - PYTHON LANGGRAPH\
+5. Agent Service - Main FastAPI Server\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 apps/agent/requirements.txt
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # Core Framework\
+fastapi==0.109.0\
+uvicorn[standard]==0.27.0\
+pydantic==2.5.3\
+pydantic-settings==2.1.0\
+\
+# LangChain & LangGraph\
+langgraph==0.2.0\
+langchain==0.1.0\
+langchain-openai==0.0.5\
+langchain-community==0.0.17\
+langsmith==0.0.77\
+\
+# Database & Cache\
+psycopg2-binary==2.9.9\
+redis==5.0.1\
+sqlalchemy==2.0.25\
+\
+# ML & AI\
+openai==1.10.0\
+anthropic==0.8.1\
+tiktoken==0.5.2\
+sentence-transformers==2.3.1\
+torch==2.1.2\
+transformers==4.37.0\
+\
+# Utilities\
+httpx==0.26.0\
+aiohttp==3.9.1\
+python-dotenv==1.0.0\
+python-jose[cryptography]==3.3.0\
+python-multipart==0.0.6\
+\
+# Monitoring\
+prometheus-client==0.19.0\
+structlog==24.1.0\
+\
+# Testing\
+pytest==7.4.4\
+pytest-asyncio==0.23.3\
+pytest-cov==4.1.0\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\b\fs39 \cf0 \strokec2 apps/agent/src/main.py
+\f1\fs36 \strokec2  (FastAPI Server)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 python\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 """\
+creditX Ecosystem Agent - Main FastAPI Server\
+Production-ready LangGraph agent with CopilotKit integration\
+"""\cf4 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  os\
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  logging\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  contextlib 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  asynccontextmanager\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  typing 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  Optional\
+\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  fastapi 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  FastAPI, HTTPException, Depends, Header\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  fastapi.middleware.cors 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  CORSMiddleware\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  fastapi.responses 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  JSONResponse\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  pydantic 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  BaseModel, Field\
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  structlog\
+\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .agents.creditx_agent 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  CreditXAgent\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .agents.apps_91_agent 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  Apps91Agent\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .agents.global_ai_alert_agent 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  GlobalAIAlertAgent\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .agents.guardian_ai_agent 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  GuardianAIAgent\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .agents.stolen_phones_agent 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  StolenPhonesAgent\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .utils.database 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  init_db, close_db\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .utils.redis_client 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  init_redis, close_redis\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .middleware.auth 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  verify_agent_token\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  .middleware.tenant 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  set_tenant_context\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf7 \strokec7 # Configure structured logging
+\f5\i0 \cf4 \strokec4 \
+structlog.configure(\
+    processors=[\
+        structlog.stdlib.filter_by_level,\
+        structlog.stdlib.add_logger_name,\
+        structlog.stdlib.add_log_level,\
+        structlog.stdlib.PositionalArgumentsFormatter(),\
+        structlog.processors.TimeStamper(fmt=\cf5 \strokec5 "iso"\cf4 \strokec4 ),\
+        structlog.processors.StackInfoRenderer(),\
+        structlog.processors.format_exc_info,\
+        structlog.processors.UnicodeDecoder(),\
+        structlog.processors.JSONRenderer()\
+    ],\
+    wrapper_class=structlog.stdlib.BoundLogger,\
+    logger_factory=structlog.stdlib.LoggerFactory(),\
+    cache_logger_on_first_use=True,\
+)\
+\
+logger = structlog.get_logger()\
+\
+
+\f6\i \cf7 \strokec7 # Initialize agents globally
+\f5\i0 \cf4 \strokec4 \
+agents = \{\}\
+\
+@asynccontextmanager\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  lifespan(app: FastAPI):\
+    \cf5 \strokec5 """Application lifespan manager"""\cf4 \strokec4 \
+    
+\f6\i \cf7 \strokec7 # Startup
+\f5\i0 \cf4 \strokec4 \
+    logger.info(\cf5 \strokec5 "Starting creditX Ecosystem Agent"\cf4 \strokec4 )\
+    \
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  init_db()\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  init_redis()\
+    \
+    
+\f6\i \cf7 \strokec7 # Initialize all module agents
+\f5\i0 \cf4 \strokec4 \
+    agents[\cf5 \strokec5 'creditx'\cf4 \strokec4 ] = CreditXAgent()\
+    agents[\cf5 \strokec5 '91-apps'\cf4 \strokec4 ] = Apps91Agent()\
+    agents[\cf5 \strokec5 'global-ai-alert'\cf4 \strokec4 ] = GlobalAIAlertAgent()\
+    agents[\cf5 \strokec5 'guardian-ai'\cf4 \strokec4 ] = GuardianAIAgent()\
+    agents[\cf5 \strokec5 'stolen-phones'\cf4 \strokec4 ] = StolenPhonesAgent()\
+    \
+    logger.info(\cf5 \strokec5 "All agents initialized successfully"\cf4 \strokec4 )\
+    \
+    
+\f3\b \cf6 \strokec6 yield
+\f5\b0 \cf4 \strokec4 \
+    \
+    
+\f6\i \cf7 \strokec7 # Shutdown
+\f5\i0 \cf4 \strokec4 \
+    logger.info(\cf5 \strokec5 "Shutting down creditX Ecosystem Agent"\cf4 \strokec4 )\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  close_redis()\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  close_db()\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf7 \strokec7 # Create FastAPI app
+\f5\i0 \cf4 \strokec4 \
+app = FastAPI(\
+    title=\cf5 \strokec5 "creditX Ecosystem Agent"\cf4 \strokec4 ,\
+    description=\cf5 \strokec5 "AI-powered multi-module agent system for PE portfolio management"\cf4 \strokec4 ,\
+    version=\cf5 \strokec5 "1.0.0"\cf4 \strokec4 ,\
+    lifespan=lifespan,\
+    docs_url=\cf5 \strokec5 "/docs"\cf4 \strokec4  
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  os.getenv(\cf5 \strokec5 "ENVIRONMENT"\cf4 \strokec4 ) != \cf5 \strokec5 "production"\cf4 \strokec4  
+\f3\b \cf6 \strokec6 else
+\f5\b0 \cf4 \strokec4  None,\
+    redoc_url=\cf5 \strokec5 "/redoc"\cf4 \strokec4  
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  os.getenv(\cf5 \strokec5 "ENVIRONMENT"\cf4 \strokec4 ) != \cf5 \strokec5 "production"\cf4 \strokec4  
+\f3\b \cf6 \strokec6 else
+\f5\b0 \cf4 \strokec4  None,\
+)\
+\
+
+\f6\i \cf7 \strokec7 # CORS middleware
+\f5\i0 \cf4 \strokec4 \
+app.add_middleware(\
+    CORSMiddleware,\
+    allow_origins=[\
+        \cf5 \strokec5 "https://ecosystem.ai"\cf4 \strokec4 ,\
+        \cf5 \strokec5 "https://*.ecosystem.ai"\cf4 \strokec4 ,\
+        \cf5 \strokec5 "http://localhost:3000"\cf4 \strokec4 ,\
+    ],\
+    allow_credentials=True,\
+    allow_methods=[\cf5 \strokec5 "*"\cf4 \strokec4 ],\
+    allow_headers=[\cf5 \strokec5 "*"\cf4 \strokec4 ],\
+)\
+\
+
+\f6\i \cf7 \strokec7 # Request/Response Models
+\f5\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 class
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 AgentRequest\cf4 \strokec4 (BaseModel):\
+    \cf5 \strokec5 """Standard agent request"""\cf4 \strokec4 \
+    module: \cf9 \strokec9 str\cf4 \strokec4  = Field(..., description=\cf5 \strokec5 "Module name: creditx, 91-apps, etc."\cf4 \strokec4 )\
+    action: \cf9 \strokec9 str\cf4 \strokec4  = Field(..., description=\cf5 \strokec5 "Action to perform"\cf4 \strokec4 )\
+    parameters: \cf9 \strokec9 dict\cf4 \strokec4  = Field(default_factory=\cf9 \strokec9 dict\cf4 \strokec4 , description=\cf5 \strokec5 "Action parameters"\cf4 \strokec4 )\
+    context: Optional[\cf9 \strokec9 dict\cf4 \strokec4 ] = Field(default=None, description=\cf5 \strokec5 "Additional context"\cf4 \strokec4 )\
+    tenant_id: \cf9 \strokec9 int\cf4 \strokec4  = Field(..., description=\cf5 \strokec5 "Tenant ID"\cf4 \strokec4 )\
+    user_id: \cf9 \strokec9 str\cf4 \strokec4  = Field(..., description=\cf5 \strokec5 "User ID"\cf4 \strokec4 )\
+\
+
+\f3\b \cf6 \strokec6 class
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 AgentResponse\cf4 \strokec4 (BaseModel):\
+    \cf5 \strokec5 """Standard agent response"""\cf4 \strokec4 \
+    success: \cf9 \strokec9 bool\cf4 \strokec4 \
+    result: Optional[\cf9 \strokec9 dict\cf4 \strokec4 ] = None\
+    error: Optional[\cf9 \strokec9 str\cf4 \strokec4 ] = None\
+    metadata: Optional[\cf9 \strokec9 dict\cf4 \strokec4 ] = None\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf7 \strokec7 # Health check endpoint
+\f5\i0 \cf4 \strokec4 \
+@app.get(\cf5 \strokec5 "/health"\cf4 \strokec4 )\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  health_check():\
+    \cf5 \strokec5 """Health check endpoint"""\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \{\
+        \cf5 \strokec5 "status"\cf4 \strokec4 : \cf5 \strokec5 "healthy"\cf4 \strokec4 ,\
+        \cf5 \strokec5 "version"\cf4 \strokec4 : \cf5 \strokec5 "1.0.0"\cf4 \strokec4 ,\
+        \cf5 \strokec5 "agents"\cf4 \strokec4 : \cf9 \strokec9 list\cf4 \strokec4 (agents.keys()),\
+    \}\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf7 \strokec7 # CopilotKit compatibility endpoint
+\f5\i0 \cf4 \strokec4 \
+@app.post(\cf5 \strokec5 "/copilotkit"\cf4 \strokec4 )\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  copilotkit_handler(\
+    request: AgentRequest,\
+    authorization: Optional[\cf9 \strokec9 str\cf4 \strokec4 ] = Header(None),\
+):\
+    \cf5 \strokec5 """\
+    CopilotKit-compatible endpoint for agent interactions\
+    Handles all module routing and agent orchestration\
+    """\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4 :\
+        
+\f6\i \cf7 \strokec7 # Verify authentication
+\f5\i0 \cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 not
+\f5\b0 \cf4 \strokec4  authorization:\
+            
+\f3\b \cf6 \strokec6 raise
+\f5\b0 \cf4 \strokec4  HTTPException(status_code=\cf9 \strokec9 401\cf4 \strokec4 , detail=\cf5 \strokec5 "Missing authorization header"\cf4 \strokec4 )\
+        \
+        
+\f6\i \cf7 \strokec7 # Get appropriate agent
+\f5\i0 \cf4 \strokec4 \
+        agent = agents.get(request.module)\
+        
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 not
+\f5\b0 \cf4 \strokec4  agent:\
+            
+\f3\b \cf6 \strokec6 raise
+\f5\b0 \cf4 \strokec4  HTTPException(\
+                status_code=\cf9 \strokec9 404\cf4 \strokec4 ,\
+                detail=\cf5 \strokec5 f"Agent for module '\cf4 \strokec4 \{request.module\}\cf5 \strokec5 ' not found"\cf4 \strokec4 \
+            )\
+        \
+        
+\f6\i \cf7 \strokec7 # Set tenant context
+\f5\i0 \cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  set_tenant_context(request.tenant_id)\
+        \
+        
+\f6\i \cf7 \strokec7 # Execute agent action
+\f5\i0 \cf4 \strokec4 \
+        logger.info(\
+            \cf5 \strokec5 "Executing agent action"\cf4 \strokec4 ,\
+            module=request.module,\
+            action=request.action,\
+            tenant_id=request.tenant_id,\
+            user_id=request.user_id,\
+        )\
+        \
+        result = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  agent.execute(\
+            action=request.action,\
+            parameters=request.parameters,\
+            context=request.context,\
+            tenant_id=request.tenant_id,\
+            user_id=request.user_id,\
+        )\
+        \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  AgentResponse(\
+            success=True,\
+            result=result,\
+            metadata=\{\
+                \cf5 \strokec5 "module"\cf4 \strokec4 : request.module,\
+                \cf5 \strokec5 "action"\cf4 \strokec4 : request.action,\
+                \cf5 \strokec5 "execution_time_ms"\cf4 \strokec4 : result.get(\cf5 \strokec5 "execution_time_ms"\cf4 \strokec4 , \cf9 \strokec9 0\cf4 \strokec4 ),\
+            \}\
+        )\
+        \
+    
+\f3\b \cf6 \strokec6 except
+\f5\b0 \cf4 \strokec4  HTTPException:\
+        
+\f3\b \cf6 \strokec6 raise
+\f5\b0 \cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 except
+\f5\b0 \cf4 \strokec4  Exception 
+\f3\b \cf6 \strokec6 as
+\f5\b0 \cf4 \strokec4  e:\
+        logger.error(\
+            \cf5 \strokec5 "Agent execution error"\cf4 \strokec4 ,\
+            error=\cf9 \strokec9 str\cf4 \strokec4 (e),\
+            module=request.module,\
+            action=request.action,\
+        )\
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  AgentResponse(\
+            success=False,\
+            error=\cf9 \strokec9 str\cf4 \strokec4 (e),\
+            metadata=\{\cf5 \strokec5 "module"\cf4 \strokec4 : request.module, \cf5 \strokec5 "action"\cf4 \strokec4 : request.action\}\
+        )\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf7 \strokec7 # Module-specific endpoints for direct invocation
+\f5\i0 \cf4 \strokec4 \
+@app.post(\cf5 \strokec5 "/agents/creditx"\cf4 \strokec4 )\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  creditx_agent_handler(request: AgentRequest):\
+    \cf5 \strokec5 """CreditX Compliance Agent endpoint"""\cf4 \strokec4 \
+    request.module = \cf5 \strokec5 "creditx"\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  copilotkit_handler(request)\
+\
+@app.post(\cf5 \strokec5 "/agents/91-apps"\cf4 \strokec4 )\
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  apps_91_agent_handler(request: AgentRequest):\
+    \cf5 \strokec5 """91 Apps Business Automation Agent endpoint"""\cf4 \strokec4 \
+    request.module = \cf5 \strokec5 "91-apps"\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  copilotkit_handler(request)\
+\
+@app.post(\cf5 \strokec5 "/agents/global-ai-alert"\cf4 \strokec4 )\
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  global_ai_alert_agent_handler(request: AgentRequest):\
+    \cf5 \strokec5 """Global AI Alert Network Agent endpoint"""\cf4 \strokec4 \
+    request.module = \cf5 \strokec5 "global-ai-alert"\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  copilotkit_handler(request)\
+\
+@app.post(\cf5 \strokec5 "/agents/guardian-ai"\cf4 \strokec4 )\
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  guardian_ai_agent_handler(request: AgentRequest):\
+    \cf5 \strokec5 """Guardian AI Endpoint Security Agent endpoint"""\cf4 \strokec4 \
+    request.module = \cf5 \strokec5 "guardian-ai"\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  copilotkit_handler(request)\
+\
+@app.post(\cf5 \strokec5 "/agents/stolen-phones"\cf4 \strokec4 )\
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  stolen_phones_agent_handler(request: AgentRequest):\
+    \cf5 \strokec5 """Stolen/Lost Phones Recovery Agent endpoint"""\cf4 \strokec4 \
+    request.module = \cf5 \strokec5 "stolen-phones"\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  copilotkit_handler(request)\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf7 \strokec7 # Metrics endpoint for Prometheus
+\f5\i0 \cf4 \strokec4 \
+@app.get(\cf5 \strokec5 "/metrics"\cf4 \strokec4 )\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  metrics():\
+    \cf5 \strokec5 """Prometheus metrics endpoint"""\cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  prometheus_client 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  generate_latest, CONTENT_TYPE_LATEST\
+    
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  fastapi.responses 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  Response\
+    \
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  Response(\
+        content=generate_latest(),\
+        media_type=CONTENT_TYPE_LATEST,\
+    )\
+\
+
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  __name__ == \cf5 \strokec5 "__main__"\cf4 \strokec4 :\
+    
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  uvicorn\
+    \
+    uvicorn.run(\
+        \cf5 \strokec5 "main:app"\cf4 \strokec4 ,\
+        host=\cf5 \strokec5 "0.0.0.0"\cf4 \strokec4 ,\
+        port=\cf9 \strokec9 8000\cf4 \strokec4 ,\
+        \cf9 \strokec9 reload\cf4 \strokec4 =os.getenv(\cf5 \strokec5 "ENVIRONMENT"\cf4 \strokec4 ) != \cf5 \strokec5 "production"\cf4 \strokec4 ,\
+        log_level=\cf5 \strokec5 "info"\cf4 \strokec4 ,\
+    )\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 6. CreditX Agent Implementation (LangGraph)\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 apps/agent/src/agents/creditx_agent.py
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 python\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 """\
+CreditX Compliance Automation Agent\
+Handles KYC, AML, sanctions screening, and regulatory reporting\
+"""\cf4 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  time\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  typing 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  Dict, Any, Optional, List\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  datetime 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  datetime\
+\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  langgraph.graph 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  StateGraph, END\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  langgraph.checkpoint.postgres 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  PostgresSaver\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  langchain_openai 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  ChatOpenAI\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  langchain_core.messages 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  HumanMessage, AIMessage, SystemMessage\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  pydantic 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  BaseModel, Field\
+\
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  structlog\
+\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  ..tools.sanctions_screening 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  sanctions_screening_tool\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  ..tools.kyc_generation 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  kyc_generation_tool\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  ..tools.document_extraction 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  document_extraction_tool\
+
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  ..utils.database 
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  get_db_connection\
+\
+logger = structlog.get_logger()\
+\
+
+\f3\b \cf6 \strokec6 class
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 CreditXState\cf4 \strokec4 (BaseModel):\
+    \cf5 \strokec5 """State management for CreditX agent"""\cf4 \strokec4 \
+    messages: List[Any] = Field(default_factory=\cf9 \strokec9 list\cf4 \strokec4 )\
+    tenant_id: \cf9 \strokec9 int\cf4 \strokec4 \
+    user_id: \cf9 \strokec9 str\cf4 \strokec4 \
+    action: \cf9 \strokec9 str\cf4 \strokec4 \
+    parameters: Dict[\cf9 \strokec9 str\cf4 \strokec4 , Any] = Field(default_factory=\cf9 \strokec9 dict\cf4 \strokec4 )\
+    context: Optional[Dict[\cf9 \strokec9 str\cf4 \strokec4 , Any]] = None\
+    \
+    
+\f6\i \cf7 \strokec7 # Workflow state
+\f5\i0 \cf4 \strokec4 \
+    current_step: \cf9 \strokec9 str\cf4 \strokec4  = \cf5 \strokec5 "init"\cf4 \strokec4 \
+    transaction_data: Optional[Dict] = None\
+    screening_result: Optional[Dict] = None\
+    compliance_score: \cf9 \strokec9 int\cf4 \strokec4  = \cf9 \strokec9 0\cf4 \strokec4 \
+    kyc_report: Optional[Dict] = None\
+    requires_approval: \cf9 \strokec9 bool\cf4 \strokec4  = False\
+    \
+    
+\f6\i \cf7 \strokec7 # Results
+\f5\i0 \cf4 \strokec4 \
+    result: Optional[Dict] = None\
+    error: Optional[\cf9 \strokec9 str\cf4 \strokec4 ] = None\
+\
+
+\f3\b \cf6 \strokec6 class
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 CreditXAgent\cf4 \strokec4 :\
+    \cf5 \strokec5 """\
+    CreditX Compliance Agent using LangGraph\
+    \
+    Workflow:\
+    1. Receive transaction/entity data\
+    2. Extract and validate information\
+    3. Perform sanctions screening\
+    4. Calculate compliance score\
+    5. Generate reports if needed\
+    6. Return results with approval requirement\
+    """\cf4 \strokec4 \
+    \
+    
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  __init__(self):\
+        self.llm = ChatOpenAI(\
+            model=\cf5 \strokec5 "gpt-4-turbo-preview"\cf4 \strokec4 ,\
+            temperature=\cf9 \strokec9 0\cf4 \strokec4 ,\
+            streaming=True,\
+        )\
+        \
+        
+\f6\i \cf7 \strokec7 # Build LangGraph workflow
+\f5\i0 \cf4 \strokec4 \
+        self.workflow = self._build_workflow()\
+        \
+        
+\f6\i \cf7 \strokec7 # Initialize checkpoint saver for persistence
+\f5\i0 \cf4 \strokec4 \
+        self.checkpointer = PostgresSaver.from_conn_string(\
+            conn_string=self._get_db_url()\
+        )\
+        \
+        
+\f6\i \cf7 \strokec7 # Compile graph with checkpointing
+\f5\i0 \cf4 \strokec4 \
+        self.graph = self.workflow.\cf9 \strokec9 compile\cf4 \strokec4 (checkpointer=self.checkpointer)\
+        \
+        logger.info(\cf5 \strokec5 "CreditX Agent initialized"\cf4 \strokec4 )\
+    \
+    
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  _get_db_url(self) -> \cf9 \strokec9 str\cf4 \strokec4 :\
+        \cf5 \strokec5 """Get database URL from environment"""\cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  os\
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  os.getenv(\cf5 \strokec5 "DATABASE_URL"\cf4 \strokec4 , \cf5 \strokec5 ""\cf4 \strokec4 )\
+    \
+    
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  _build_workflow(self) -> StateGraph:\
+        \cf5 \strokec5 """Build LangGraph workflow"""\cf4 \strokec4 \
+        workflow = StateGraph(CreditXState)\
+        \
+        
+\f6\i \cf7 \strokec7 # Add nodes
+\f5\i0 \cf4 \strokec4 \
+        workflow.add_node(\cf5 \strokec5 "validate_input"\cf4 \strokec4 , self.validate_input)\
+        workflow.add_node(\cf5 \strokec5 "extract_data"\cf4 \strokec4 , self.extract_data)\
+        workflow.add_node(\cf5 \strokec5 "sanctions_screening"\cf4 \strokec4 , self.sanctions_screening)\
+        workflow.add_node(\cf5 \strokec5 "calculate_score"\cf4 \strokec4 , self.calculate_score)\
+        workflow.add_node(\cf5 \strokec5 "generate_report"\cf4 \strokec4 , self.generate_report)\
+        workflow.add_node(\cf5 \strokec5 "check_approval"\cf4 \strokec4 , self.check_approval)\
+        workflow.add_node(\cf5 \strokec5 "finalize"\cf4 \strokec4 , self.finalize)\
+        \
+        
+\f6\i \cf7 \strokec7 # Define edges
+\f5\i0 \cf4 \strokec4 \
+        workflow.set_entry_point(\cf5 \strokec5 "validate_input"\cf4 \strokec4 )\
+        workflow.add_edge(\cf5 \strokec5 "validate_input"\cf4 \strokec4 , \cf5 \strokec5 "extract_data"\cf4 \strokec4 )\
+        workflow.add_edge(\cf5 \strokec5 "extract_data"\cf4 \strokec4 , \cf5 \strokec5 "sanctions_screening"\cf4 \strokec4 )\
+        workflow.add_edge(\cf5 \strokec5 "sanctions_screening"\cf4 \strokec4 , \cf5 \strokec5 "calculate_score"\cf4 \strokec4 )\
+        \
+        
+\f6\i \cf7 \strokec7 # Conditional edge based on action type
+\f5\i0 \cf4 \strokec4 \
+        workflow.add_conditional_edges(\
+            \cf5 \strokec5 "calculate_score"\cf4 \strokec4 ,\
+            self.should_generate_report,\
+            \{\
+                \cf5 \strokec5 "generate"\cf4 \strokec4 : \cf5 \strokec5 "generate_report"\cf4 \strokec4 ,\
+                \cf5 \strokec5 "skip"\cf4 \strokec4 : \cf5 \strokec5 "check_approval"\cf4 \strokec4 ,\
+            \}\
+        )\
+        \
+        workflow.add_edge(\cf5 \strokec5 "generate_report"\cf4 \strokec4 , \cf5 \strokec5 "check_approval"\cf4 \strokec4 )\
+        workflow.add_edge(\cf5 \strokec5 "check_approval"\cf4 \strokec4 , \cf5 \strokec5 "finalize"\cf4 \strokec4 )\
+        workflow.add_edge(\cf5 \strokec5 "finalize"\cf4 \strokec4 , END)\
+        \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  workflow\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  validate_input(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Validate input parameters"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Validating input"\cf4 \strokec4 , action=state.action)\
+        \
+        
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  state.action 
+\f3\b \cf6 \strokec6 not
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 in
+\f5\b0 \cf4 \strokec4  [\
+            \cf5 \strokec5 "screen_transaction"\cf4 \strokec4 ,\
+            \cf5 \strokec5 "generate_kyc"\cf4 \strokec4 ,\
+            \cf5 \strokec5 "generate_audit_report"\cf4 \strokec4 ,\
+            \cf5 \strokec5 "check_sanctions"\cf4 \strokec4 \
+        ]:\
+            state.error = \cf5 \strokec5 f"Unknown action: \cf4 \strokec4 \{state.action\}\cf5 \strokec5 "\cf4 \strokec4 \
+            state.current_step = \cf5 \strokec5 "error"\cf4 \strokec4 \
+            
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+        \
+        state.current_step = \cf5 \strokec5 "validated"\cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  extract_data(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Extract and structure data using LLM"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Extracting data"\cf4 \strokec4 , action=state.action)\
+        \
+        
+\f6\i \cf7 \strokec7 # Use LLM to extract structured data
+\f5\i0 \cf4 \strokec4 \
+        system_message = SystemMessage(\
+            content=\cf5 \strokec5 """You are a compliance data extraction expert. \
+            Extract structured transaction or entity data from the provided information.\
+            Ensure all required fields are present and properly formatted."""\cf4 \strokec4 \
+        )\
+        \
+        human_message = HumanMessage(\
+            content=\cf5 \strokec5 f"Extract compliance data from: \cf4 \strokec4 \{state.parameters\}\cf5 \strokec5 "\cf4 \strokec4 \
+        )\
+        \
+        response = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  self.llm.ainvoke([system_message, human_message])\
+        \
+        
+\f6\i \cf7 \strokec7 # Parse response (simplified - would use structured output in production)
+\f5\i0 \cf4 \strokec4 \
+        state.transaction_data = state.parameters\
+        state.current_step = \cf5 \strokec5 "extracted"\cf4 \strokec4 \
+        \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  sanctions_screening(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Perform sanctions screening"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Performing sanctions screening"\cf4 \strokec4 , tenant_id=state.tenant_id)\
+        \
+        
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4 :\
+            
+\f6\i \cf7 \strokec7 # Call sanctions screening tool
+\f5\i0 \cf4 \strokec4 \
+            screening_result = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  sanctions_screening_tool(\
+                counterparty=state.transaction_data.get(\cf5 \strokec5 "counterparty"\cf4 \strokec4 ),\
+                amount=state.transaction_data.get(\cf5 \strokec5 "amount"\cf4 \strokec4 ),\
+                currency=state.transaction_data.get(\cf5 \strokec5 "currency"\cf4 \strokec4 ),\
+            )\
+            \
+            state.screening_result = screening_result\
+            state.current_step = \cf5 \strokec5 "screened"\cf4 \strokec4 \
+            \
+        
+\f3\b \cf6 \strokec6 except
+\f5\b0 \cf4 \strokec4  Exception 
+\f3\b \cf6 \strokec6 as
+\f5\b0 \cf4 \strokec4  e:\
+            logger.error(\cf5 \strokec5 "Sanctions screening failed"\cf4 \strokec4 , error=\cf9 \strokec9 str\cf4 \strokec4 (e))\
+            state.error = \cf5 \strokec5 f"Screening failed: \cf4 \strokec4 \{\cf9 \strokec9 str\cf4 \strokec4 (e)\}\cf5 \strokec5 "\cf4 \strokec4 \
+            state.current_step = \cf5 \strokec5 "error"\cf4 \strokec4 \
+        \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  calculate_score(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Calculate compliance score"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Calculating compliance score"\cf4 \strokec4 )\
+        \
+        score = \cf9 \strokec9 100\cf4 \strokec4 \
+        \
+        
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  state.screening_result:\
+            status = state.screening_result.get(\cf5 \strokec5 "status"\cf4 \strokec4 , \cf5 \strokec5 ""\cf4 \strokec4 )\
+            \
+            
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  status == \cf5 \strokec5 "FLAGGED"\cf4 \strokec4 :\
+                score -= \cf9 \strokec9 50\cf4 \strokec4 \
+            
+\f3\b \cf6 \strokec6 elif
+\f5\b0 \cf4 \strokec4  status == \cf5 \strokec5 "BLOCKED"\cf4 \strokec4 :\
+                score = \cf9 \strokec9 0\cf4 \strokec4 \
+            \
+            matches = state.screening_result.get(\cf5 \strokec5 "matches"\cf4 \strokec4 , [])\
+            score -= \cf9 \strokec9 len\cf4 \strokec4 (matches) * \cf9 \strokec9 10\cf4 \strokec4 \
+        \
+        state.compliance_score = \cf9 \strokec9 max\cf4 \strokec4 (\cf9 \strokec9 0\cf4 \strokec4 , \cf9 \strokec9 min\cf4 \strokec4 (\cf9 \strokec9 100\cf4 \strokec4 , score))\
+        state.current_step = \cf5 \strokec5 "scored"\cf4 \strokec4 \
+        \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  should_generate_report(self, state: CreditXState) -> \cf9 \strokec9 str\cf4 \strokec4 :\
+        \cf5 \strokec5 """Determine if report generation is needed"""\cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  state.action 
+\f3\b \cf6 \strokec6 in
+\f5\b0 \cf4 \strokec4  [\cf5 \strokec5 "generate_kyc"\cf4 \strokec4 , \cf5 \strokec5 "generate_audit_report"\cf4 \strokec4 ]:\
+            
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \cf5 \strokec5 "generate"\cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \cf5 \strokec5 "skip"\cf4 \strokec4 \
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  generate_report(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Generate compliance report"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Generating report"\cf4 \strokec4 , action=state.action)\
+        \
+        
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4 :\
+            
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  state.action == \cf5 \strokec5 "generate_kyc"\cf4 \strokec4 :\
+                report = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  kyc_generation_tool(\
+                    entity_id=state.parameters.get(\cf5 \strokec5 "entity_id"\cf4 \strokec4 ),\
+                    report_type=state.parameters.get(\cf5 \strokec5 "report_type"\cf4 \strokec4 , \cf5 \strokec5 "standard"\cf4 \strokec4 ),\
+                )\
+                state.kyc_report = report\
+            \
+            state.current_step = \cf5 \strokec5 "report_generated"\cf4 \strokec4 \
+            \
+        
+\f3\b \cf6 \strokec6 except
+\f5\b0 \cf4 \strokec4  Exception 
+\f3\b \cf6 \strokec6 as
+\f5\b0 \cf4 \strokec4  e:\
+            logger.error(\cf5 \strokec5 "Report generation failed"\cf4 \strokec4 , error=\cf9 \strokec9 str\cf4 \strokec4 (e))\
+            state.error = \cf5 \strokec5 f"Report generation failed: \cf4 \strokec4 \{\cf9 \strokec9 str\cf4 \strokec4 (e)\}\cf5 \strokec5 "\cf4 \strokec4 \
+        \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  check_approval(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Check if human approval is required"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Checking approval requirements"\cf4 \strokec4 )\
+        \
+        
+\f6\i \cf7 \strokec7 # Approval required if:
+\f5\i0 \cf4 \strokec4 \
+        
+\f6\i \cf7 \strokec7 # - Sanctions flagged or blocked
+\f5\i0 \cf4 \strokec4 \
+        
+\f6\i \cf7 \strokec7 # - Compliance score < 70
+\f5\i0 \cf4 \strokec4 \
+        
+\f6\i \cf7 \strokec7 # - High value transaction (> $1M)
+\f5\i0 \cf4 \strokec4 \
+        \
+        state.requires_approval = (\
+            state.screening_result 
+\f3\b \cf6 \strokec6 and
+\f5\b0 \cf4 \strokec4  state.screening_result.get(\cf5 \strokec5 "status"\cf4 \strokec4 ) 
+\f3\b \cf6 \strokec6 in
+\f5\b0 \cf4 \strokec4  [\cf5 \strokec5 "FLAGGED"\cf4 \strokec4 , \cf5 \strokec5 "BLOCKED"\cf4 \strokec4 ]\
+        ) 
+\f3\b \cf6 \strokec6 or
+\f5\b0 \cf4 \strokec4  (\
+            state.compliance_score < \cf9 \strokec9 70\cf4 \strokec4 \
+        ) 
+\f3\b \cf6 \strokec6 or
+\f5\b0 \cf4 \strokec4  (\
+            state.transaction_data \
+            
+\f3\b \cf6 \strokec6 and
+\f5\b0 \cf4 \strokec4  state.transaction_data.get(\cf5 \strokec5 "amount"\cf4 \strokec4 , \cf9 \strokec9 0\cf4 \strokec4 ) > \cf9 \strokec9 1000000\cf4 \strokec4 \
+        )\
+        \
+        state.current_step = \cf5 \strokec5 "approval_checked"\cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  finalize(self, state: CreditXState) -> CreditXState:\
+        \cf5 \strokec5 """Finalize and prepare response"""\cf4 \strokec4 \
+        logger.info(\cf5 \strokec5 "Finalizing response"\cf4 \strokec4 )\
+        \
+        state.result = \{\
+            \cf5 \strokec5 "action"\cf4 \strokec4 : state.action,\
+            \cf5 \strokec5 "compliance_score"\cf4 \strokec4 : state.compliance_score,\
+            \cf5 \strokec5 "sanctions_status"\cf4 \strokec4 : state.screening_result.get(\cf5 \strokec5 "status"\cf4 \strokec4 ) 
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  state.screening_result 
+\f3\b \cf6 \strokec6 else
+\f5\b0 \cf4 \strokec4  None,\
+            \cf5 \strokec5 "requires_approval"\cf4 \strokec4 : state.requires_approval,\
+            \cf5 \strokec5 "kyc_report"\cf4 \strokec4 : state.kyc_report,\
+            \cf5 \strokec5 "timestamp"\cf4 \strokec4 : datetime.utcnow().isoformat(),\
+        \}\
+        \
+        state.current_step = \cf5 \strokec5 "completed"\cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  state\
+    \
+    
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 def
+\f5\b0 \cf4 \strokec4  execute(\
+        self,\
+        action: \cf9 \strokec9 str\cf4 \strokec4 ,\
+        parameters: Dict[\cf9 \strokec9 str\cf4 \strokec4 , Any],\
+        context: Optional[Dict[\cf9 \strokec9 str\cf4 \strokec4 , Any]],\
+        tenant_id: \cf9 \strokec9 int\cf4 \strokec4 ,\
+        user_id: \cf9 \strokec9 str\cf4 \strokec4 ,\
+    ) -> Dict[\cf9 \strokec9 str\cf4 \strokec4 , Any]:\
+        \cf5 \strokec5 """Execute agent workflow"""\cf4 \strokec4 \
+        start_time = time.time()\
+        \
+        
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4 :\
+            
+\f6\i \cf7 \strokec7 # Create initial state
+\f5\i0 \cf4 \strokec4 \
+            initial_state = CreditXState(\
+                tenant_id=tenant_id,\
+                user_id=user_id,\
+                action=action,\
+                parameters=parameters,\
+                context=context,\
+            )\
+            \
+            
+\f6\i \cf7 \strokec7 # Execute graph
+\f5\i0 \cf4 \strokec4 \
+            final_state = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  self.graph.ainvoke(\
+                initial_state.\cf9 \strokec9 dict\cf4 \strokec4 (),\
+                config=\{\
+                    \cf5 \strokec5 "configurable"\cf4 \strokec4 : \{\
+                        \cf5 \strokec5 "thread_id"\cf4 \strokec4 : \cf5 \strokec5 f"\cf4 \strokec4 \{tenant_id\}\cf5 \strokec5 _\cf4 \strokec4 \{user_id\}\cf5 \strokec5 _\cf4 \strokec4 \{\cf9 \strokec9 int\cf4 \strokec4 (time.time())\}\cf5 \strokec5 "\cf4 \strokec4 ,\
+                    \}\
+                \}\
+            )\
+            \
+            execution_time = (time.time() - start_time) * \cf9 \strokec9 1000\cf4 \strokec4 \
+            \
+            
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  final_state.get(\cf5 \strokec5 "error"\cf4 \strokec4 ):\
+                
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \{\
+                    \cf5 \strokec5 "success"\cf4 \strokec4 : False,\
+                    \cf5 \strokec5 "error"\cf4 \strokec4 : final_state[\cf5 \strokec5 "error"\cf4 \strokec4 ],\
+                    \cf5 \strokec5 "execution_time_ms"\cf4 \strokec4 : execution_time,\
+                \}\
+            \
+            
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \{\
+                \cf5 \strokec5 "success"\cf4 \strokec4 : True,\
+                **final_state[\cf5 \strokec5 "result"\cf4 \strokec4 ],\
+                \cf5 \strokec5 "execution_time_ms"\cf4 \strokec4 : execution_time,\
+            \}\
+            \
+        
+\f3\b \cf6 \strokec6 except
+\f5\b0 \cf4 \strokec4  Exception 
+\f3\b \cf6 \strokec6 as
+\f5\b0 \cf4 \strokec4  e:\
+            logger.error(\cf5 \strokec5 "Agent execution failed"\cf4 \strokec4 , error=\cf9 \strokec9 str\cf4 \strokec4 (e))\
+            
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \{\
+                \cf5 \strokec5 "success"\cf4 \strokec4 : False,\
+                \cf5 \strokec5 "error"\cf4 \strokec4 : \cf9 \strokec9 str\cf4 \strokec4 (e),\
+                \cf5 \strokec5 "execution_time_ms"\cf4 \strokec4 : (time.time() - start_time) * \cf9 \strokec9 1000\cf4 \strokec4 ,\
+            \}\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 7. Database Package - Migrations\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 packages/database/package.json
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 json\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 \{\
+  "name": \cf5 \strokec5 "@creditx/database"\cf4 \strokec4 ,\
+  "version": \cf5 \strokec5 "1.0.0"\cf4 \strokec4 ,\
+  "private": true,\
+  "scripts": \{\
+    "migrate": \cf5 \strokec5 "prisma migrate deploy"\cf4 \strokec4 ,\
+    "migrate:dev": \cf5 \strokec5 "prisma migrate dev"\cf4 \strokec4 ,\
+    "migrate:create": \cf5 \strokec5 "prisma migrate dev --create-only"\cf4 \strokec4 ,\
+    "seed": \cf5 \strokec5 "tsx seed.ts"\cf4 \strokec4 ,\
+    "studio": \cf5 \strokec5 "prisma studio"\cf4 \strokec4 ,\
+    "generate": \cf5 \strokec5 "prisma generate"\cf4 \strokec4 \
+  \},\
+  "dependencies": \{\
+    "@prisma/client": \cf5 \strokec5 "^5.8.0"\cf4 \strokec4 \
+  \},\
+  "devDependencies": \{\
+    "prisma": \cf5 \strokec5 "^5.8.0"\cf4 \strokec4 ,\
+    "tsx": \cf5 \strokec5 "^4.7.0"\cf4 \strokec4 \
+  \}\
+\}\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\b\fs39 \cf0 \strokec2 packages/database/schema.prisma
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 // creditX Ecosystem - Database Schema\
+// Multi-tenant PostgreSQL with Row-Level Security\
+\
+generator client \{\
+  provider = "prisma-client-js"\
+\}\
+\
+datasource db \{\
+  provider = "postgresql"\
+  url      = env("DATABASE_URL")\
+\}\
+\
+// ============================================================================\
+// CORE MULTI-TENANCY\
+// ============================================================================\
+\
+model Tenant \{\
+  id           Int       @id @default(autoincrement())\
+  externalId   String    @unique @default(uuid())\
+  name         String\
+  domain       String    @unique\
+  schemaName   String    @unique @map("schema_name")\
+  status       String    @default("active")\
+  modulesEnabled String[] @map("modules_enabled")\
+  settings     Json      @default("\{\}")\
+  createdAt    DateTime  @default(now()) @map("created_at")\
+  updatedAt    DateTime  @updatedAt @map("updated_at")\
+\
+  users        User[]\
+  transactions Transaction[]\
+  leads        Lead[]\
+  endpoints    Endpoint[]\
+  devices      Device[]\
+\
+  @@map("tenants")\
+\}\
+\
+model User \{\
+  id              String    @id @default(uuid())\
+  tenantId        Int       @map("tenant_id")\
+  email           String    @unique\
+  name            String?\
+  role            String    @default("user")\
+  authProvider    String    @map("auth_provider")\
+  authProviderId  String?   @map("auth_provider_id")\
+  permissions     Json      @default("\{\}")\
+  lastLoginAt     DateTime? @map("last_login_at")\
+  createdAt       DateTime  @default(now()) @map("created_at")\
+\
+  tenant          Tenant    @relation(fields: [tenantId], references: [id])\
+  auditLogs       AuditLog[]\
+\
+  @@map("users")\
+\}\
+\
+// ============================================================================\
+// CREDITX COMPLIANCE MODULE\
+// ============================================================================\
+\
+model Transaction \{\
+  id                String    @id @default(uuid())\
+  tenantId          Int       @map("tenant_id")\
+  transactionDate   DateTime  @map("transaction_date")\
+  amount            Decimal   @db.Decimal(15, 2)\
+  currency          String    @db.VarChar(3)\
+  counterparty      String\
+  description       String?\
+  sanctionsStatus   String    @map("sanctions_status")\
+  complianceScore   Int       @map("compliance_score")\
+  kycDocumentUrl    String?   @map("kyc_document_url")\
+  metadata          Json      @default("\{\}")\
+  createdAt         DateTime  @default(now()) @map("created_at")\
+  updatedAt         DateTime  @updatedAt @map("updated_at")\
+\
+  tenant            Tenant    @relation(fields: [tenantId], references: [id])\
+  approvals         ApprovalWorkflow[]\
+\
+  @@index([tenantId, sanctionsStatus])\
+  @@index([tenantId, transactionDate])\
+  @@map("transactions")\
+\}\
+\
+model AuditLog \{\
+  id           String    @id @default(uuid())\
+  tenantId     Int       @map("tenant_id")\
+  action       String\
+  userId       String    @map("user_id")\
+  resourceType String    @map("resource_type")\
+  resourceId   String    @map("resource_id")\
+  changes      Json      @default("\{\}")\
+  ipAddress    String    @map("ip_address")\
+  timestamp    DateTime  @default(now())\
+\
+  user         User      @relation(fields: [userId], references: [id])\
+\
+  @@index([tenantId, timestamp])\
+  @@index([resourceType, resourceId])\
+  @@map("audit_logs")\
+\}\
+\
+// ============================================================================\
+// 91 APPS AUTOMATION MODULE\
+// ============================================================================\
+\
+model Lead \{\
+  id              String    @id @default(uuid())\
+  tenantId        Int       @map("tenant_id")\
+  externalId      String?   @map("external_id")\
+  name            String\
+  email           String\
+  company         String\
+  status          String    @default("new")\
+  score           Int       @default(0)\
+  lastActivityAt  DateTime? @map("last_activity_at")\
+  assignedTo      String?   @map("assigned_to")\
+  metadata        Json      @default("\{\}")\
+  createdAt       DateTime  @default(now()) @map("created_at")\
+  updatedAt       DateTime  @updatedAt @map("updated_at")\
+\
+  tenant          Tenant    @relation(fields: [tenantId], references: [id])\
+  activities      LeadActivity[]\
+\
+  @@index([tenantId, status])\
+  @@index([tenantId, score])\
+  @@map("leads")\
+\}\
+\
+model LeadActivity \{\
+  id          String    @id @default(uuid())\
+  leadId      String    @map("lead_id")\
+  activityType String   @map("activity_type")\
+  description String\
+  metadata    Json      @default("\{\}")\
+  createdAt   DateTime  @default(now()) @map("created_at")\
+\
+  lead        Lead      @relation(fields: [leadId], references: [id])\
+\
+  @@index([leadId, createdAt])\
+  @@map("lead_activities")\
+\}\
+\
+model AutomationWorkflow \{\
+  id              String    @id @default(uuid())\
+  tenantId        Int       @map("tenant_id")\
+  workflowType    String    @map("workflow_type")\
+  triggerEvent    String    @map("trigger_event")\
+  conditions      Json      @default("\{\}")\
+  actions         Json      @default("\{\}")\
+  status          String    @default("active")\
+  executionCount  Int       @default(0) @map("execution_count")\
+  lastExecutedAt  DateTime? @map("last_executed_at")\
+  createdAt       DateTime  @default(now()) @map("created_at")\
+\
+  executions      WorkflowExecution[]\
+\
+  @@index([tenantId, status])\
+  @@map("automation_workflows")\
+\}\
+\
+model WorkflowExecution \{\
+  id          String    @id @default(uuid())\
+  workflowId  String    @map("workflow_id")\
+  tenantId    Int       @map("tenant_id")\
+  inputData   Json      @map("input_data")\
+  outputData  Json?     @map("output_data")\
+  status      String    @default("pending")\
+  errorMessage String?  @map("error_message")\
+  durationMs  Int?      @map("duration_ms")\
+  executedAt  DateTime  @default(now()) @map("executed_at")\
+\
+  workflow    AutomationWorkflow @relation(fields: [workflowId], references: [id])\
+\
+  @@index([workflowId, executedAt])\
+  @@map("workflow_executions")\
+\}\
+\
+// ============================================================================\
+// GLOBAL AI ALERT MODULE\
+// ============================================================================\
+\
+model ThreatIntelligence \{\
+  id            String    @id @default(uuid())\
+  tenantId      Int       @map("tenant_id")\
+  sourceIp      String    @map("source_ip")\
+  destIp        String    @map("dest_ip")\
+  dnsQuery      String?   @map("dns_query")\
+  packetMetadata Json     @default("\{\}") @map("packet_metadata")\
+  threatType    String    @map("threat_type")\
+  threatScore   Int       @map("threat_score")\
+  severity      String\
+  detectedAt    DateTime  @default(now()) @map("detected_at")\
+  resolvedAt    DateTime? @map("resolved_at")\
+  resolution    String?\
+\
+  @@index([tenantId, detectedAt])\
+  @@index([threatScore, severity])\
+  @@map("threat_intelligence")\
+\}\
+\
+model NetworkDevice \{\
+  id              String    @id @default(uuid())\
+  tenantId        Int       @map("tenant_id")\
+  deviceType      String    @map("device_type")\
+  macAddress      String    @map("mac_address")\
+  ipAddress       String    @map("ip_address")\
+  hostname        String?\
+  baselineProfile Json      @default("\{\}") @map("baseline_profile")\
+  lastSeenAt      DateTime? @map("last_seen_at")\
+  createdAt       DateTime  @default(now()) @map("created_at")\
+\
+  @@index([tenantId, deviceType])\
+  @@map("network_devices")\
+\}\
+\
+// ============================================================================\
+// GUARDIAN AI ENDPOINT SECURITY MODULE\
+// ============================================================================\
+\
+model Endpoint \{\
+  id                  String    @id @default(uuid())\
+  tenantId            Int       @map("tenant_id")\
+  deviceId            String    @unique @map("device_id")\
+  deviceType          String    @map("device_type")\
+  osVersion           String    @map("os_version")\
+  agentVersion        String    @map("agent_version")\
+  lastCheckinAt       DateTime? @map("last_checkin_at")\
+  status              String    @default("online")\
+  baselineEstablished Boolean   @default(false) @map("baseline_established")\
+  baselineData        Json      @default("\{\}") @map("baseline_data")\
+  createdAt           DateTime  @default(now()) @map("created_at")\
+\
+  tenant              Tenant    @relation(fields: [tenantId], references: [id])\
+  events              EndpointEvent[]\
+  incidents           Incident[]\
+\
+  @@index([tenantId, status])\
+  @@map("endpoints")\
+\}\
+\
+model EndpointEvent \{\
+  id           String    @id @default(uuid())\
+  endpointId   String    @map("endpoint_id")\
+  tenantId     Int       @map("tenant_id")\
+  eventType    String    @map("event_type")\
+  eventData    Json      @map("event_data")\
+  anomalyScore Int       @map("anomaly_score")\
+  flagged      Boolean   @default(false)\
+  timestamp    DateTime  @default(now())\
+\
+  endpoint     Endpoint  @relation(fields: [endpointId], references: [id])\
+\
+  @@index([endpointId, timestamp])\
+  @@index([tenantId, flagged])\
+  @@map("endpoint_events")\
+\}\
+\
+model Incident \{\
+  id              String    @id @default(uuid())\
+  endpointId      String    @map("endpoint_id")\
+  tenantId        Int       @map("tenant_id")\
+  incidentType    String    @map("incident_type")\
+  severity        String\
+  description     String\
+  status          String    @default("open")\
+  isolatedAt      DateTime? @map("isolated_at")\
+  resolvedAt      DateTime? @map("resolved_at")\
+  resolutionNotes String?   @map("resolution_notes")\
+  createdAt       DateTime  @default(now()) @map("created_at")\
+\
+  endpoint        Endpoint  @relation(fields: [endpointId], references: [id])\
+\
+  @@index([tenantId, status])\
+  @@map("incidents")\
+\}\
+\
+// ============================================================================\
+// STOLEN/LOST PHONES MODULE\
+// ============================================================================\
+\
+model Device \{\
+  id                String    @id @default(uuid())\
+  tenantId          Int       @map("tenant_id")\
+  deviceId          String    @unique @map("device_id")\
+  ownerUserId       String    @map("owner_user_id")\
+  deviceType        String    @map("device_type")\
+  osVersion         String    @map("os_version")\
+  status            String    @default("active")\
+  lastLocation      Json?     @map("last_location")\
+  lastLocationAt    DateTime? @map("last_location_at")\
+  stolenAt          DateTime? @map("stolen_at")\
+  recoveredAt       DateTime? @map("recovered_at")\
+  insuranceClaimId  String?   @map("insurance_claim_id")\
+  createdAt         DateTime  @default(now()) @map("created_at")\
+\
+  tenant            Tenant    @relation(fields: [tenantId], references: [id])\
+  locationHistory   LocationHistory[]\
+  recoveryWorkflows RecoveryWorkflow[]\
+\
+  @@index([tenantId, status])\
+  @@map("devices")\
+\}\
+\
+model LocationHistory \{\
+  id             String    @id @default(uuid())\
+  deviceId       String    @map("device_id")\
+  tenantId       Int       @map("tenant_id")\
+  location       Json\
+  accuracyMeters Int       @map("accuracy_meters")\
+  locationMethod String    @map("location_method")\
+  timestamp      DateTime  @default(now())\
+\
+  device         Device    @relation(fields: [deviceId], references: [id])\
+\
+  @@index([deviceId, timestamp])\
+  @@map("location_history")\
+\}\
+\
+model RecoveryWorkflow \{\
+  id                   String    @id @default(uuid())\
+  deviceId             String    @map("device_id")\
+  tenantId             Int       @map("tenant_id")\
+  workflowStatus       String    @map("workflow_status")\
+  playbookActions      Json      @map("playbook_actions")\
+  authoritiesNotified  Boolean   @default(false) @map("authorities_notified")\
+  insuranceClaimFiled  Boolean   @default(false) @map("insurance_claim_filed")\
+  chainOfCustody       Json[]    @map("chain_of_custody")\
+  createdAt            DateTime  @default(now()) @map("created_at")\
+\
+  device               Device    @relation(fields: [deviceId], references: [id])\
+\
+  @@map("recovery_workflows")\
+\}\
+\
+// ============================================================================\
+// SHARED SERVICES\
+// ============================================================================\
+\
+model ApprovalWorkflow \{\
+  id           String    @id @default(uuid())\
+  tenantId     Int       @map("tenant_id")\
+  resourceType String    @map("resource_type")\
+  resourceId   String    @map("resource_id")\
+  status       String    @default("pending")\
+  requestedBy  String    @map("requested_by")\
+  approvedBy   String?   @map("approved_by")\
+  metadata     Json      @default("\{\}")\
+  requestedAt  DateTime  @default(now()) @map("requested_at")\
+  respondedAt  DateTime? @map("responded_at")\
+\
+  transaction  Transaction? @relation(fields: [resourceId], references: [id])\
+\
+  @@index([tenantId, status])\
+  @@map("approval_workflows")\
+\}\
+\
+model IntegrationConnection \{\
+  id              String    @id @default(uuid())\
+  tenantId        Int       @map("tenant_id")\
+  integrationType String    @map("integration_type")\
+  credentials     Json      @default("\{\}") // Encrypted\
+  settings        Json      @default("\{\}")\
+  lastSyncAt      DateTime? @map("last_sync_at")\
+  status          String    @default("active")\
+  createdAt       DateTime  @default(now()) @map("created_at")\
+\
+  syncLogs        IntegrationSyncLog[]\
+\
+  @@index([tenantId, integrationType])\
+  @@map("integration_connections")\
+\}\
+\
+model IntegrationSyncLog \{\
+  id                String    @id @default(uuid())\
+  connectionId      String    @map("connection_id")\
+  syncType          String    @map("sync_type")\
+  recordsProcessed  Int       @map("records_processed")\
+  errors            Int       @default(0)\
+  durationMs        Int       @map("duration_ms")\
+  startedAt         DateTime  @map("started_at")\
+  completedAt       DateTime? @map("completed_at")\
+\
+  connection        IntegrationConnection @relation(fields: [connectionId], references: [id])\
+\
+  @@index([connectionId, startedAt])\
+  @@map("integration_sync_logs")\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b \cf0 Continue next files with:
+\f2\b0 \strokec2 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}
+\f0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u9989 
+\f2  Docker Configuration\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}
+\f0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u9989 
+\f2  CI/CD Pipeline (GitHub Actions)\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}
+\f0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u9989 
+\f2  Terraform Infrastructure\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}
+\f0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u9989 
+\f2  Additional API Endpoints\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}
+\f0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u9989 
+\f2  Integration Connectors\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 \strokec2 \
+}

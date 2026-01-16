@@ -1,0 +1,311 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Medium;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Light;\f4\fnil\fcharset0 .SFNSMono-Light_YAXS144F07C_wght2260000;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red60\green60\blue59;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c30196\c30196\c29804;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 text-first code map
+\f1 \'a0in diagram form that you can turn into visuals (e.g., Mermaid, Excalidraw, Whimsical). It shows the full platform layout, from repo \uc0\u8594  services \u8594  DB \u8594  AI/memory.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 1) Top-level repository map\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs18 \cf0 text
+\f2\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \strokec3 creditx/\
+\uc0\u9500 \u9472  apps/\
+\uc0\u9474   \u9500 \u9472  web/                      # Next.js/React frontend (consumer + partner + internal)\
+\uc0\u9474   \u9492 \u9472  admin/                    # Internal OS / admin UI (optional separate app)\
+\uc0\u9474 \
+\uc0\u9500 \u9472  services/\
+\uc0\u9474   \u9500 \u9472  control-plane/            # Control Plane (registries, policies, prompt resolver)\
+\uc0\u9474   \u9500 \u9472  orchestrator/             # Workflow Orchestrator (Edge Functions)\
+\uc0\u9474   \u9500 \u9472  semantic-api/             # Semantic entity APIs (views/materialized views + RPC)\
+\uc0\u9474   \u9500 \u9472  engines/\
+\uc0\u9474   \u9474   \u9500 \u9472  outcome/               # Outcome engine (plans, campaigns)\
+\uc0\u9474   \u9474   \u9500 \u9472  rights/                # Rights & Trust engine (consents, disputes)\
+\uc0\u9474   \u9474   \u9500 \u9472  risk/                  # Risk & Security engine (alerts, incidents)\
+\uc0\u9474   \u9474   \u9492 \u9472  market/                # Market & Capital engine (underwriting, packages)\
+\uc0\u9474   \u9500 \u9472  memory-service/           # Memory abstraction over episodes/knowledge + vectors\
+\uc0\u9474   \u9500 \u9472  ai-gateway-client/        # Thin client for external/self-hosted AI Gateway\
+\uc0\u9474   \u9492 \u9472  ui-gateway/               # UI API facade for apps (timeline, settings, views)\
+\uc0\u9474 \
+\uc0\u9500 \u9472  infra/\
+\uc0\u9474   \u9500 \u9472  supabase/                 # Supabase project configs, migrations, RLS policies\
+\uc0\u9474   \u9500 \u9472  events/                   # Event topics/schemas (workflow_events, domain_events)\
+\uc0\u9474   \u9492 \u9472  ci-cd/                    # Pipelines, config validation, deploy scripts\
+\uc0\u9474 \
+\uc0\u9500 \u9472  config/\
+\uc0\u9474   \u9500 \u9472  playbooks/                # Playbook configs (graphs, milestones, guards)\
+\uc0\u9474   \u9500 \u9472  agents/                   # Agent registry configs (types, tools, prompts)\
+\uc0\u9474   \u9500 \u9472  entities/                 # Semantic entity contracts (schemas, SLAs)\
+\uc0\u9474   \u9500 \u9472  prompts/                  # Prompt texts (SYS/ROLE, TASK, POLICY, UX)\
+\uc0\u9474   \u9492 \u9472  observability/            # Metric/log/tracing config per component\
+\uc0\u9474 \
+\uc0\u9500 \u9472  db/\
+\uc0\u9474   \u9500 \u9472  schema/                   # SQL for tables (core domain, control-plane, memory)\
+\uc0\u9474   \u9500 \u9472  views/                    # mv_* views for semantic entities\
+\uc0\u9474   \u9500 \u9472  policies/                 # RLS + consent filters\
+\uc0\u9474   \u9492 \u9472  seeds/                    # Seed data for dev/sandbox\
+\uc0\u9474 \
+\uc0\u9492 \u9472  tests/\
+   \uc0\u9500 \u9472  unit/\
+   \uc0\u9500 \u9472  integration/\
+   \uc0\u9492 \u9472  e2e/\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs32 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 2) Service interaction diagram (logical)\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs18 \cf0 text
+\f2\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \strokec3 [apps/web] \uc0\u9472 \u9472 \u9472 \u9488 \
+[apps/admin] \uc0\u9472 \u9524 \u9472 \u9472 > [services/ui-gateway] \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+                                   \uc0\u9474                                      \u9474 \
+                                   \uc0\u9660                                      \u9474 \
+                           [services/orchestrator]                       \uc0\u9474 \
+                             \uc0\u9474      \u9650                                      \u9474 \
+                             \uc0\u9474      \u9474                                      \u9474 \
+       \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488                            \u9474 \
+       \uc0\u9474                                      \u9474                            \u9474 \
+       \uc0\u9660                                      \u9660                            \u9660 \
+[services/control-plane]           [services/memory-service]     [services/semantic-api]\
+       \uc0\u9474                                      \u9474                            \u9474 \
+       \uc0\u9474                                      \u9474                            \u9474 \
+       \uc0\u9660                                      \u9660                            \u9660 \
+      [db/schema + views + prompts + configs (Supabase Postgres + pgvector)]\
+       \uc0\u9474 \
+       \uc0\u9660 \
+[services/engines/outcome | rights | risk | market]\
+       \uc0\u9474 \
+       \uc0\u9660 \
+   [infra/events bus]  (workflow_events, domain_events)\
+       \uc0\u9474 \
+       \uc0\u9492 \u9472 \u9472 \u9472 \u9472 > feeds back into orchestrator, memory, engines, and observability\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls1\ilvl0
+\f1\fs32 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 UI \uc0\u8594  UI Gateway for all app calls.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 UI Gateway \uc0\u8594  Orchestrator for workflows and timelines.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Orchestrator \uc0\u8594  Control Plane for configs/policies; \u8594  Memory & Semantic APIs for data; \u8594  Engines via events.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Engines emit domain events and update DB; Memory reads/writes episodes and knowledge.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 3) Supabase Edge Functions & code layout\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1\fs32 \cf0 Within\'a0
+\f4\b\fs28 \strokec2 services/
+\f1\b0\fs32 \strokec2 \'a0each service uses Edge Functions organized by domain:\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs18 \cf0 text
+\f2\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \strokec3 services/orchestrator/\
+\uc0\u9500 \u9472  functions/\
+\uc0\u9474   \u9500 \u9472  start.ts            # POST /orchestrator/start\
+\uc0\u9474   \u9500 \u9472  step.ts             # POST /orchestrator/step\
+\uc0\u9474   \u9492 \u9472  on-event.ts         # POST /orchestrator/on-event (invoked by triggers/webhooks)\
+\uc0\u9492 \u9472  lib/\
+   \uc0\u9500 \u9472  graph-loader.ts     # Load playbook graphs from control-plane/config\
+   \uc0\u9500 \u9472  step-runner.ts      # Run single step with tools + schema\
+   \uc0\u9500 \u9472  event-publisher.ts  # Emit workflow_events\
+   \uc0\u9492 \u9472  types.ts\
+\
+services/control-plane/\
+\uc0\u9500 \u9472  functions/\
+\uc0\u9474   \u9500 \u9472  playbooks-id.ts      # GET /control-plane/playbooks/:id\
+\uc0\u9474   \u9500 \u9472  agents-id.ts         # GET /control-plane/agents/:id\
+\uc0\u9474   \u9500 \u9472  entities-id.ts       # GET /control-plane/entities/:id\
+\uc0\u9474   \u9500 \u9472  can-run-playbook.ts  # POST /control-plane/can-run-playbook\
+\uc0\u9474   \u9492 \u9472  resolve-step.ts      # POST /control-plane/resolve-step\
+\uc0\u9492 \u9472  lib/\
+   \uc0\u9500 \u9472  registry-loader.ts\
+   \uc0\u9500 \u9472  milestone-engine.ts\
+   \uc0\u9500 \u9472  policy-engine.ts\
+   \uc0\u9500 \u9472  prompt-resolver.ts\
+   \uc0\u9492 \u9472  types.ts\
+\
+services/memory-service/\
+\uc0\u9500 \u9472  functions/\
+\uc0\u9474   \u9500 \u9472  get-context-memory.ts\
+\uc0\u9474   \u9500 \u9472  get-similar-outcomes.ts\
+\uc0\u9474   \u9500 \u9472  search-knowledge.ts\
+\uc0\u9474   \u9492 \u9472  append-episode.ts\
+\uc0\u9492 \u9472  lib/\
+   \uc0\u9500 \u9472  embeddings.ts\
+   \uc0\u9500 \u9472  hybrid-search.ts\
+   \uc0\u9500 \u9472  pruning.ts\
+   \uc0\u9492 \u9472  types.ts\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1\fs32 \cf0 \strokec2 (Same pattern for\'a0
+\f4\b\fs28 \strokec2 semantic-api/
+\f1\b0\fs32 \strokec2 , each engine, and\'a0
+\f4\b\fs28 \strokec2 ui-gateway/
+\f1\b0\fs32 \strokec2 .)\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 4) Database & semantic/entity layout\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs18 \cf0 text
+\f2\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \strokec3 Supabase Postgres\
+\uc0\u9500 \u9472  schemas\
+\uc0\u9474   \u9500 \u9472  public/\
+\uc0\u9474   \u9474   \u9500 \u9472  users, tenants, persons, partners\
+\uc0\u9474   \u9474   \u9500 \u9472  credit_reports, credit_trade_lines\
+\uc0\u9474   \u9474   \u9500 \u9472  cashflow_accounts, cashflow_transactions\
+\uc0\u9474   \u9474   \u9500 \u9472  loans, underwriting_applications, underwriting_decisions\
+\uc0\u9474   \u9474   \u9500 \u9472  consents, rights_requests\
+\uc0\u9474   \u9474   \u9500 \u9472  disputes, dispute_artifacts\
+\uc0\u9474   \u9474   \u9500 \u9472  security_alerts, security_incidents\
+\uc0\u9474   \u9474   \u9500 \u9472  cases, campaigns, human_tasks\
+\uc0\u9474   \u9474   \u9500 \u9472  audit_events, notifications\
+\uc0\u9474   \u9474   \u9500 \u9472  episodes, episode_embeddings\
+\uc0\u9474   \u9474   \u9500 \u9472  knowledge_docs, knowledge_chunks, knowledge_embeddings\
+\uc0\u9474   \u9474   \u9500 \u9472  playbooks, agents, semantic_entities, prompts\
+\uc0\u9474   \u9474   \u9492 \u9472  settings, automation_settings\
+\uc0\u9474   \u9492 \u9472  engine_* (if you want per-engine schemas)\
+\uc0\u9474 \
+\uc0\u9492 \u9472  views (semantic layer)\
+   \uc0\u9500 \u9472  mv_consumer_snapshot_v1\
+   \uc0\u9500 \u9472  mv_consumer_plan_summary_v1\
+   \uc0\u9500 \u9472  mv_dispute_summary_v1\
+   \uc0\u9500 \u9472  mv_consumer_security_summary_v1\
+   \uc0\u9492 \u9472  mv_underwriting_summary_v1\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1\fs32 \cf0 \strokec2 These views are what\'a0
+\f4\b\fs28 \strokec2 services/semantic-api
+\f1\b0\fs32 \strokec2 \'a0serves to agents/UIs.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 5) Prompts & registries\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs18 \cf0 text
+\f2\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \strokec3 config/\
+\uc0\u9500 \u9472  playbooks/\
+\uc0\u9474   \u9500 \u9472  score_lift.yml\
+\uc0\u9474   \u9500 \u9472  dispute_advocacy.yml\
+\uc0\u9474   \u9492 \u9472  security_cleanup.yml\
+\uc0\u9500 \u9472  agents/\
+\uc0\u9474   \u9500 \u9472  plan_generation.yml\
+\uc0\u9474   \u9500 \u9472  dispute_advocacy.yml\
+\uc0\u9474   \u9500 \u9472  security_remediation.yml\
+\uc0\u9474   \u9492 \u9472  explainer.yml\
+\uc0\u9500 \u9472  entities/\
+\uc0\u9474   \u9500 \u9472  ConsumerSnapshot.v1.yml\
+\uc0\u9474   \u9500 \u9472  ConsumerPlanSummary.v1.yml\
+\uc0\u9474   \u9492 \u9472  DisputeSummary.v1.yml\
+\uc0\u9492 \u9472  prompts/\
+   \uc0\u9500 \u9472  SYS/\
+   \uc0\u9474   \u9500 \u9472  ROLE/global.base.v1.txt\
+   \uc0\u9474   \u9500 \u9472  ROLE/plan_generation.v1.txt\
+   \uc0\u9474   \u9500 \u9472  ROLE/dispute_advocacy.v1.txt\
+   \uc0\u9474   \u9492 \u9472  ROLE/security_remediation.v1.txt\
+   \uc0\u9500 \u9472  TASK/\
+   \uc0\u9474   \u9492 \u9472  <playbook>/<step>.v1.txt\
+   \uc0\u9500 \u9472  POLICY/\
+   \uc0\u9474   \u9500 \u9472  rights.global.v1.txt\
+   \uc0\u9474   \u9492 \u9472  tools.global.v1.txt\
+   \uc0\u9492 \u9472  UX/\
+      \uc0\u9492 \u9472  consumer.timeline.explanation.v1.txt\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1\fs32 \cf0 \strokec2 These are loaded into\'a0
+\f4\b\fs28 \strokec2 playbooks
+\f1\b0\fs32 \strokec2 ,\'a0
+\f4\b\fs28 \strokec2 agents
+\f1\b0\fs32 \strokec2 ,\'a0
+\f4\b\fs28 \strokec2 semantic_entities
+\f1\b0\fs32 \strokec2 , and\'a0
+\f4\b\fs28 \strokec2 prompts
+\f1\b0\fs32 \strokec2 \'a0tables by the Control Plane\'92s config sync.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 6) Event & observability map\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs18 \cf0 text
+\f2\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \strokec3 Event bus (Kafka/Redpanda/PubSub)\
+\uc0\u9500 \u9472  workflow_events\
+\uc0\u9474   \u9500 \u9472  playbook_started\
+\uc0\u9474   \u9500 \u9472  step_completed\
+\uc0\u9474   \u9500 \u9472  step_failed\
+\uc0\u9474   \u9500 \u9472  hitl_required\
+\uc0\u9474   \u9492 \u9472  hitl_resolved\
+\uc0\u9492 \u9472  domain_events\
+   \uc0\u9500 \u9472  PlanGenerated\
+   \uc0\u9500 \u9472  PlanApplied\
+   \uc0\u9500 \u9472  DisputeOpened\
+   \uc0\u9500 \u9472  DisputeSubmitted\
+   \uc0\u9500 \u9472  SecurityAlertRaised\
+   \uc0\u9500 \u9472  SecurityIncidentOpened\
+   \uc0\u9500 \u9472  UnderwritingDecisionMade\
+   \uc0\u9492 \u9472  LoanPackagePerformanceUpdated\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1\fs32 \cf0 \strokec2 Observability:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls2\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Metrics: emitted from each\'a0
+\f4\b\fs28 services/*
+\f1\b0\fs32 \'a0module.\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Logs: Edge Functions + DB.\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Traces: spans around orchestrator steps, AI Gateway calls, memory queries, and DB access.\
+}

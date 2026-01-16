@@ -1,0 +1,294 @@
+# ============================================================================
+# CreditX Ecosystem - Spaceship Hyperlift Deployment Configuration
+# Enterprise Production Build - Dragonfly Native
+# ============================================================================
+
+version: "1.0"
+platform: spaceship_hyperlift
+
+project:
+  name: creditx-ecosystem
+  region: us-phx-1
+  environment: production
+
+# ============================================================================
+# BUILD CONFIGURATION
+# ============================================================================
+
+builds:
+  trigger: github_webhook
+  events: [push]
+  branches: [main]
+  
+  stages:
+    - stage: test
+      commands:
+        - "pip install -r services/creditx-service/requirements.txt"
+        - "python -m pytest tests/ -v --cov=services --cov-report=xml"
+      timeout: 300
+      
+    - stage: security_scan
+      commands:
+        - "trivy image --severity HIGH,CRITICAL --exit-code 1 ."
+        - "bandit -r services/ -ll"
+      fail_on_critical: true
+      
+    - stage: build
+      docker_file: ./Dockerfile
+      context: .
+      build_args:
+        BUILD_DATE: "{{ build_date }}"
+        GIT_COMMIT: "{{ git_sha }}"
+        VERSION: "{{ git_tag || 'latest' }}"
+      cache: true
+      
+    - stage: registry_push
+      registry: spaceship_registry
+      image_tag: "creditx-ecosystem:{{ git_sha }}"
+      image_latest: "creditx-ecosystem:latest"
+
+# ============================================================================
+# DEPLOYMENT CONFIGURATION
+# ============================================================================
+
+deployments:
+  production:
+    strategy: blue_green
+    
+    steps:
+      1_deploy_to_green:
+        replicas: 3
+        health_check_wait: 60
+        
+      2_smoke_tests:
+        endpoints:
+          - path: /health/live
+            expected_status: 200
+          - path: /health/ready
+            expected_status: 200
+        timeout: 120
+        
+      3_traffic_shift:
+        method: load_balancer_switch
+        cutover_time: 5
+        
+      4_monitor:
+        duration: 300
+        metrics:
+          - error_rate
+          - latency_p95
+          - cpu_utilization
+          - memory_utilization
+        rollback_thresholds:
+          error_rate: 5%
+          latency_p95: 2000ms
+          
+      5_cleanup:
+        retain_for_rollback: 24h
+
+# ============================================================================
+# SERVICES
+# ============================================================================
+
+services:
+  creditx-service:
+    image: creditx-ecosystem:{{ git_sha }}
+    port: 8000
+    replicas: 3
+    cpu: 1
+    memory: 2Gi
+    
+    health_check:
+      path: /health/live
+      interval: 30s
+      timeout: 3s
+      start_period: 40s
+      retries: 3
+    
+    readiness_check:
+      path: /health/ready
+      interval: 10s
+      timeout: 5s
+    
+    environment:
+      NODE_ENV: production
+      SPACES_REGION: us-phx-1
+      LOG_LEVEL: INFO
+      LOG_FORMAT: json
+    
+    secrets:
+      - DATABASE_URL
+      - CACHE_HOST
+      - OPENAI_API_KEY
+      - ANTHROPIC_API_KEY
+      - JWT_PUBLIC_KEY
+      - ENCRYPTION_KEY
+    
+    autoscaling:
+      enabled: true
+      min_replicas: 3
+      max_replicas: 10
+      metrics:
+        - type: cpu
+          target: 80
+        - type: memory
+          target: 85
+        - type: latency_p95
+          target: 1000ms
+
+# ============================================================================
+# INFRASTRUCTURE (Spaceship Native)
+# ============================================================================
+
+infrastructure:
+  load_balancer:
+    type: spaceship_lb
+    algorithm: weighted_round_robin
+    ssl_termination: true
+    ddos_protection:
+      enabled: true
+      capacity_gbps: 10
+    
+    health_check:
+      path: /health/live
+      interval: 30s
+      timeout: 5s
+      healthy_threshold: 2
+      unhealthy_threshold: 3
+
+  cdn:
+    enabled: true
+    edge_locations: global
+    cache_rules:
+      - pattern: "/static/*"
+        ttl: 86400
+      - pattern: "/api/*"
+        ttl: 0
+        bypass: true
+
+  volumes:
+    postgres-data:
+      size: 100Gi
+      type: ssd
+      encrypted: true
+      backup:
+        enabled: true
+        schedule: "0 2 * * *"
+        retention: 30d
+
+# ============================================================================
+# DATABASE (Spaceship Starlight)
+# ============================================================================
+
+database:
+  type: postgresql
+  version: "17"
+  instance: starlight-db-prod
+  
+  config:
+    max_connections: 200
+    shared_buffers: 256MB
+    effective_cache_size: 768MB
+    maintenance_work_mem: 64MB
+    checkpoint_completion_target: 0.9
+    wal_buffers: 16MB
+    default_statistics_target: 100
+    random_page_cost: 1.1
+    effective_io_concurrency: 200
+    work_mem: 16MB
+    min_wal_size: 1GB
+    max_wal_size: 4GB
+  
+  replication:
+    enabled: true
+    read_replicas: 2
+  
+  backup:
+    enabled: true
+    schedule: "0 */6 * * *"
+    retention: 30d
+    point_in_time_recovery: true
+
+# ============================================================================
+# CACHE (Dragonfly - Redis Compatible)
+# ============================================================================
+
+cache:
+  type: dragonfly
+  instance: dragonfly-cache-prod
+  version: latest
+  
+  config:
+    maxmemory: 2gb
+    maxmemory-policy: allkeys-lru
+    tcp-keepalive: 300
+    timeout: 0
+  
+  replication:
+    enabled: true
+    replicas: 1
+  
+  persistence:
+    enabled: false
+
+# ============================================================================
+# COMMUNICATION SERVICES (Bundle Included)
+# ============================================================================
+
+communication:
+  thunderbolt:
+    enabled: true
+    domain: ecosystem.thunderbolt.spaceship.com
+    e2ee: true
+    
+  spacemail:
+    enabled: true
+    domain: mail.ecosystem.ai
+    dkim: true
+    spf: true
+    dmarc: true
+    
+  fastvpn:
+    enabled: true
+    tunnels:
+      - name: portfolio-access
+        type: site-to-site
+        encryption: military_grade
+
+# ============================================================================
+# OBSERVABILITY
+# ============================================================================
+
+observability:
+  metrics:
+    enabled: true
+    provider: prometheus
+    scrape_interval: 15s
+    retention: 15d
+    
+  logging:
+    enabled: true
+    format: json
+    retention: 30d
+    
+  tracing:
+    enabled: true
+    provider: jaeger
+    sample_rate: 0.1
+
+# ============================================================================
+# ROLLBACK CONFIGURATION
+# ============================================================================
+
+rollback:
+  automatic:
+    enabled: true
+    triggers:
+      - error_rate > 5%
+      - latency_p95 > 2000ms
+      - crash_rate > 2%
+    action: traffic_shift_to_previous
+    
+  manual:
+    command: "spaceship rollback creditx-ecosystem --to-version={{ version }}"
+    time_to_complete: 30s

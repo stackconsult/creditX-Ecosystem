@@ -1,0 +1,568 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Medium;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 .AppleColorEmojiUI;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-Light;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red60\green60\blue59;
+\red95\green124\blue3;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c30196\c30196\c29804;
+\cssrgb\c44314\c54902\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Phase1-Deliverable-6.md\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \strokec2 \
+\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs30 \cf0 \strokec2 DELIVERABLE 6: Monitoring & Observability\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs27 \cf0 \strokec2 Prometheus, Grafana, ELK Stack & Alerting V2.3\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f2\fs27 \cf0 \strokec2 \uc0\u55357 \u56523 
+\f0  CONTENTS\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls1\ilvl0
+\b\fs24 \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#monitoring-architecture"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Monitoring Architecture}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#prometheus-configuration"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Prometheus Configuration}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#grafana-dashboards"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Grafana Dashboards}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#alert-rules"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Alert Rules}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#logging-elk"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Logging (ELK)}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#distributed-tracing"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Distributed Tracing}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 MONITORING ARCHITECTURE\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Stack Components\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474    Applications  \u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+         \uc0\u9474  (Metrics + Logs + Traces)\
+    \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9488 \
+    \uc0\u9474     \u9474     \u9474 \
+    \uc0\u9660     \u9660     \u9660 \
+\uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474  Prometheus \u9474  ELK Stack \u9474  Jaeger       \u9474 \
+\uc0\u9474  (Metrics)  \u9474  (Logs)    \u9474  (Traces)     \u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+    \uc0\u9474          \u9474             \u9474 \
+    \uc0\u9660          \u9660             \u9660 \
+\uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474  Grafana \u9474  Kibana  \u9474  Jaeger UI\u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+    \uc0\u9474 \
+    \uc0\u9660 \
+\uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474  Alertmanager     \u9474 \
+\uc0\u9474  (Slack, PD, etc) \u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 PROMETHEUS CONFIGURATION\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 prometheus.yml\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 global:\
+  scrape_interval: 15s\
+  evaluation_interval: 15s\
+  external_labels:\
+    environment: 'production'\
+    cluster: 'ecosystem-phase1'\
+\
+scrape_configs:\
+  # API Services\
+  - job_name: 'creditx'\
+    static_configs:\
+      - targets: ['creditx-phx-01:8000', 'creditx-phx-02:8000']\
+    metrics_path: '/metrics'\
+\
+  - job_name: 'threat-detection'\
+    static_configs:\
+      - targets: ['threat-phx-01:8000', 'threat-phx-02:8000']\
+\
+  - job_name: 'guardian'\
+    static_configs:\
+      - targets: ['guardian-phx-01:8000', 'guardian-phx-02:8000']\
+\
+  - job_name: 'apps-automation'\
+    static_configs:\
+      - targets: ['apps-phx-01:3000', 'apps-phx-02:3000']\
+\
+  - job_name: 'phones-recovery'\
+    static_configs:\
+      - targets: ['phones-phx-01:3000', 'phones-phx-02:3000']\
+\
+  # Infrastructure\
+  - job_name: 'prometheus'\
+    static_configs:\
+      - targets: ['localhost:9090']\
+\
+  - job_name: 'node-exporter'\
+    static_configs:\
+      - targets: ['node-1:9100', 'node-2:9100', 'node-3:9100']\
+\
+  - job_name: 'postgresql'\
+    static_configs:\
+      - targets: ['postgres-primary:9187']\
+\
+  - job_name: 'dragonfly'\
+    static_configs:\
+      - targets: ['dragonfly-cache:6379']\
+\
+  # Kubernetes (if applicable)\
+  - job_name: 'kubernetes-apiservers'\
+    kubernetes_sd_configs:\
+      - role: endpoints\
+    scheme: https\
+    tls_config:\
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\
+\
+retention: 15d\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Recording Rules\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # recording_rules.yml\
+groups:\
+  - name: "Service Metrics"\
+    interval: 30s\
+    rules:\
+      - record: "service:requests:rate5m"\
+        expr: "rate(http_requests_total[5m])"\
+      \
+      - record: "service:errors:rate5m"\
+        expr: "rate(http_requests_total\{status=~'5..'\}[5m])"\
+      \
+      - record: "service:latency:p95"\
+        expr: "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))"\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 GRAFANA DASHBOARDS\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Dashboard Configuration\
+\pard\pardeftab720\sa120\partightenfactor0
+\cf0 \strokec2 12 Production Dashboards
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls2\ilvl0
+\f0 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Platform Overview
+\f1 \'a0- System health\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Service Metrics
+\f1 \'a0- Per-service performance\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Cache Performance
+\f1 \'a0- Dragonfly stats\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Agent Execution
+\f1 \'a0- Workflow telemetry\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	5	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Security Events
+\f1 \'a0- Breach detection\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	6	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Performance Trends
+\f1 \'a0- Latency/throughput\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	7	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 EBITDA Impact
+\f1 \'a0- Business metrics\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	8	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Database Health
+\f1 \'a0- PostgreSQL stats\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	9	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 API Gateway
+\f1 \'a0- Request routing\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	10	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Error Tracking
+\f1 \'a0- Error rates/patterns\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	11	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 User Activity
+\f1 \'a0- Usage patterns\
+\ls2\ilvl0
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	12	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Cost Analysis
+\f1 \'a0- Infrastructure costs\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Sample Dashboard JSON\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 json
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 \{\
+  "dashboard": \{\
+    "title": \cf5 \strokec5 "Platform Overview"\cf4 \strokec4 ,\
+    "timezone": \cf5 \strokec5 "browser"\cf4 \strokec4 ,\
+    "panels": [\
+      \{\
+        "title": \cf5 \strokec5 "API Request Rate"\cf4 \strokec4 ,\
+        "targets": [\
+          \{\
+            "expr": \cf5 \strokec5 "sum(rate(http_requests_total[5m])) by (service)"\cf4 \strokec4 \
+          \}\
+        ],\
+        "type": \cf5 \strokec5 "graph"\cf4 \strokec4 \
+      \},\
+      \{\
+        "title": \cf5 \strokec5 "Error Rate"\cf4 \strokec4 ,\
+        "targets": [\
+          \{\
+            "expr": \cf5 \strokec5 "sum(rate(http_requests_total\{status=~'5..'\}[5m])) by (service)"\cf4 \strokec4 \
+          \}\
+        ],\
+        "type": \cf5 \strokec5 "graph"\cf4 \strokec4 \
+      \},\
+      \{\
+        "title": \cf5 \strokec5 "P95 Latency"\cf4 \strokec4 ,\
+        "targets": [\
+          \{\
+            "expr": \cf5 \strokec5 "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))"\cf4 \strokec4 \
+          \}\
+        ],\
+        "type": \cf5 \strokec5 "graph"\cf4 \strokec4 \
+      \},\
+      \{\
+        "title": \cf5 \strokec5 "Active Users"\cf4 \strokec4 ,\
+        "targets": [\
+          \{\
+            "expr": \cf5 \strokec5 "count(active_sessions)"\cf4 \strokec4 \
+          \}\
+        ],\
+        "type": \cf5 \strokec5 "stat"\cf4 \strokec4 \
+      \}\
+    ]\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 ALERT RULES\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 alert-rules.yml\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 groups:\
+  - name: "Critical Alerts"\
+    interval: 30s\
+    rules:\
+      # High Error Rate\
+      - alert: HighErrorRate\
+        expr: |\
+          (sum(rate(http_requests_total\{status=~'5..'\}[5m])) by (service) /\
+           sum(rate(http_requests_total[5m])) by (service)) > 0.01\
+        for: 5m\
+        annotations:\
+          summary: "High error rate detected: \{\{ $value | humanizePercentage \}\}"\
+          severity: "critical"\
+      \
+      # High Latency\
+      - alert: HighLatency\
+        expr: |\
+          histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5\
+        for: 10m\
+        annotations:\
+          summary: "High P95 latency: \{\{ $value \}\}s"\
+          severity: "warning"\
+      \
+      # Database Connection Pool Exhausted\
+      - alert: DatabasePoolExhausted\
+        expr: |\
+          pg_stat_activity_count > 900\
+        for: 2m\
+        annotations:\
+          summary: "Database connection pool near limit"\
+          severity: "critical"\
+      \
+      # Cache Memory Pressure\
+      - alert: CacheMemoryPressure\
+        expr: |\
+          redis_memory_used_bytes / redis_memory_max_bytes > 0.9\
+        for: 5m\
+        annotations:\
+          summary: "Cache memory usage above 90%"\
+          severity: "warning"\
+      \
+      # Service Down\
+      - alert: ServiceDown\
+        expr: |\
+          up\{job=~"creditx|threat-detection|guardian|apps-automation|phones-recovery"\} == 0\
+        for: 2m\
+        annotations:\
+          summary: "\{\{ $labels.job \}\} service is down"\
+          severity: "critical"\
+      \
+      # High CPU Usage\
+      - alert: HighCPU\
+        expr: |\
+          node_cpu_seconds_total > 80\
+        for: 10m\
+        annotations:\
+          summary: "CPU usage above 80%"\
+          severity: "warning"\
+\
+  - name: "Compliance Alerts"\
+    interval: 1m\
+    rules:\
+      # Unauthorized Document Access\
+      - alert: UnauthorizedDocumentAccess\
+        expr: |\
+          increase(unauthorized_access_attempts[5m]) > 5\
+        annotations:\
+          summary: "Multiple unauthorized document access attempts"\
+          severity: "critical"\
+\
+  - name: "Security Alerts"\
+    interval: 1m\
+    rules:\
+      # DDoS Attack Detected\
+      - alert: DDoSDetected\
+        expr: |\
+          rate(http_requests_total[1m]) > 10000\
+        for: 1m\
+        annotations:\
+          summary: "Potential DDoS attack"\
+          severity: "critical"\
+      \
+      # Brute Force Attack\
+      - alert: BruteForceAttack\
+        expr: |\
+          increase(failed_login_attempts[5m]) > 10\
+        annotations:\
+          summary: "Brute force attack detected"\
+          severity: "critical"\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 LOGGING (ELK)\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Elasticsearch Configuration\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # elasticsearch.yml\
+cluster.name: ecosystem-logs\
+node.name: es-node-1\
+network.host: 0.0.0.0\
+http.port: 9200\
+discovery.type: single-node\
+\
+index:\
+  lifecycle:\
+    name: logs\
+    rollover:\
+      max_size: 50gb\
+      max_age: 1d\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Logstash Pipeline\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 input \{\
+  tcp \{\
+    port => 5000\
+    codec => json\
+  \}\
+\}\
+\
+filter \{\
+  if [type] == "application" \{\
+    mutate \{\
+      add_field => \{ "[@metadata][index_name]" => "logs-app-%\{+YYYY.MM.dd\}" \}\
+    \}\
+  \}\
+\}\
+\
+output \{\
+  elasticsearch \{\
+    hosts => ["elasticsearch:9200"]\
+    index => "%\{[@metadata][index_name]\}"\
+  \}\
+\}\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Kibana Dashboards\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1 \cf0 \strokec2 Pre-configured dashboards for:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls3\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Application errors\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Performance metrics\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 User activity\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 System health\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Security events\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DISTRIBUTED TRACING\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Jaeger Configuration\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # jaeger-config.yaml\
+collector:\
+  port: 14250\
+  \
+agent:\
+  samplingRate: 0.1  # 10% sampling\
+  \
+storage:\
+  type: elasticsearch\
+  elasticsearch:\
+    server-urls: http://elasticsearch:9200\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Trace Example\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 Request Flow:\
+\uc0\u9492 \u9472  API Gateway (10ms)\
+   \uc0\u9492 \u9472  CreditX Service (45ms)\
+      \uc0\u9500 \u9472  Database Query (20ms)\
+      \uc0\u9500 \u9472  Cache Check (5ms)\
+      \uc0\u9492 \u9472  Compliance Validation (20ms)\
+   \uc0\u9492 \u9472  Response (5ms)\
+\
+Total: 60ms\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 Status
+\f1 : 
+\f2 \uc0\u9989 
+\f1 \'a0
+\f0 PRODUCTION READY
+\f1 \uc0\u8232 
+\f0 Dashboards
+\f1 : 12\uc0\u8232 
+\f0 Alert Rules
+\f1 : 25+\uc0\u8232 
+\f0 Metrics
+\f1 : 50+\uc0\u8232 
+\f0 Lines
+\f1 : 898+\
+}

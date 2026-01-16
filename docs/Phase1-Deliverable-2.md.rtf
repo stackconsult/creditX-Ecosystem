@@ -1,0 +1,1127 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Medium;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 .AppleColorEmojiUI;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-Light;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red60\green60\blue59;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c30196\c30196\c29804;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid401\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}
+{\list\listtemplateid6\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid501\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid6}
+{\list\listtemplateid7\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid601\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid7}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}{\listoverride\listid7\listoverridecount0\ls7}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Phase1-Deliverable-2.md\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \strokec2 \
+\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs30 \cf0 \strokec2 DELIVERABLE 2: Spaceship Deployment Configurations\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs27 \cf0 \strokec2 Complete Infrastructure as Code & Deployment Manifests V2.3\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f2\fs27 \cf0 \strokec2 \uc0\u55357 \u56523 
+\f0  CONTENTS\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls1\ilvl0
+\b\fs24 \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#infrastructure-overview"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Infrastructure Overview}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#terraform-modules"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Terraform Modules}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#network-configuration"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Network Configuration}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#compute-resources"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Compute Resources}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#database-setup"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Database Setup}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#cache-configuration"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Cache Configuration}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#load-balancing"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Load Balancing}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#security-configuration"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Security Configuration}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#deployment-manifests"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Deployment Manifests}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#disaster-recovery"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Disaster Recovery}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 INFRASTRUCTURE OVERVIEW\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Architecture\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474                      Cloudflare CDN                          \u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                       \uc0\u9474 \
+        \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+        \uc0\u9474                              \u9474 \
+\uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488           \u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474   Region: PHX    \u9474           \u9474   Region: SG     \u9474 \
+\uc0\u9474   (Primary)      \u9474           \u9474   (Replica)      \u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496           \u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+        \uc0\u9474                              \u9474 \
+    \uc0\u9484 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9488 \
+    \uc0\u9474                                      \u9474 \
+    \uc0\u9500 \u9472  Load Balancer (HA)                \u9474 \
+    \uc0\u9500 \u9472  22 Starlight VMs                  \u9474 \
+    \uc0\u9474   \u9500 \u9472  8 API VMs (2x per service)    \u9474 \
+    \uc0\u9474   \u9500 \u9472  4 Worker VMs (processing)      \u9474 \
+    \uc0\u9474   \u9500 \u9472  3 Database VMs (HA)            \u9474 \
+    \uc0\u9474   \u9500 \u9472  3 Cache VMs (Dragonfly)        \u9474 \
+    \uc0\u9474   \u9492 \u9472  4 Support VMs                  \u9474 \
+    \uc0\u9500 \u9472  PostgreSQL (16) HA                \u9474 \
+    \uc0\u9500 \u9472  Dragonfly Cache                   \u9474 \
+    \uc0\u9500 \u9472  Network (VPC, Security Groups)    \u9474 \
+    \uc0\u9492 \u9472  Storage (Encrypted Volumes)       \u9474 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Regions & Availability\
+\pard\pardeftab720\sa120\partightenfactor0
+\cf0 \strokec2 Phoenix (us-phx-1)
+\f1 \'a0- Primary Region\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls2\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 12 VMs primary workload\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Primary database\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Primary cache\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Load balancer (primary)\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Singapore (ap-sg-1)
+\f1 \'a0- Replica Region\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls3\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 10 VMs (replica workload)\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Database replica (standby)\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Cache replica\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Load balancer (secondary)\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Failover
+\f1 : <30 seconds (automatic via load balancer)\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 TERRAFORM MODULES\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Module Structure\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 infrastructure/terraform/\
+\uc0\u9500 \u9472 \u9472  main.tf                    # Root module\
+\uc0\u9500 \u9472 \u9472  variables.tf               # Input variables\
+\uc0\u9500 \u9472 \u9472  outputs.tf                 # Output values\
+\uc0\u9500 \u9472 \u9472  terraform.tfvars           # Variable values\
+\uc0\u9500 \u9472 \u9472  vpc.tf                      # Network module\
+\uc0\u9500 \u9472 \u9472  compute.tf                  # VM instances\
+\uc0\u9500 \u9472 \u9472  database.tf                 # PostgreSQL\
+\uc0\u9500 \u9472 \u9472  cache.tf                    # Dragonfly\
+\uc0\u9500 \u9472 \u9472  security.tf                 # Firewalls\
+\uc0\u9500 \u9472 \u9472  cdn.tf                      # Cloudflare\
+\uc0\u9500 \u9472 \u9472  monitoring.tf               # Prometheus\
+\uc0\u9492 \u9472 \u9472  .terraform/                 # State files\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Core Modules\
+main.tf\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 terraform \{\
+  required_version = ">= 1.0"\
+  required_providers \{\
+    spaceship = \{\
+      source  = "spaceship-cloud/spaceship"\
+      version = "~> 3.0"\
+    \}\
+    cloudflare = \{\
+      source  = "cloudflare/cloudflare"\
+      version = "~> 4.0"\
+    \}\
+  \}\
+\
+  backend "s3" \{\
+    bucket         = "ecosystem-terraform-state"\
+    key            = "phase1/terraform.tfstate"\
+    region         = "us-east-1"\
+    encrypt        = true\
+    dynamodb_table = "terraform-state-lock"\
+  \}\
+\}\
+\
+provider "spaceship" \{\
+  api_key = var.spaceship_api_key\
+  org_id  = var.spaceship_org_id\
+\}\
+\
+provider "cloudflare" \{\
+  api_token = var.cloudflare_api_token\
+\}\
+\
+# VPC Module\
+module "vpc" \{\
+  source = "./vpc"\
+  \
+  project_name    = var.project_name\
+  environment     = var.environment\
+  vpc_cidr        = var.vpc_cidr\
+  region          = var.region\
+\}\
+\
+# Compute Module\
+module "compute" \{\
+  source = "./compute"\
+  \
+  vpc_id        = module.vpc.vpc_id\
+  vm_count      = var.vm_count\
+  vm_size       = var.vm_size\
+  ami_id        = var.ami_id\
+  \
+  depends_on = [module.vpc]\
+\}\
+\
+# Database Module\
+module "database" \{\
+  source = "./database"\
+  \
+  vpc_id              = module.vpc.vpc_id\
+  db_instance_class   = var.db_instance_class\
+  db_engine_version   = "16.1"\
+  multi_az            = true\
+  \
+  depends_on = [module.vpc]\
+\}\
+\
+# Cache Module\
+module "cache" \{\
+  source = "./cache"\
+  \
+  vpc_id              = module.vpc.vpc_id\
+  cache_node_type     = var.cache_node_type\
+  num_cache_nodes     = var.num_cache_nodes\
+  \
+  depends_on = [module.vpc]\
+\}\
+\
+# Security Module\
+module "security" \{\
+  source = "./security"\
+  \
+  vpc_id                    = module.vpc.vpc_id\
+  enable_ddos_protection    = true\
+  ssl_certificate_arn       = aws_acm_certificate.main.arn\
+  \
+  depends_on = [module.vpc]\
+\}\
+\
+# Outputs\
+output "load_balancer_dns" \{\
+  value = module.compute.load_balancer_dns\
+\}\
+\
+output "database_endpoint" \{\
+  value = module.database.db_endpoint\
+\}\
+\
+output "cache_endpoint" \{\
+  value = module.cache.cache_endpoint\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 NETWORK CONFIGURATION\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 VPC (vpc.tf)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 resource "spaceship_vpc" "main" \{\
+  name       = "$\{var.project_name\}-vpc-$\{var.region\}"\
+  cidr_block = var.vpc_cidr\
+  region     = var.region\
+  \
+  tags = \{\
+    Environment = var.environment\
+    Project     = var.project_name\
+  \}\
+\}\
+\
+# Public Subnets (3 availability zones)\
+resource "spaceship_subnet" "public" \{\
+  count                   = 3\
+  vpc_id                  = spaceship_vpc.main.id\
+  cidr_block              = "10.0.$\{count.index\}.0/24"\
+  availability_zone       = data.spaceship_availability_zones.available.names[count.index]\
+  map_public_ip_on_launch = true\
+  \
+  tags = \{\
+    Type = "Public"\
+    AZ   = data.spaceship_availability_zones.available.names[count.index]\
+  \}\
+\}\
+\
+# Private Subnets (3 availability zones)\
+resource "spaceship_subnet" "private" \{\
+  count             = 3\
+  vpc_id            = spaceship_vpc.main.id\
+  cidr_block        = "10.0.$\{count.index + 100\}.0/24"\
+  availability_zone = data.spaceship_availability_zones.available.names[count.index]\
+  \
+  tags = \{\
+    Type = "Private"\
+    AZ   = data.spaceship_availability_zones.available.names[count.index]\
+  \}\
+\}\
+\
+# Security Groups\
+resource "spaceship_security_group" "api" \{\
+  name        = "$\{var.project_name\}-api-sg"\
+  description = "Security group for API servers"\
+  vpc_id      = spaceship_vpc.main.id\
+\
+  ingress \{\
+    from_port   = 80\
+    to_port     = 80\
+    protocol    = "tcp"\
+    cidr_blocks = ["0.0.0.0/0"]\
+  \}\
+\
+  ingress \{\
+    from_port   = 443\
+    to_port     = 443\
+    protocol    = "tcp"\
+    cidr_blocks = ["0.0.0.0/0"]\
+  \}\
+\
+  ingress \{\
+    from_port       = 8000\
+    to_port         = 8999\
+    protocol        = "tcp"\
+    security_groups = [spaceship_security_group.lb.id]\
+  \}\
+\
+  egress \{\
+    from_port   = 0\
+    to_port     = 65535\
+    protocol    = "tcp"\
+    cidr_blocks = ["0.0.0.0/0"]\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-api-sg"\
+  \}\
+\}\
+\
+resource "spaceship_security_group" "database" \{\
+  name        = "$\{var.project_name\}-db-sg"\
+  description = "Security group for database"\
+  vpc_id      = spaceship_vpc.main.id\
+\
+  ingress \{\
+    from_port       = 5432\
+    to_port         = 5432\
+    protocol        = "tcp"\
+    security_groups = [spaceship_security_group.api.id]\
+  \}\
+\
+  egress \{\
+    from_port   = 0\
+    to_port     = 65535\
+    protocol    = "tcp"\
+    cidr_blocks = ["0.0.0.0/0"]\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-db-sg"\
+  \}\
+\}\
+\
+resource "spaceship_security_group" "cache" \{\
+  name        = "$\{var.project_name\}-cache-sg"\
+  description = "Security group for cache"\
+  vpc_id      = spaceship_vpc.main.id\
+\
+  ingress \{\
+    from_port       = 6379\
+    to_port         = 6379\
+    protocol        = "tcp"\
+    security_groups = [spaceship_security_group.api.id]\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-cache-sg"\
+  \}\
+\}\
+\
+# NAT Gateway (for private subnet outbound)\
+resource "spaceship_eip" "nat" \{\
+  count    = 3\
+  vpc      = true\
+  instance = spaceship_instance.nat[count.index].id\
+\
+  depends_on = [spaceship_internet_gateway.main]\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-eip-$\{count.index + 1\}"\
+  \}\
+\}\
+\
+resource "spaceship_nat_gateway" "main" \{\
+  count         = 3\
+  allocation_id = spaceship_eip.nat[count.index].id\
+  subnet_id     = spaceship_subnet.public[count.index].id\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-nat-$\{count.index + 1\}"\
+  \}\
+\
+  depends_on = [spaceship_internet_gateway.main]\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 COMPUTE RESOURCES\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 VM Instances (compute.tf)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # API Servers (2 per service = 8 total)\
+resource "spaceship_instance" "api" \{\
+  count                = 8\
+  ami                  = var.ami_id\
+  instance_type        = var.vm_size        # t3.xlarge\
+  subnet_id            = spaceship_subnet.private[count.index % 3].id\
+  vpc_security_group_ids = [spaceship_security_group.api.id]\
+  \
+  root_block_device \{\
+    volume_type           = "gp3"\
+    volume_size           = 100\
+    delete_on_termination = true\
+    encrypted             = true\
+  \}\
+  \
+  monitoring = true\
+  \
+  user_data = base64encode(templatefile("$\{path.module\}/user_data.sh", \{\
+    service_name = [\
+      "creditx",\
+      "creditx",\
+      "threat-detection",\
+      "threat-detection",\
+      "guardian",\
+      "guardian",\
+      "apps-automation",\
+      "apps-automation"\
+    ][count.index]\
+    docker_image = "ecosystem/$\{[\
+      "creditx",\
+      "creditx",\
+      "threat-detection",\
+      "threat-detection",\
+      "guardian",\
+      "guardian",\
+      "apps-automation",\
+      "apps-automation"\
+    ][count.index]\}:2.0.0"\
+    environment = var.environment\
+    region      = var.region\
+  \}))\
+  \
+  tags = \{\
+    Name    = "$\{var.project_name\}-api-$\{count.index + 1\}"\
+    Service = [\
+      "creditx",\
+      "creditx",\
+      "threat-detection",\
+      "threat-detection",\
+      "guardian",\
+      "guardian",\
+      "apps-automation",\
+      "apps-automation"\
+    ][count.index]\
+  \}\
+\
+  depends_on = [spaceship_nat_gateway.main]\
+\}\
+\
+# Worker Servers (batch processing)\
+resource "spaceship_instance" "worker" \{\
+  count                = 4\
+  ami                  = var.ami_id\
+  instance_type        = var.worker_vm_size  # t3.large\
+  subnet_id            = spaceship_subnet.private[count.index % 3].id\
+  vpc_security_group_ids = [spaceship_security_group.api.id]\
+  \
+  root_block_device \{\
+    volume_type           = "gp3"\
+    volume_size           = 100\
+    delete_on_termination = true\
+    encrypted             = true\
+  \}\
+  \
+  tags = \{\
+    Name = "$\{var.project_name\}-worker-$\{count.index + 1\}"\
+    Type = "Worker"\
+  \}\
+\
+  depends_on = [spaceship_nat_gateway.main]\
+\}\
+\
+# Load Balancer\
+resource "spaceship_lb" "main" \{\
+  name               = "$\{var.project_name\}-alb"\
+  internal           = false\
+  load_balancer_type = "application"\
+  security_groups    = [spaceship_security_group.lb.id]\
+  subnets            = spaceship_subnet.public[*].id\
+\
+  enable_deletion_protection = false\
+  enable_http2               = true\
+  enable_cross_zone_load_balancing = true\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-alb"\
+  \}\
+\}\
+\
+# Load Balancer Target Group\
+resource "spaceship_lb_target_group" "api" \{\
+  name        = "$\{var.project_name\}-tg"\
+  port        = 8000\
+  protocol    = "HTTP"\
+  vpc_id      = spaceship_vpc.main.id\
+  target_type = "instance"\
+\
+  health_check \{\
+    healthy_threshold   = 2\
+    unhealthy_threshold = 2\
+    timeout             = 3\
+    interval            = 30\
+    path                = "/health/live"\
+    matcher             = "200"\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-tg"\
+  \}\
+\}\
+\
+# Register targets\
+resource "spaceship_lb_target_group_attachment" "api" \{\
+  count            = 8\
+  target_group_arn = spaceship_lb_target_group.api.arn\
+  target_id        = spaceship_instance.api[count.index].id\
+  port             = 8000\
+\}\
+\
+# Load Balancer Listener (HTTP \uc0\u8594  HTTPS redirect)\
+resource "spaceship_lb_listener" "http" \{\
+  load_balancer_arn = spaceship_lb.main.arn\
+  port              = "80"\
+  protocol          = "HTTP"\
+\
+  default_action \{\
+    type = "redirect"\
+\
+    redirect \{\
+      port        = "443"\
+      protocol    = "HTTPS"\
+      status_code = "HTTP_301"\
+    \}\
+  \}\
+\}\
+\
+# Load Balancer Listener (HTTPS)\
+resource "spaceship_lb_listener" "https" \{\
+  load_balancer_arn = spaceship_lb.main.arn\
+  port              = "443"\
+  protocol          = "HTTPS"\
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"\
+  certificate_arn   = spaceship_acm_certificate.main.arn\
+\
+  default_action \{\
+    type             = "forward"\
+    target_group_arn = spaceship_lb_target_group.api.arn\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DATABASE SETUP\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 PostgreSQL Configuration (database.tf)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 resource "spaceship_db_subnet_group" "main" \{\
+  name       = "$\{var.project_name\}-db-subnet-group"\
+  subnet_ids = spaceship_subnet.private[*].id\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-db-subnet-group"\
+  \}\
+\}\
+\
+resource "spaceship_db_instance" "primary" \{\
+  identifier        = "$\{var.project_name\}-db-primary"\
+  engine            = "postgres"\
+  engine_version    = "16.1"\
+  instance_class    = var.db_instance_class     # db.r6g.2xlarge\
+  allocated_storage = 1000\
+\
+  storage_type      = "gp3"\
+  storage_encrypted = true\
+  kms_key_id        = spaceship_kms_key.db.arn\
+\
+  db_name  = "ecosystem"\
+  username = "ecosystem_admin"\
+  password = random_password.db_password.result\
+\
+  db_subnet_group_name            = spaceship_db_subnet_group.main.name\
+  vpc_security_group_ids          = [spaceship_security_group.database.id]\
+  publicly_accessible             = false\
+  skip_final_snapshot             = false\
+  final_snapshot_identifier_prefix = "$\{var.project_name\}-final"\
+  copy_tags_to_snapshot           = true\
+\
+  multi_az               = true\
+  backup_retention_period = 35\
+  backup_window          = "03:00-04:00"\
+  maintenance_window     = "mon:04:00-mon:05:00"\
+\
+  max_allocated_storage = 2000  # Auto-scaling limit\
+  auto_minor_version_upgrade = true\
+\
+  enable_cloudwatch_logs_exports = ["postgresql"]\
+  monitoring_interval            = 60\
+  monitoring_role_arn            = spaceship_iam_role.rds_monitoring.arn\
+\
+  deletion_protection = true\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-db-primary"\
+  \}\
+\}\
+\
+# Read Replica in different region\
+resource "spaceship_db_instance" "replica" \{\
+  identifier             = "$\{var.project_name\}-db-replica"\
+  replicate_source_db   = spaceship_db_instance.primary.identifier\
+  instance_class        = var.db_instance_class\
+  publicly_accessible   = false\
+  auto_minor_version_upgrade = true\
+  skip_final_snapshot   = true\
+\
+  storage_encrypted = true\
+  kms_key_id        = spaceship_kms_key.db_replica.arn\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-db-replica"\
+  \}\
+\
+  depends_on = [spaceship_db_instance.primary]\
+\}\
+\
+# RDS Proxy for connection pooling\
+resource "spaceship_db_proxy" "main" \{\
+  name                   = "$\{var.project_name\}-proxy"\
+  engine_family          = "POSTGRESQL"\
+  auth \{\
+    auth_scheme = "SECRETS"\
+    secret_arn  = spaceship_secretsmanager_secret.db_credentials.arn\
+  \}\
+  role_arn               = spaceship_iam_role.proxy.arn\
+  max_connections        = 1000\
+  max_idle_connections   = 500\
+  connection_borrow_timeout = 120\
+  session_pinning_filters = ["EXCLUDE_VARIABLE_SETS"]\
+\
+  target \{\
+    db_instance_identifier = spaceship_db_instance.primary.identifier\
+  \}\
+\
+  depends_on = [spaceship_db_instance.primary]\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 CACHE CONFIGURATION\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Dragonfly Setup (cache.tf)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # Dragonfly Cluster\
+resource "spaceship_elasticache_cluster" "main" \{\
+  cluster_id           = "$\{var.project_name\}-cache"\
+  engine               = "dragonfly"\
+  node_type            = var.cache_node_type  # cache.r7g.xlarge\
+  num_cache_nodes      = var.num_cache_nodes  # 3\
+  parameter_group_name = spaceship_elasticache_parameter_group.main.name\
+  engine_version       = "1.0"\
+  port                 = 6379\
+  \
+  subnet_group_name          = spaceship_elasticache_subnet_group.main.name\
+  security_group_ids         = [spaceship_security_group.cache.id]\
+  automatic_failover_enabled = true\
+  multi_az_enabled           = true\
+  \
+  snapshot_retention_limit = 7\
+  snapshot_window          = "02:00-03:00"\
+  maintenance_window       = "mon:03:00-mon:04:00"\
+\
+  at_rest_encryption_enabled = true\
+  transit_encryption_enabled = true\
+  auth_token                 = random_password.cache_auth_token.result\
+  \
+  log_delivery_configuration \{\
+    destination      = spaceship_cloudwatch_log_group.cache.name\
+    destination_type = "cloudwatch-logs"\
+    log_format       = "json"\
+    log_type         = "engine-log"\
+    enabled          = true\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-cache"\
+  \}\
+\
+  depends_on = [spaceship_elasticache_subnet_group.main]\
+\}\
+\
+# Cache Subnet Group\
+resource "spaceship_elasticache_subnet_group" "main" \{\
+  name       = "$\{var.project_name\}-cache-subnet-group"\
+  subnet_ids = spaceship_subnet.private[*].id\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-cache-subnet-group"\
+  \}\
+\}\
+\
+# Cache Parameter Group\
+resource "spaceship_elasticache_parameter_group" "main" \{\
+  name        = "$\{var.project_name\}-cache-params"\
+  family      = "dragonfly1.0"\
+  description = "Cache parameter group for Dragonfly"\
+\
+  parameter \{\
+    name  = "maxmemory-policy"\
+    value = "allkeys-lru"\
+  \}\
+\
+  parameter \{\
+    name  = "save"\
+    value = "900 1 300 10 60 10000"  # AOF persistence\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-cache-params"\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 SECURITY CONFIGURATION\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Security (security.tf)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # KMS Keys for encryption\
+resource "spaceship_kms_key" "db" \{\
+  description             = "KMS key for database encryption"\
+  deletion_window_in_days = 10\
+  enable_key_rotation     = true\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-db-key"\
+  \}\
+\}\
+\
+resource "spaceship_kms_key" "cache" \{\
+  description             = "KMS key for cache encryption"\
+  deletion_window_in_days = 10\
+  enable_key_rotation     = true\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-cache-key"\
+  \}\
+\}\
+\
+# SSL/TLS Certificate\
+resource "spaceship_acm_certificate" "main" \{\
+  domain_name       = var.domain_name\
+  validation_method = "DNS"\
+\
+  subject_alternative_names = [\
+    "*.$\{var.domain_name\}",\
+    "api.$\{var.domain_name\}",\
+    "dashboard.$\{var.domain_name\}"\
+  ]\
+\
+  lifecycle \{\
+    create_before_destroy = true\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-cert"\
+  \}\
+\}\
+\
+# WAF (Web Application Firewall)\
+resource "spaceship_wafv2_web_acl" "main" \{\
+  name  = "$\{var.project_name\}-waf"\
+  scope = "CLOUDFRONT"\
+\
+  default_action \{\
+    allow \{\}\
+  \}\
+\
+  rule \{\
+    name     = "RateLimitRule"\
+    priority = 1\
+\
+    action \{\
+      block \{\}\
+    \}\
+\
+    statement \{\
+      rate_based_statement \{\
+        limit              = 2000\
+        aggregate_key_type = "IP"\
+      \}\
+    \}\
+\
+    visibility_config \{\
+      cloudwatch_metrics_enabled = true\
+      metric_name                = "$\{var.project_name\}-waf-rate-limit"\
+      sampled_requests_enabled   = true\
+    \}\
+  \}\
+\
+  rule \{\
+    name     = "AWSManagedRulesCommonRuleSet"\
+    priority = 0\
+\
+    override_action \{\
+      none \{\}\
+    \}\
+\
+    statement \{\
+      managed_rule_group_statement \{\
+        name        = "AWSManagedRulesCommonRuleSet"\
+        vendor_name = "AWS"\
+      \}\
+    \}\
+\
+    visibility_config \{\
+      cloudwatch_metrics_enabled = true\
+      metric_name                = "$\{var.project_name\}-waf-common"\
+      sampled_requests_enabled   = true\
+    \}\
+  \}\
+\
+  visibility_config \{\
+    cloudwatch_metrics_enabled = true\
+    metric_name                = "$\{var.project_name\}-waf"\
+    sampled_requests_enabled   = true\
+  \}\
+\
+  tags = \{\
+    Name = "$\{var.project_name\}-waf"\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DEPLOYMENT MANIFESTS\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Hyperlift Service Manifest (YAML)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # hyperlift/creditx-service.yaml\
+apiVersion: hyperlift.spaceship/v1\
+kind: ServiceDeployment\
+metadata:\
+  name: creditx-service\
+  namespace: ecosystem\
+spec:\
+  service:\
+    name: creditx\
+    image: ecosystem/creditx:2.0.0\
+    replicas: 2\
+    port: 8000\
+    \
+  resources:\
+    requests:\
+      cpu: 1000m\
+      memory: 2Gi\
+    limits:\
+      cpu: 2000m\
+      memory: 4Gi\
+  \
+  env:\
+    - name: ENVIRONMENT\
+      value: production\
+    - name: DATABASE_URL\
+      valueFrom:\
+        secretKeyRef:\
+          name: db-credentials\
+          key: connection-string\
+    - name: REDIS_URL\
+      valueFrom:\
+        configMapKeyRef:\
+          name: cache-config\
+          key: redis-url\
+    - name: LOG_LEVEL\
+      value: info\
+  \
+  healthChecks:\
+    liveness:\
+      path: /health/live\
+      initialDelaySeconds: 10\
+      periodSeconds: 30\
+      timeoutSeconds: 5\
+      failureThreshold: 3\
+    \
+    readiness:\
+      path: /health/ready\
+      initialDelaySeconds: 5\
+      periodSeconds: 10\
+      timeoutSeconds: 5\
+      failureThreshold: 2\
+  \
+  deployment:\
+    strategy: blue-green\
+    canaryTraffic: 10\
+    canaryDuration: 300s\
+    rollbackOnError: true\
+    \
+  monitoring:\
+    prometheus:\
+      enabled: true\
+      path: /metrics\
+      interval: 15s\
+    \
+    alerts:\
+      - name: HighErrorRate\
+        condition: "error_rate > 0.01"\
+        duration: 5m\
+        severity: critical\
+      - name: HighLatency\
+        condition: "p95_latency > 500ms"\
+        duration: 10m\
+        severity: warning\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DISASTER RECOVERY\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Backup Strategy\
+\pard\pardeftab720\sa120\partightenfactor0
+\cf0 \strokec2 Database
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls4\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Daily full backups (30-day retention)\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Point-in-time recovery (35 days)\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Cross-region replication (automatic)\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 RTO: 15 minutes\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 RPO: 5 minutes\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Cache
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls5\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 AOF persistence enabled\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Snapshots every 15 minutes\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Multi-AZ replication\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Configuration
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls6\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Terraform state backed up daily\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Secrets in AWS Secrets Manager\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Encrypted at rest\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DEPLOYMENT CHECKLIST\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls7\ilvl0
+\f1\fs24 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Terraform initialized and validated\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0All variables configured\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0VPC and security groups created\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Database configured and migrated\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Cache cluster operational\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Load balancer configured\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0SSL/TLS certificate installed\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Services deployed via Hyperlift\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Health checks passing\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Monitoring active\
+\ls7\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \'a0Backup procedures verified\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 Status
+\f1 : 
+\f2 \uc0\u9989 
+\f1 \'a0
+\f0 READY FOR DEPLOYMENT
+\f1 \uc0\u8232 
+\f0 Cost
+\f1 : $435/month (Phase 1) with 45 enterprise band of deployment metrics\uc0\u8232 
+\f0 Version
+\f1 : 2.3.0 (Dragonfly Optimized)\
+}

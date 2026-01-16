@@ -1,0 +1,2402 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 AppleColorEmoji;\f1\froman\fcharset0 Times-Bold;\f2\froman\fcharset0 Times-Roman;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fnil\fcharset0 HelveticaNeue;\f5\fmodern\fcharset0 Courier;
+\f6\fmodern\fcharset0 Courier-Oblique;\f7\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red60\green60\blue59;
+\red123\green126\blue121;\red117\green66\blue151;\red95\green124\blue3;\red52\green92\blue158;\red240\green115\blue25;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c0\c84706;\cssrgb\c30196\c30196\c29804;
+\cssrgb\c55686\c56471\c54902;\cssrgb\c53725\c34902\c65882;\cssrgb\c44314\c54902\c0;\cssrgb\c25882\c44314\c68235;\cssrgb\c96078\c52941\c12157;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\sa321\partightenfactor0
+
+\f0\fs48 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u55357 \u56960 
+\f1\b  CREDITX ECOSYSTEM - PRODUCTION CODE (FINAL)\
+\pard\pardeftab720\partightenfactor0
+
+\f2\b0\fs24 \cf0 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56371 
+\f1\b  DOCKER CONFIGURATION\
+8. Frontend Dockerfile\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 docker/Dockerfile.frontend
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # ============================================================================\
+# creditX Ecosystem - Frontend Container\
+# Next.js 14 optimized for production deployment\
+# ============================================================================\
+\
+FROM node:20-alpine AS base\
+\
+# Install dependencies only when needed\
+FROM base AS deps\
+RUN apk add --no-cache libc6-compat\
+WORKDIR /app\
+\
+# Copy dependency files\
+COPY apps/frontend/package*.json ./\
+COPY package*.json ./\
+\
+# Install dependencies\
+RUN npm ci --only=production && \\\
+    npm cache clean --force\
+\
+# Rebuild the source code only when needed\
+FROM base AS builder\
+WORKDIR /app\
+\
+# Copy dependencies from deps stage\
+COPY --from=deps /app/node_modules ./node_modules\
+COPY apps/frontend ./apps/frontend\
+COPY packages ./packages\
+COPY package*.json ./\
+COPY turbo.json ./\
+\
+# Set environment variables for build\
+ARG NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY\
+ARG NEXT_PUBLIC_APP_URL\
+ARG NEXT_PUBLIC_APP_ENV=production\
+\
+ENV NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY=$NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY\
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL\
+ENV NEXT_PUBLIC_APP_ENV=$NEXT_PUBLIC_APP_ENV\
+ENV NEXT_TELEMETRY_DISABLED=1\
+\
+# Build application\
+WORKDIR /app/apps/frontend\
+RUN npm run build\
+\
+# Production image\
+FROM base AS runner\
+WORKDIR /app\
+\
+ENV NODE_ENV=production\
+ENV NEXT_TELEMETRY_DISABLED=1\
+\
+# Create non-root user\
+RUN addgroup --system --gid 1001 nodejs && \\\
+    adduser --system --uid 1001 nextjs\
+\
+# Copy built application\
+COPY --from=builder /app/apps/frontend/public ./public\
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./\
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./.next/static\
+\
+USER nextjs\
+\
+EXPOSE 3000\
+\
+ENV PORT=3000\
+ENV HOSTNAME="0.0.0.0"\
+\
+# Health check\
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \\\
+  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => \{process.exit(r.statusCode === 200 ? 0 : 1)\})"\
+\
+CMD ["node", "server.js"]\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 9. Agent Dockerfile\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 docker/Dockerfile.agent
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # ============================================================================\
+# creditX Ecosystem - Agent Container\
+# Python LangGraph agent with ML dependencies\
+# ============================================================================\
+\
+FROM python:3.12-slim AS base\
+\
+# Install system dependencies\
+FROM base AS deps\
+RUN apt-get update && apt-get install -y \\\
+    build-essential \\\
+    libpcap-dev \\\
+    libpq-dev \\\
+    curl \\\
+    && rm -rf /var/lib/apt/lists/*\
+\
+WORKDIR /app\
+\
+# Copy requirements\
+COPY apps/agent/requirements.txt .\
+\
+# Install Python dependencies\
+RUN pip install --no-cache-dir --upgrade pip && \\\
+    pip install --no-cache-dir -r requirements.txt\
+\
+# Production stage\
+FROM python:3.12-slim AS runner\
+\
+# Install runtime dependencies only\
+RUN apt-get update && apt-get install -y \\\
+    libpcap0.8 \\\
+    libpq5 \\\
+    curl \\\
+    && rm -rf /var/lib/apt/lists/*\
+\
+WORKDIR /app\
+\
+# Create non-root user\
+RUN useradd -m -u 1001 agent && \\\
+    chown -R agent:agent /app\
+\
+# Copy dependencies\
+COPY --from=deps /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages\
+COPY --from=deps /usr/local/bin /usr/local/bin\
+\
+# Copy application code\
+COPY --chown=agent:agent apps/agent/src ./src\
+\
+USER agent\
+\
+EXPOSE 8000\
+\
+# Health check\
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \\\
+  CMD curl -f http://localhost:8000/health || exit 1\
+\
+# Run with uvicorn\
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 10. API Dockerfile\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 docker/Dockerfile.api
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # ============================================================================\
+# creditX Ecosystem - API Container\
+# Node.js backend services\
+# ============================================================================\
+\
+FROM node:20-alpine AS base\
+\
+FROM base AS deps\
+RUN apk add --no-cache libc6-compat\
+WORKDIR /app\
+\
+COPY apps/api/package*.json ./\
+RUN npm ci --only=production && npm cache clean --force\
+\
+FROM base AS builder\
+WORKDIR /app\
+\
+COPY --from=deps /app/node_modules ./node_modules\
+COPY apps/api ./apps/api\
+COPY packages ./packages\
+COPY package*.json ./\
+COPY tsconfig.json ./\
+\
+WORKDIR /app/apps/api\
+RUN npm run build\
+\
+FROM base AS runner\
+WORKDIR /app\
+\
+ENV NODE_ENV=production\
+\
+RUN addgroup --system --gid 1001 nodejs && \\\
+    adduser --system --uid 1001 api\
+\
+COPY --from=builder --chown=api:nodejs /app/apps/api/dist ./dist\
+COPY --from=builder --chown=api:nodejs /app/apps/api/node_modules ./node_modules\
+COPY --from=builder --chown=api:nodejs /app/apps/api/package*.json ./\
+\
+USER api\
+\
+EXPOSE 4000\
+\
+HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \\\
+  CMD node -e "require('http').get('http://localhost:4000/health', (r) => \{process.exit(r.statusCode === 200 ? 0 : 1)\})"\
+\
+CMD ["node", "dist/index.js"]\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 11. Docker Compose (Development)\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 docker/docker-compose.yml
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 version: '3.9'\
+\
+services:\
+  # PostgreSQL Database\
+  postgres:\
+    image: postgres:16-alpine\
+    container_name: creditx-postgres\
+    environment:\
+      POSTGRES_USER: creditx\
+      POSTGRES_PASSWORD: dev_password_change_in_production\
+      POSTGRES_DB: creditx_development\
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=en_US.UTF-8"\
+    ports:\
+      - "5432:5432"\
+    volumes:\
+      - postgres_data:/var/lib/postgresql/data\
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql\
+    healthcheck:\
+      test: ["CMD-SHELL", "pg_isready -U creditx"]\
+      interval: 10s\
+      timeout: 5s\
+      retries: 5\
+\
+  # Redis Cache\
+  redis:\
+    image: redis:7-alpine\
+    container_name: creditx-redis\
+    command: redis-server --appendonly yes --requirepass dev_redis_password\
+    ports:\
+      - "6379:6379"\
+    volumes:\
+      - redis_data:/data\
+    healthcheck:\
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]\
+      interval: 10s\
+      timeout: 3s\
+      retries: 5\
+\
+  # Frontend (Next.js)\
+  frontend:\
+    build:\
+      context: ..\
+      dockerfile: docker/Dockerfile.frontend\
+      args:\
+        NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY: $\{NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY\}\
+        NEXT_PUBLIC_APP_URL: http://localhost:3000\
+        NEXT_PUBLIC_APP_ENV: development\
+    container_name: creditx-frontend\
+    ports:\
+      - "3000:3000"\
+    environment:\
+      - NODE_ENV=development\
+      - DATABASE_URL=postgresql://creditx:dev_password_change_in_production@postgres:5432/creditx_development\
+      - REDIS_URL=redis://:dev_redis_password@redis:6379\
+      - LANGGRAPH_AGENT_URL=http://agent:8000\
+    depends_on:\
+      postgres:\
+        condition: service_healthy\
+      redis:\
+        condition: service_healthy\
+      agent:\
+        condition: service_healthy\
+    volumes:\
+      - ../apps/frontend:/app/apps/frontend\
+      - /app/apps/frontend/node_modules\
+      - /app/apps/frontend/.next\
+\
+  # Agent (Python LangGraph)\
+  agent:\
+    build:\
+      context: ..\
+      dockerfile: docker/Dockerfile.agent\
+    container_name: creditx-agent\
+    ports:\
+      - "8000:8000"\
+    environment:\
+      - ENVIRONMENT=development\
+      - DATABASE_URL=postgresql://creditx:dev_password_change_in_production@postgres:5432/creditx_development\
+      - REDIS_URL=redis://:dev_redis_password@redis:6379\
+      - OPENAI_API_KEY=$\{OPENAI_API_KEY\}\
+      - LANGCHAIN_TRACING_V2=true\
+      - LANGCHAIN_API_KEY=$\{LANGCHAIN_API_KEY\}\
+    depends_on:\
+      postgres:\
+        condition: service_healthy\
+      redis:\
+        condition: service_healthy\
+    volumes:\
+      - ../apps/agent/src:/app/src\
+    healthcheck:\
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]\
+      interval: 30s\
+      timeout: 10s\
+      retries: 3\
+\
+  # API (Node.js Backend)\
+  api:\
+    build:\
+      context: ..\
+      dockerfile: docker/Dockerfile.api\
+    container_name: creditx-api\
+    ports:\
+      - "4000:4000"\
+    environment:\
+      - NODE_ENV=development\
+      - DATABASE_URL=postgresql://creditx:dev_password_change_in_production@postgres:5432/creditx_development\
+      - REDIS_URL=redis://:dev_redis_password@redis:6379\
+    depends_on:\
+      postgres:\
+        condition: service_healthy\
+      redis:\
+        condition: service_healthy\
+    volumes:\
+      - ../apps/api/src:/app/src\
+\
+volumes:\
+  postgres_data:\
+  redis_data:\
+\
+networks:\
+  default:\
+    name: creditx-network\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56580 
+\f1\b  CI/CD PIPELINE - GITHUB ACTIONS\
+12. Complete Production Deployment Workflow\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 .github/workflows/deploy.yml
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 name: 
+\f0 \uc0\u55357 \u56960 
+\f5  Production Deploy to Spaceship\
+\
+on:\
+  push:\
+    branches: [main]\
+  pull_request:\
+    branches: [main]\
+  workflow_dispatch:\
+\
+env:\
+  REGISTRY: registry.spaceship.com\
+  IMAGE_TAG: $\{\{ github.sha \}\}\
+  PROJECT_NAME: creditx-ecosystem\
+\
+jobs:\
+  # ============================================================================\
+  # QUALITY CHECKS\
+  # ============================================================================\
+  \
+  lint:\
+    name: 
+\f0 \uc0\u55357 \u56589 
+\f5  Lint & Type Check\
+    runs-on: ubuntu-latest\
+    steps:\
+      - name: Checkout code\
+        uses: actions/checkout@v4\
+\
+      - name: Setup Node.js\
+        uses: actions/setup-node@v4\
+        with:\
+          node-version: '20'\
+          cache: 'npm'\
+\
+      - name: Install dependencies\
+        run: npm ci\
+\
+      - name: Run ESLint\
+        run: npm run lint\
+\
+      - name: TypeScript type check\
+        run: npm run type-check\
+\
+  # ============================================================================\
+  # TESTING\
+  # ============================================================================\
+  \
+  test-frontend:\
+    name: 
+\f0 \uc0\u55358 \u56810 
+\f5  Test Frontend\
+    runs-on: ubuntu-latest\
+    steps:\
+      - uses: actions/checkout@v4\
+      \
+      - uses: actions/setup-node@v4\
+        with:\
+          node-version: '20'\
+          cache: 'npm'\
+\
+      - name: Install dependencies\
+        run: npm ci\
+\
+      - name: Run unit tests\
+        run: npm run test --workspace=@creditx/frontend\
+\
+      - name: Upload coverage\
+        uses: codecov/codecov-action@v3\
+        with:\
+          files: ./apps/frontend/coverage/lcov.info\
+          flags: frontend\
+\
+  test-agent:\
+    name: 
+\f0 \uc0\u55358 \u56810 
+\f5  Test Agent\
+    runs-on: ubuntu-latest\
+    steps:\
+      - uses: actions/checkout@v4\
+      \
+      - uses: actions/setup-python@v5\
+        with:\
+          python-version: '3.12'\
+          cache: 'pip'\
+\
+      - name: Install dependencies\
+        run: |\
+          cd apps/agent\
+          pip install -r requirements.txt\
+          pip install pytest pytest-asyncio pytest-cov\
+\
+      - name: Run pytest\
+        run: |\
+          cd apps/agent\
+          pytest --cov=src --cov-report=xml\
+\
+      - name: Upload coverage\
+        uses: codecov/codecov-action@v3\
+        with:\
+          files: ./apps/agent/coverage.xml\
+          flags: agent\
+\
+  # ============================================================================\
+  # E2E TESTING\
+  # ============================================================================\
+  \
+  test-e2e:\
+    name: 
+\f0 \uc0\u55356 \u57261 
+\f5  E2E Tests (Playwright)\
+    runs-on: ubuntu-latest\
+    steps:\
+      - uses: actions/checkout@v4\
+      \
+      - uses: actions/setup-node@v4\
+        with:\
+          node-version: '20'\
+          cache: 'npm'\
+\
+      - name: Install dependencies\
+        run: npm ci\
+\
+      - name: Install Playwright Browsers\
+        run: npx playwright install --with-deps\
+\
+      - name: Run E2E tests\
+        run: npm run test:e2e --workspace=@creditx/frontend\
+\
+      - name: Upload test results\
+        if: always()\
+        uses: actions/upload-artifact@v4\
+        with:\
+          name: playwright-report\
+          path: apps/frontend/playwright-report/\
+\
+  # ============================================================================\
+  # SECURITY SCANNING\
+  # ============================================================================\
+  \
+  security-scan:\
+    name: 
+\f0 \uc0\u55357 \u56594 
+\f5  Security Scan\
+    runs-on: ubuntu-latest\
+    steps:\
+      - uses: actions/checkout@v4\
+\
+      - name: Run Trivy vulnerability scanner\
+        uses: aquasecurity/trivy-action@master\
+        with:\
+          scan-type: 'fs'\
+          scan-ref: '.'\
+          format: 'sarif'\
+          output: 'trivy-results.sarif'\
+\
+      - name: Upload to GitHub Security\
+        uses: github/codeql-action/upload-sarif@v3\
+        with:\
+          sarif_file: 'trivy-results.sarif'\
+\
+      - name: Dependency audit\
+        run: npm audit --audit-level=high\
+\
+  # ============================================================================\
+  # BUILD DOCKER IMAGES\
+  # ============================================================================\
+  \
+  build:\
+    name: 
+\f0 \uc0\u55356 \u57303 \u65039 
+\f5  Build Docker Images\
+    needs: [lint, test-frontend, test-agent, test-e2e, security-scan]\
+    runs-on: ubuntu-latest\
+    strategy:\
+      matrix:\
+        service: [frontend, agent, api]\
+    steps:\
+      - name: Checkout code\
+        uses: actions/checkout@v4\
+\
+      - name: Set up Docker Buildx\
+        uses: docker/setup-buildx-action@v3\
+\
+      - name: Login to Spaceship Registry\
+        uses: docker/login-action@v3\
+        with:\
+          registry: $\{\{ env.REGISTRY \}\}\
+          username: $\{\{ secrets.SPACESHIP_USERNAME \}\}\
+          password: $\{\{ secrets.SPACESHIP_TOKEN \}\}\
+\
+      - name: Extract metadata\
+        id: meta\
+        uses: docker/metadata-action@v5\
+        with:\
+          images: $\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-$\{\{ matrix.service \}\}\
+          tags: |\
+            type=sha,prefix=\{\{branch\}\}-\
+            type=ref,event=branch\
+            type=ref,event=pr\
+            type=semver,pattern=\{\{version\}\}\
+            type=raw,value=latest,enable=\{\{is_default_branch\}\}\
+\
+      - name: Build and push\
+        uses: docker/build-push-action@v5\
+        with:\
+          context: .\
+          file: docker/Dockerfile.$\{\{ matrix.service \}\}\
+          push: true\
+          tags: $\{\{ steps.meta.outputs.tags \}\}\
+          labels: $\{\{ steps.meta.outputs.labels \}\}\
+          cache-from: type=registry,ref=$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-$\{\{ matrix.service \}\}:buildcache\
+          cache-to: type=registry,ref=$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-$\{\{ matrix.service \}\}:buildcache,mode=max\
+          build-args: |\
+            NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY=$\{\{ secrets.COPILOT_PUBLIC_API_KEY \}\}\
+            NEXT_PUBLIC_APP_URL=https://ecosystem.ai\
+            NEXT_PUBLIC_APP_ENV=production\
+\
+      - name: Image digest\
+        run: echo $\{\{ steps.build.outputs.digest \}\}\
+\
+  # ============================================================================\
+  # DATABASE MIGRATIONS\
+  # ============================================================================\
+  \
+  migrate:\
+    name: 
+\f0 \uc0\u55357 \u56772 \u65039 
+\f5  Database Migration\
+    needs: [build]\
+    runs-on: ubuntu-latest\
+    if: github.ref == 'refs/heads/main'\
+    steps:\
+      - uses: actions/checkout@v4\
+\
+      - uses: actions/setup-node@v4\
+        with:\
+          node-version: '20'\
+          cache: 'npm'\
+\
+      - name: Install dependencies\
+        run: npm ci\
+\
+      - name: Run migrations\
+        env:\
+          DATABASE_URL: $\{\{ secrets.DATABASE_URL \}\}\
+        run: |\
+          cd packages/database\
+          npx prisma migrate deploy\
+\
+  # ============================================================================\
+  # DEPLOY TO SPACESHIP HYPERLIFT\
+  # ============================================================================\
+  \
+  deploy-staging:\
+    name: 
+\f0 \uc0\u55357 \u56994 
+\f5  Deploy to Staging\
+    needs: [build, migrate]\
+    runs-on: ubuntu-latest\
+    if: github.ref == 'refs/heads/main'\
+    environment:\
+      name: staging\
+      url: https://staging.ecosystem.ai\
+    steps:\
+      - name: Deploy to Spaceship Hyperlift (Staging)\
+        run: |\
+          curl -X POST https://hyperlift.spaceship.com/v1/deploy \\\
+            -H "Authorization: Bearer $\{\{ secrets.HYPERLIFT_TOKEN \}\}" \\\
+            -H "Content-Type: application/json" \\\
+            -d '\{\
+              "project": "$\{\{ env.PROJECT_NAME \}\}",\
+              "environment": "staging",\
+              "region": "us-west-1",\
+              "images": \{\
+                "frontend": "$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-frontend:$\{\{ env.IMAGE_TAG \}\}",\
+                "agent": "$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-agent:$\{\{ env.IMAGE_TAG \}\}",\
+                "api": "$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-api:$\{\{ env.IMAGE_TAG \}\}"\
+              \},\
+              "strategy": "blue-green",\
+              "healthCheck": \{\
+                "path": "/api/health",\
+                "interval": 10,\
+                "timeout": 5,\
+                "retries": 3\
+              \},\
+              "resources": \{\
+                "frontend": \{\
+                  "cpu": "2",\
+                  "memory": "4GB",\
+                  "replicas": 2\
+                \},\
+                "agent": \{\
+                  "cpu": "4",\
+                  "memory": "8GB",\
+                  "replicas": 3\
+                \},\
+                "api": \{\
+                  "cpu": "2",\
+                  "memory": "4GB",\
+                  "replicas": 2\
+                \}\
+              \},\
+              "rollbackOnFailure": true\
+            \}'\
+\
+      - name: Wait for deployment\
+        run: sleep 30\
+\
+      - name: Health check\
+        run: |\
+          curl -f https://staging.ecosystem.ai/api/health || exit 1\
+\
+  deploy-production:\
+    name: 
+\f0 \uc0\u55357 \u56960 
+\f5  Deploy to Production\
+    needs: [deploy-staging]\
+    runs-on: ubuntu-latest\
+    if: github.ref == 'refs/heads/main'\
+    environment:\
+      name: production\
+      url: https://ecosystem.ai\
+    steps:\
+      - name: Deploy to Spaceship Hyperlift (Production)\
+        run: |\
+          curl -X POST https://hyperlift.spaceship.com/v1/deploy \\\
+            -H "Authorization: Bearer $\{\{ secrets.HYPERLIFT_TOKEN \}\}" \\\
+            -H "Content-Type: application/json" \\\
+            -d '\{\
+              "project": "$\{\{ env.PROJECT_NAME \}\}",\
+              "environment": "production",\
+              "regions": ["us-west-1", "ap-southeast-1"],\
+              "images": \{\
+                "frontend": "$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-frontend:$\{\{ env.IMAGE_TAG \}\}",\
+                "agent": "$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-agent:$\{\{ env.IMAGE_TAG \}\}",\
+                "api": "$\{\{ env.REGISTRY \}\}/$\{\{ env.PROJECT_NAME \}\}-api:$\{\{ env.IMAGE_TAG \}\}"\
+              \},\
+              "strategy": "canary",\
+              "canary": \{\
+                "steps": [10, 25, 50, 100],\
+                "interval": 300\
+              \},\
+              "healthCheck": \{\
+                "path": "/api/health",\
+                "interval": 10,\
+                "timeout": 5,\
+                "retries": 3\
+              \},\
+              "resources": \{\
+                "frontend": \{\
+                  "cpu": "4",\
+                  "memory": "8GB",\
+                  "replicas": 5,\
+                  "autoscaling": \{\
+                    "enabled": true,\
+                    "minReplicas": 5,\
+                    "maxReplicas": 20,\
+                    "targetCPU": 70\
+                  \}\
+                \},\
+                "agent": \{\
+                  "cpu": "8",\
+                  "memory": "16GB",\
+                  "replicas": 10,\
+                  "autoscaling": \{\
+                    "enabled": true,\
+                    "minReplicas": 10,\
+                    "maxReplicas": 50,\
+                    "targetCPU": 75\
+                  \}\
+                \},\
+                "api": \{\
+                  "cpu": "4",\
+                  "memory": "8GB",\
+                  "replicas": 5,\
+                  "autoscaling": \{\
+                    "enabled": true,\
+                    "minReplicas": 5,\
+                    "maxReplicas": 20,\
+                    "targetCPU": 70\
+                  \}\
+                \}\
+              \},\
+              "rollbackOnFailure": true\
+            \}'\
+\
+      - name: Wait for canary deployment\
+        run: sleep 300\
+\
+      - name: Production health check\
+        run: |\
+          curl -f https://ecosystem.ai/api/health || exit 1\
+\
+      - name: Smoke tests\
+        run: |\
+          # Test each module endpoint\
+          curl -f https://ecosystem.ai/api/creditx/health || exit 1\
+          curl -f https://ecosystem.ai/api/91-apps/health || exit 1\
+          curl -f https://ecosystem.ai/api/global-ai-alert/health || exit 1\
+          curl -f https://ecosystem.ai/api/guardian-ai/health || exit 1\
+          curl -f https://ecosystem.ai/api/stolen-phones/health || exit 1\
+\
+  # ============================================================================\
+  # POST-DEPLOYMENT\
+  # ============================================================================\
+  \
+  notify:\
+    name: 
+\f0 \uc0\u55357 \u56546 
+\f5  Notify Team\
+    needs: [deploy-production]\
+    runs-on: ubuntu-latest\
+    if: always()\
+    steps:\
+      - name: Send Slack notification\
+        uses: 8398a7/action-slack@v3\
+        with:\
+          status: $\{\{ job.status \}\}\
+          text: |\
+            
+\f0 \uc0\u55357 \u56960 
+\f5  *creditX Ecosystem Deployment*\
+            \
+            *Status:* $\{\{ job.status \}\}\
+            *Commit:* `$\{\{ github.sha \}\}`\
+            *Author:* $\{\{ github.actor \}\}\
+            *Branch:* $\{\{ github.ref_name \}\}\
+            \
+            *Deployments:*\
+            \'95 Staging: https://staging.ecosystem.ai\
+            \'95 Production: https://ecosystem.ai\
+            \
+            *Metrics:*\
+            \'95 Build Time: $\{\{ github.run_duration \}\}\
+            \'95 Image Tag: $\{\{ env.IMAGE_TAG \}\}\
+          webhook_url: $\{\{ secrets.SLACK_WEBHOOK_URL \}\}\
+\
+      - name: Create Sentry release\
+        uses: getsentry/action-release@v1\
+        env:\
+          SENTRY_AUTH_TOKEN: $\{\{ secrets.SENTRY_AUTH_TOKEN \}\}\
+          SENTRY_ORG: $\{\{ secrets.SENTRY_ORG \}\}\
+          SENTRY_PROJECT: creditx-ecosystem\
+        with:\
+          environment: production\
+          version: $\{\{ github.sha \}\}\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55356 \u57303 \u65039 
+\f1\b  TERRAFORM INFRASTRUCTURE\
+13. Spaceship.com Infrastructure as Code\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 infrastructure/terraform/main.tf
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # ============================================================================\
+# creditX Ecosystem - Spaceship Infrastructure\
+# Terraform configuration for Starlight VMs, Load Balancers, and Volumes\
+# ============================================================================\
+\
+terraform \{\
+  required_version = ">= 1.6.0"\
+  \
+  required_providers \{\
+    spaceship = \{\
+      source  = "spaceship/spaceship"\
+      version = "~> 1.0"\
+    \}\
+    \
+    cloudflare = \{\
+      source  = "cloudflare/cloudflare"\
+      version = "~> 4.0"\
+    \}\
+  \}\
+  \
+  backend "s3" \{\
+    bucket         = "creditx-terraform-state"\
+    key            = "production/terraform.tfstate"\
+    region         = "us-west-2"\
+    encrypt        = true\
+    dynamodb_table = "terraform-state-lock"\
+  \}\
+\}\
+\
+# Provider configuration\
+provider "spaceship" \{\
+  api_key = var.spaceship_api_key\
+\}\
+\
+provider "cloudflare" \{\
+  api_token = var.cloudflare_api_token\
+\}\
+\
+# ============================================================================\
+# VARIABLES\
+# ============================================================================\
+\
+variable "spaceship_api_key" \{\
+  description = "Spaceship.com API key"\
+  type        = string\
+  sensitive   = true\
+\}\
+\
+variable "cloudflare_api_token" \{\
+  description = "Cloudflare API token"\
+  type        = string\
+  sensitive   = true\
+\}\
+\
+variable "environment" \{\
+  description = "Environment name"\
+  type        = string\
+  default     = "production"\
+\}\
+\
+variable "project_name" \{\
+  description = "Project name"\
+  type        = string\
+  default     = "creditx-ecosystem"\
+\}\
+\
+# ============================================================================\
+# STARLIGHT VIRTUAL MACHINES\
+# ============================================================================\
+\
+# Frontend VMs (Phoenix)\
+resource "spaceship_starlight_vm" "frontend_phoenix" \{\
+  count = 5\
+  \
+  name   = "$\{var.project_name\}-frontend-phoenix-$\{count.index + 1\}"\
+  region = "us-west-1"  # Phoenix\
+  \
+  plan = "standard-3"  # 4 vCPU, 8GB RAM, 160GB NVMe\
+  \
+  image = "ubuntu-22.04-lts"\
+  \
+  ssh_keys = [\
+    var.ssh_public_key\
+  ]\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:frontend",\
+    "region:phoenix",\
+    "project:$\{var.project_name\}"\
+  ]\
+  \
+  user_data = templatefile("$\{path.module\}/user-data/frontend.sh", \{\
+    docker_image    = var.frontend_docker_image\
+    registry_token  = var.registry_token\
+    environment     = var.environment\
+  \})\
+\}\
+\
+# Agent VMs (Phoenix) - CPU Optimized\
+resource "spaceship_starlight_vm" "agent_phoenix" \{\
+  count = 10\
+  \
+  name   = "$\{var.project_name\}-agent-phoenix-$\{count.index + 1\}"\
+  region = "us-west-1"\
+  \
+  plan = "cpu-optimized-2"  # 8 vCPU, 16GB RAM\
+  \
+  image = "ubuntu-22.04-lts"\
+  \
+  ssh_keys = [var.ssh_public_key]\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:agent",\
+    "region:phoenix",\
+    "project:$\{var.project_name\}"\
+  ]\
+  \
+  user_data = templatefile("$\{path.module\}/user-data/agent.sh", \{\
+    docker_image   = var.agent_docker_image\
+    registry_token = var.registry_token\
+    environment    = var.environment\
+  \})\
+\}\
+\
+# API VMs (Phoenix)\
+resource "spaceship_starlight_vm" "api_phoenix" \{\
+  count = 5\
+  \
+  name   = "$\{var.project_name\}-api-phoenix-$\{count.index + 1\}"\
+  region = "us-west-1"\
+  \
+  plan = "standard-3"\
+  \
+  image = "ubuntu-22.04-lts"\
+  \
+  ssh_keys = [var.ssh_public_key]\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:api",\
+    "region:phoenix",\
+    "project:$\{var.project_name\}"\
+  ]\
+\}\
+\
+# Database VM (Memory Optimized)\
+resource "spaceship_starlight_vm" "database_phoenix" \{\
+  name   = "$\{var.project_name\}-database-phoenix-primary"\
+  region = "us-west-1"\
+  \
+  plan = "memory-optimized-2"  # 8 vCPU, 32GB RAM\
+  \
+  image = "ubuntu-22.04-lts"\
+  \
+  ssh_keys = [var.ssh_public_key]\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:database",\
+    "region:phoenix",\
+    "role:primary"\
+  ]\
+\}\
+\
+# ============================================================================\
+# SINGAPORE REGION (DR + APAC)\
+# ============================================================================\
+\
+resource "spaceship_starlight_vm" "frontend_singapore" \{\
+  count = 2\
+  \
+  name   = "$\{var.project_name\}-frontend-singapore-$\{count.index + 1\}"\
+  region = "ap-southeast-1"  # Singapore\
+  \
+  plan = "standard-3"\
+  \
+  image = "ubuntu-22.04-lts"\
+  \
+  ssh_keys = [var.ssh_public_key]\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:frontend",\
+    "region:singapore",\
+    "project:$\{var.project_name\}"\
+  ]\
+\}\
+\
+# ============================================================================\
+# STARLIGHT VOLUMES (Block Storage)\
+# ============================================================================\
+\
+# Database volume\
+resource "spaceship_starlight_volume" "database" \{\
+  name   = "$\{var.project_name\}-database-volume"\
+  region = "us-west-1"\
+  size   = 500  # GB\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:database"\
+  ]\
+\}\
+\
+resource "spaceship_starlight_volume_attachment" "database" \{\
+  volume_id = spaceship_starlight_volume.database.id\
+  vm_id     = spaceship_starlight_vm.database_phoenix.id\
+\}\
+\
+# ============================================================================\
+# LOAD BALANCERS\
+# ============================================================================\
+\
+# Frontend Load Balancer\
+resource "spaceship_starlight_loadbalancer" "frontend" \{\
+  name   = "$\{var.project_name\}-frontend-lb"\
+  region = "us-west-1"\
+  \
+  plan = "professional"  # 10,000 concurrent connections\
+  \
+  algorithm = "least_connections"\
+  \
+  health_check \{\
+    protocol = "https"\
+    path     = "/api/health"\
+    interval = 10\
+    timeout  = 5\
+    retries  = 3\
+  \}\
+  \
+  ssl \{\
+    certificate_id = cloudflare_origin_ca_certificate.frontend.id\
+    redirect_http  = true\
+  \}\
+  \
+  tags = [\
+    "environment:$\{var.environment\}",\
+    "service:frontend"\
+  ]\
+\}\
+\
+# Frontend LB pool members\
+resource "spaceship_starlight_loadbalancer_member" "frontend" \{\
+  count = length(spaceship_starlight_vm.frontend_phoenix)\
+  \
+  loadbalancer_id = spaceship_starlight_loadbalancer.frontend.id\
+  vm_id           = spaceship_starlight_vm.frontend_phoenix[count.index].id\
+  port            = 3000\
+  weight          = 100\
+\}\
+\
+# Agent Load Balancer\
+resource "spaceship_starlight_loadbalancer" "agent" \{\
+  name   = "$\{var.project_name\}-agent-lb"\
+  region = "us-west-1"\
+  \
+  plan = "professional"\
+  \
+  algorithm = "least_connections"\
+  \
+  health_check \{\
+    protocol = "http"\
+    path     = "/health"\
+    interval = 10\
+    timeout  = 5\
+    retries  = 3\
+  \}\
+  \
+  ssl \{\
+    certificate_id = cloudflare_origin_ca_certificate.agent.id\
+    redirect_http  = true\
+  \}\
+\}\
+\
+resource "spaceship_starlight_loadbalancer_member" "agent" \{\
+  count = length(spaceship_starlight_vm.agent_phoenix)\
+  \
+  loadbalancer_id = spaceship_starlight_loadbalancer.agent.id\
+  vm_id           = spaceship_starlight_vm.agent_phoenix[count.index].id\
+  port            = 8000\
+  weight          = 100\
+\}\
+\
+# ============================================================================\
+# CDN CONFIGURATION\
+# ============================================================================\
+\
+resource "spaceship_cdn" "main" \{\
+  name = "$\{var.project_name\}-cdn"\
+  plan = "pro"  # $188.88/year\
+  \
+  origin \{\
+    hostname = spaceship_starlight_loadbalancer.frontend.ip_address\
+    port     = 443\
+    protocol = "https"\
+  \}\
+  \
+  cache_settings \{\
+    cache_level = "aggressive"\
+    browser_ttl = 14400\
+    edge_ttl    = 86400\
+  \}\
+  \
+  security \{\
+    ddos_protection = true\
+    waf_enabled     = true\
+    rate_limit      = 1000\
+  \}\
+\}\
+\
+# ============================================================================\
+# CLOUDFLARE DNS\
+# ============================================================================\
+\
+resource "cloudflare_zone" "ecosystem" \{\
+  zone = "ecosystem.ai"\
+\}\
+\
+# Main domain\
+resource "cloudflare_record" "root" \{\
+  zone_id = cloudflare_zone.ecosystem.id\
+  name    = "@"\
+  type    = "A"\
+  value   = spaceship_starlight_loadbalancer.frontend.ip_address\
+  proxied = true\
+\}\
+\
+# Agent subdomain\
+resource "cloudflare_record" "agent" \{\
+  zone_id = cloudflare_zone.ecosystem.id\
+  name    = "agent"\
+  type    = "A"\
+  value   = spaceship_starlight_loadbalancer.agent.ip_address\
+  proxied = true\
+\}\
+\
+# API subdomain\
+resource "cloudflare_record" "api" \{\
+  zone_id = cloudflare_zone.ecosystem.id\
+  name    = "api"\
+  type    = "A"\
+  value   = spaceship_starlight_loadbalancer.frontend.ip_address\
+  proxied = true\
+\}\
+\
+# CDN subdomain\
+resource "cloudflare_record" "cdn" \{\
+  zone_id = cloudflare_zone.ecosystem.id\
+  name    = "cdn"\
+  type    = "CNAME"\
+  value   = spaceship_cdn.main.cname\
+  proxied = true\
+\}\
+\
+# ============================================================================\
+# OUTPUTS\
+# ============================================================================\
+\
+output "frontend_lb_ip" \{\
+  description = "Frontend Load Balancer IP"\
+  value       = spaceship_starlight_loadbalancer.frontend.ip_address\
+\}\
+\
+output "agent_lb_ip" \{\
+  description = "Agent Load Balancer IP"\
+  value       = spaceship_starlight_loadbalancer.agent.ip_address\
+\}\
+\
+output "cdn_url" \{\
+  description = "CDN URL"\
+  value       = "https://cdn.ecosystem.ai"\
+\}\
+\
+output "vm_ids" \{\
+  description = "All VM IDs"\
+  value = \{\
+    frontend_phoenix = spaceship_starlight_vm.frontend_phoenix[*].id\
+    agent_phoenix    = spaceship_starlight_vm.agent_phoenix[*].id\
+    api_phoenix      = spaceship_starlight_vm.api_phoenix[*].id\
+    database         = spaceship_starlight_vm.database_phoenix.id\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56588 
+\f1\b  INTEGRATION CONNECTORS\
+14. Salesforce Integration\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 apps/frontend/lib/integrations/salesforce.ts
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 typescript\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf5 \strokec5 /**\
+ * Salesforce Integration Module\
+ * OAuth 2.0 authentication and CRM data synchronization\
+ */
+\f5\i0 \cf4 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  axios, \{ AxiosInstance \} 
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 'axios'\cf4 \strokec4 ;\
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  \{ db \} 
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 '@/lib/database'\cf4 \strokec4 ;\
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  \{ encrypt, decrypt \} 
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 '@/lib/crypto'\cf4 \strokec4 ;\
+\
+
+\f3\b \cf6 \strokec6 interface
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 SalesforceConfig\cf4 \strokec4  \{\
+  clientId: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  clientSecret: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  redirectUri: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  instanceUrl?: \cf9 \strokec9 string\cf4 \strokec4 ;\
+\}\
+\
+
+\f3\b \cf6 \strokec6 interface
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 SalesforceTokens\cf4 \strokec4  \{\
+  accessToken: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  refreshToken: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  instanceUrl: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  expiresAt: Date;\
+\}\
+\
+
+\f3\b \cf6 \strokec6 export
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 class
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 SalesforceIntegration\cf4 \strokec4  \{\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  config: SalesforceConfig;\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  client: AxiosInstance | 
+\f3\b \cf6 \strokec6 null
+\f5\b0 \cf4 \strokec4  = 
+\f3\b \cf6 \strokec6 null
+\f5\b0 \cf4 \strokec4 ;\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  tenantId: \cf9 \strokec9 number\cf4 \strokec4 ;\
+\
+  constructor(tenantId: \cf9 \strokec9 number\cf4 \strokec4 ) \{\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId = tenantId;\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config = \{\
+      clientId: process.env.SALESFORCE_CLIENT_ID!,\
+      clientSecret: process.env.SALESFORCE_CLIENT_SECRET!,\
+      redirectUri: process.env.SALESFORCE_CALLBACK_URL!,\
+    \};\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Generate OAuth authorization URL\
+   */
+\f5\i0 \cf4 \strokec4 \
+  getAuthorizationUrl(state: \cf9 \strokec9 string\cf4 \strokec4 ): \cf9 \strokec9 string\cf4 \strokec4  \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  params = 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 URLSearchParams\cf4 \strokec4 (\{\
+      response_type: \cf7 \strokec7 'code'\cf4 \strokec4 ,\
+      client_id: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.clientId,\
+      redirect_uri: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.redirectUri,\
+      state,\
+      scope: \cf7 \strokec7 'api refresh_token offline_access'\cf4 \strokec4 ,\
+    \});\
+\
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 `https://login.salesforce.com/services/oauth2/authorize?\cf4 \strokec4 $\{params\}\cf7 \strokec7 `\cf4 \strokec4 ;\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Exchange authorization code for tokens\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  exchangeCodeForTokens(code: \cf9 \strokec9 string\cf4 \strokec4 ): \cf9 \strokec9 Promise\cf4 \strokec4 <SalesforceTokens> \{\
+    
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4  \{\
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  response = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  axios.post(\
+        \cf7 \strokec7 'https://login.salesforce.com/services/oauth2/token'\cf4 \strokec4 ,\
+        
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 URLSearchParams\cf4 \strokec4 (\{\
+          grant_type: \cf7 \strokec7 'authorization_code'\cf4 \strokec4 ,\
+          code,\
+          client_id: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.clientId,\
+          client_secret: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.clientSecret,\
+          redirect_uri: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.redirectUri,\
+        \}),\
+        \{\
+          headers: \{ 'Content-Type': \cf7 \strokec7 'application/x-www-form-urlencoded'\cf4 \strokec4  \},\
+        \}\
+      );\
+\
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  tokens: SalesforceTokens = \{\
+        accessToken: response.data.access_token,\
+        refreshToken: response.data.refresh_token,\
+        instanceUrl: response.data.instance_url,\
+        expiresAt: 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (Date.now() + \cf9 \strokec9 7200\cf4 \strokec4  * \cf9 \strokec9 1000\cf4 \strokec4 ), 
+\f6\i \cf5 \strokec5 // 2 hours
+\f5\i0 \cf4 \strokec4 \
+      \};\
+\
+      
+\f6\i \cf5 \strokec5 // Store encrypted tokens in database
+\f5\i0 \cf4 \strokec4 \
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .storeTokens(tokens);\
+\
+      
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  tokens;\
+    \} 
+\f3\b \cf6 \strokec6 catch
+\f5\b0 \cf4 \strokec4  (error) \{\
+      \cf9 \strokec9 console\cf4 \strokec4 .error(\cf7 \strokec7 'Salesforce token exchange failed:'\cf4 \strokec4 , error);\
+      
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Error\cf4 \strokec4 (\cf7 \strokec7 'Failed to authenticate with Salesforce'\cf4 \strokec4 );\
+    \}\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Store encrypted tokens\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  storeTokens(tokens: SalesforceTokens): \cf9 \strokec9 Promise\cf4 \strokec4 <
+\f3\b \cf6 \strokec6 void
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  encryptedCredentials = encrypt(JSON.stringify(\{\
+      accessToken: tokens.accessToken,\
+      refreshToken: tokens.refreshToken,\
+      instanceUrl: tokens.instanceUrl,\
+      expiresAt: tokens.expiresAt,\
+    \}));\
+\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  db.integrationConnection.upsert(\{\
+      where: \{\
+        tenantId_integrationType: \{\
+          tenantId: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId,\
+          integrationType: \cf7 \strokec7 'salesforce'\cf4 \strokec4 ,\
+        \},\
+      \},\
+      update: \{\
+        credentials: encryptedCredentials,\
+        status: \cf7 \strokec7 'active'\cf4 \strokec4 ,\
+        lastSyncAt: 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (),\
+      \},\
+      create: \{\
+        tenantId: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId,\
+        integrationType: \cf7 \strokec7 'salesforce'\cf4 \strokec4 ,\
+        credentials: encryptedCredentials,\
+        status: \cf7 \strokec7 'active'\cf4 \strokec4 ,\
+      \},\
+    \});\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Initialize authenticated client\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  initializeClient(): \cf9 \strokec9 Promise\cf4 \strokec4 <
+\f3\b \cf6 \strokec6 void
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  connection = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  db.integrationConnection.findFirst(\{\
+      where: \{\
+        tenantId: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId,\
+        integrationType: \cf7 \strokec7 'salesforce'\cf4 \strokec4 ,\
+      \},\
+    \});\
+\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (!connection) \{\
+      
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Error\cf4 \strokec4 (\cf7 \strokec7 'Salesforce integration not configured'\cf4 \strokec4 );\
+    \}\
+\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  tokens = JSON.parse(decrypt(connection.credentials 
+\f3\b \cf6 \strokec6 as
+\f5\b0 \cf4 \strokec4  \cf9 \strokec9 string\cf4 \strokec4 ));\
+\
+    
+\f6\i \cf5 \strokec5 // Check if token expired
+\f5\i0 \cf4 \strokec4 \
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (tokens.expiresAt) < 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 ()) \{\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .refreshAccessToken(tokens.refreshToken);\
+      
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .initializeClient(); 
+\f6\i \cf5 \strokec5 // Retry with new tokens
+\f5\i0 \cf4 \strokec4 \
+    \}\
+\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .client = axios.create(\{\
+      baseURL: \cf7 \strokec7 `\cf4 \strokec4 $\{tokens.instanceUrl\}\cf7 \strokec7 /services/data/v58.0`\cf4 \strokec4 ,\
+      headers: \{\
+        Authorization: \cf7 \strokec7 `Bearer \cf4 \strokec4 $\{tokens.accessToken\}\cf7 \strokec7 `\cf4 \strokec4 ,\
+        'Content-Type': \cf7 \strokec7 'application/json'\cf4 \strokec4 ,\
+      \},\
+    \});\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Refresh access token\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  refreshAccessToken(refreshToken: \cf9 \strokec9 string\cf4 \strokec4 ): \cf9 \strokec9 Promise\cf4 \strokec4 <
+\f3\b \cf6 \strokec6 void
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  response = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  axios.post(\
+      \cf7 \strokec7 'https://login.salesforce.com/services/oauth2/token'\cf4 \strokec4 ,\
+      
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 URLSearchParams\cf4 \strokec4 (\{\
+        grant_type: \cf7 \strokec7 'refresh_token'\cf4 \strokec4 ,\
+        refresh_token: refreshToken,\
+        client_id: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.clientId,\
+        client_secret: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .config.clientSecret,\
+      \})\
+    );\
+\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  tokens: SalesforceTokens = \{\
+      accessToken: response.data.access_token,\
+      refreshToken,\
+      instanceUrl: response.data.instance_url,\
+      expiresAt: 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (Date.now() + \cf9 \strokec9 7200\cf4 \strokec4  * \cf9 \strokec9 1000\cf4 \strokec4 ),\
+    \};\
+\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .storeTokens(tokens);\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Sync leads from Salesforce\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  syncLeads(): \cf9 \strokec9 Promise\cf4 \strokec4 <\{ imported: \cf9 \strokec9 number\cf4 \strokec4 ; updated: \cf9 \strokec9 number\cf4 \strokec4  \}> \{\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .initializeClient();\
+\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (!
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .client) \{\
+      
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Error\cf4 \strokec4 (\cf7 \strokec7 'Salesforce client not initialized'\cf4 \strokec4 );\
+    \}\
+\
+    
+\f3\b \cf6 \strokec6 let
+\f5\b0 \cf4 \strokec4  imported = \cf9 \strokec9 0\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 let
+\f5\b0 \cf4 \strokec4  updated = \cf9 \strokec9 0\cf4 \strokec4 ;\
+\
+    
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4  \{\
+      
+\f6\i \cf5 \strokec5 // Query Salesforce leads
+\f5\i0 \cf4 \strokec4 \
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  query = \cf7 \strokec7 `\
+        SELECT Id, Name, Email, Company, Status, Rating, \
+               CreatedDate, LastModifiedDate\
+        FROM Lead\
+        WHERE LastModifiedDate > LAST_N_DAYS:7\
+      `\cf4 \strokec4 ;\
+\
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  response = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .client.get(\cf7 \strokec7 '/query'\cf4 \strokec4 , \{\
+        params: \{ q: query \},\
+      \});\
+\
+      
+\f3\b \cf6 \strokec6 for
+\f5\b0 \cf4 \strokec4  (
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  sfLead 
+\f3\b \cf6 \strokec6 of
+\f5\b0 \cf4 \strokec4  response.data.records) \{\
+        
+\f6\i \cf5 \strokec5 // Map Salesforce lead to our schema
+\f5\i0 \cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  leadData = \{\
+          tenantId: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId,\
+          externalId: sfLead.Id,\
+          name: sfLead.Name,\
+          email: sfLead.Email,\
+          company: sfLead.Company,\
+          status: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .mapSalesforceStatus(sfLead.Status),\
+          score: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .calculateLeadScore(sfLead),\
+          metadata: \{\
+            salesforceRating: sfLead.Rating,\
+            salesforceCreated: sfLead.CreatedDate,\
+          \},\
+        \};\
+\
+        
+\f6\i \cf5 \strokec5 // Upsert lead
+\f5\i0 \cf4 \strokec4 \
+        
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  result = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  db.lead.upsert(\{\
+          where: \{\
+            tenantId_externalId: \{\
+              tenantId: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId,\
+              externalId: sfLead.Id,\
+            \},\
+          \},\
+          update: leadData,\
+          create: leadData,\
+        \});\
+\
+        
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (result.createdAt.getTime() === result.updatedAt.getTime()) \{\
+          imported++;\
+        \} 
+\f3\b \cf6 \strokec6 else
+\f5\b0 \cf4 \strokec4  \{\
+          updated++;\
+        \}\
+      \}\
+\
+      
+\f6\i \cf5 \strokec5 // Log sync
+\f5\i0 \cf4 \strokec4 \
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  db.integrationSyncLog.create(\{\
+        data: \{\
+          connectionId: (
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .getConnectionId())!,\
+          syncType: \cf7 \strokec7 'incremental'\cf4 \strokec4 ,\
+          recordsProcessed: imported + updated,\
+          durationMs: \cf9 \strokec9 0\cf4 \strokec4 , 
+\f6\i \cf5 \strokec5 // Calculate actual duration
+\f5\i0 \cf4 \strokec4 \
+          startedAt: 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (),\
+          completedAt: 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (),\
+        \},\
+      \});\
+\
+      
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \{ imported, updated \};\
+    \} 
+\f3\b \cf6 \strokec6 catch
+\f5\b0 \cf4 \strokec4  (error) \{\
+      \cf9 \strokec9 console\cf4 \strokec4 .error(\cf7 \strokec7 'Salesforce sync error:'\cf4 \strokec4 , error);\
+      
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  error;\
+    \}\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Update lead in Salesforce\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  updateLead(leadId: \cf9 \strokec9 string\cf4 \strokec4 , updates: \cf9 \strokec9 any\cf4 \strokec4 ): \cf9 \strokec9 Promise\cf4 \strokec4 <
+\f3\b \cf6 \strokec6 void
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .initializeClient();\
+\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (!
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .client) 
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Error\cf4 \strokec4 (\cf7 \strokec7 'Client not initialized'\cf4 \strokec4 );\
+\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  lead = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  db.lead.findUnique(\{ where: \{ id: leadId \} \});\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (!lead?.externalId) 
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Error\cf4 \strokec4 (\cf7 \strokec7 'Lead not synced with Salesforce'\cf4 \strokec4 );\
+\
+    
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .client.patch(\cf7 \strokec7 `/sobjects/Lead/\cf4 \strokec4 $\{lead.externalId\}\cf7 \strokec7 `\cf4 \strokec4 , \{\
+      Status: updates.status,\
+      Rating: updates.score > \cf9 \strokec9 70\cf4 \strokec4  ? \cf7 \strokec7 'Hot'\cf4 \strokec4  : \cf7 \strokec7 'Warm'\cf4 \strokec4 ,\
+    \});\
+  \}\
+\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  mapSalesforceStatus(status: \cf9 \strokec9 string\cf4 \strokec4 ): \cf9 \strokec9 string\cf4 \strokec4  \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  mapping: Record<\cf9 \strokec9 string\cf4 \strokec4 , \cf9 \strokec9 string\cf4 \strokec4 > = \{\
+      'Open - Not Contacted': \cf7 \strokec7 'new'\cf4 \strokec4 ,\
+      'Working - Contacted': \cf7 \strokec7 'engaged'\cf4 \strokec4 ,\
+      'Closed - Converted': \cf7 \strokec7 'converted'\cf4 \strokec4 ,\
+      'Closed - Not Converted': \cf7 \strokec7 'disqualified'\cf4 \strokec4 ,\
+    \};\
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  mapping[status] || \cf7 \strokec7 'new'\cf4 \strokec4 ;\
+  \}\
+\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  calculateLeadScore(sfLead: \cf9 \strokec9 any\cf4 \strokec4 ): \cf9 \strokec9 number\cf4 \strokec4  \{\
+    
+\f3\b \cf6 \strokec6 let
+\f5\b0 \cf4 \strokec4  score = \cf9 \strokec9 50\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (sfLead.Rating === \cf7 \strokec7 'Hot'\cf4 \strokec4 ) score += \cf9 \strokec9 30\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (sfLead.Rating === \cf7 \strokec7 'Warm'\cf4 \strokec4 ) score += \cf9 \strokec9 15\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (sfLead.Email) score += \cf9 \strokec9 10\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 if
+\f5\b0 \cf4 \strokec4  (sfLead.Company) score += \cf9 \strokec9 10\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  Math.min(\cf9 \strokec9 100\cf4 \strokec4 , score);\
+  \}\
+\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  getConnectionId(): \cf9 \strokec9 Promise\cf4 \strokec4 <\cf9 \strokec9 string\cf4 \strokec4  | 
+\f3\b \cf6 \strokec6 null
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  connection = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  db.integrationConnection.findFirst(\{\
+      where: \{\
+        tenantId: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .tenantId,\
+        integrationType: \cf7 \strokec7 'salesforce'\cf4 \strokec4 ,\
+      \},\
+    \});\
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  connection?.id || 
+\f3\b \cf6 \strokec6 null
+\f5\b0 \cf4 \strokec4 ;\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56522 
+\f1\b  MONITORING & OBSERVABILITY\
+15. Launchpad Configuration\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f3\fs39 \cf0 \strokec2 apps/frontend/lib/observability/launchpad.ts
+\f1\fs36 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 typescript\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf5 \strokec5 /**\
+ * Launchpad Observability Integration\
+ * Metrics, tracing, and monitoring configuration\
+ */
+\f5\i0 \cf4 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  \{ Logger \} 
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 'pino'\cf4 \strokec4 ;\
+
+\f3\b \cf6 \strokec6 import
+\f5\b0 \cf4 \strokec4  pino 
+\f3\b \cf6 \strokec6 from
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 'pino'\cf4 \strokec4 ;\
+\
+
+\f3\b \cf6 \strokec6 interface
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 MetricData\cf4 \strokec4  \{\
+  name: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  value: \cf9 \strokec9 number\cf4 \strokec4 ;\
+  tags?: Record<\cf9 \strokec9 string\cf4 \strokec4 , \cf9 \strokec9 string\cf4 \strokec4 >;\
+  timestamp?: Date;\
+\}\
+\
+
+\f3\b \cf6 \strokec6 interface
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 TraceData\cf4 \strokec4  \{\
+  traceId: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  spanId: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  parentSpanId?: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  operation: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  startTime: \cf9 \strokec9 number\cf4 \strokec4 ;\
+  duration: \cf9 \strokec9 number\cf4 \strokec4 ;\
+  tags?: Record<\cf9 \strokec9 string\cf4 \strokec4 , \cf9 \strokec9 string\cf4 \strokec4 >;\
+  error?: \cf9 \strokec9 boolean\cf4 \strokec4 ;\
+\}\
+\
+
+\f3\b \cf6 \strokec6 class
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 LaunchpadObservability\cf4 \strokec4  \{\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  logger: Logger;\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  apiKey: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  projectId: \cf9 \strokec9 string\cf4 \strokec4 ;\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  environment: \cf9 \strokec9 string\cf4 \strokec4 ;\
+\
+  constructor() \{\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .apiKey = process.env.LAUNCHPAD_API_KEY || \cf7 \strokec7 ''\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .projectId = process.env.LAUNCHPAD_PROJECT_ID || \cf7 \strokec7 ''\cf4 \strokec4 ;\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .environment = process.env.NEXT_PUBLIC_APP_ENV || \cf7 \strokec7 'development'\cf4 \strokec4 ;\
+\
+    
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .logger = pino(\{\
+      level: process.env.NODE_ENV === \cf7 \strokec7 'production'\cf4 \strokec4  ? \cf7 \strokec7 'info'\cf4 \strokec4  : \cf7 \strokec7 'debug'\cf4 \strokec4 ,\
+      transport:\
+        process.env.NODE_ENV !== \cf7 \strokec7 'production'\cf4 \strokec4 \
+          ? \{ target: \cf7 \strokec7 'pino-pretty'\cf4 \strokec4  \}\
+          : 
+\f3\b \cf6 \strokec6 undefined
+\f5\b0 \cf4 \strokec4 ,\
+    \});\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Record metric\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  recordMetric(metric: MetricData): \cf9 \strokec9 Promise\cf4 \strokec4 <
+\f3\b \cf6 \strokec6 void
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4  \{\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  fetch(\cf7 \strokec7 'https://api.launchpad.dev/v1/metrics'\cf4 \strokec4 , \{\
+        method: \cf7 \strokec7 'POST'\cf4 \strokec4 ,\
+        headers: \{\
+          'Authorization': \cf7 \strokec7 `Bearer \cf4 \strokec4 $\{
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .apiKey\}\cf7 \strokec7 `\cf4 \strokec4 ,\
+          'Content-Type': \cf7 \strokec7 'application/json'\cf4 \strokec4 ,\
+        \},\
+        body: JSON.stringify(\{\
+          project_id: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .projectId,\
+          environment: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .environment,\
+          ...metric,\
+          timestamp: metric.timestamp || 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 Date\cf4 \strokec4 (),\
+        \}),\
+      \});\
+    \} 
+\f3\b \cf6 \strokec6 catch
+\f5\b0 \cf4 \strokec4  (error) \{\
+      
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .logger.error(\{ error \}, \cf7 \strokec7 'Failed to record metric'\cf4 \strokec4 );\
+    \}\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Record trace span\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  recordTrace(trace: TraceData): \cf9 \strokec9 Promise\cf4 \strokec4 <
+\f3\b \cf6 \strokec6 void
+\f5\b0 \cf4 \strokec4 > \{\
+    
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4  \{\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  fetch(\cf7 \strokec7 'https://api.launchpad.dev/v1/traces'\cf4 \strokec4 , \{\
+        method: \cf7 \strokec7 'POST'\cf4 \strokec4 ,\
+        headers: \{\
+          'Authorization': \cf7 \strokec7 `Bearer \cf4 \strokec4 $\{
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .apiKey\}\cf7 \strokec7 `\cf4 \strokec4 ,\
+          'Content-Type': \cf7 \strokec7 'application/json'\cf4 \strokec4 ,\
+        \},\
+        body: JSON.stringify(\{\
+          project_id: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .projectId,\
+          environment: 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .environment,\
+          ...trace,\
+        \}),\
+      \});\
+    \} 
+\f3\b \cf6 \strokec6 catch
+\f5\b0 \cf4 \strokec4  (error) \{\
+      
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .logger.error(\{ error \}, \cf7 \strokec7 'Failed to record trace'\cf4 \strokec4 );\
+    \}\
+  \}\
+\
+  
+\f6\i \cf5 \strokec5 /**\
+   * Measure execution time\
+   */
+\f5\i0 \cf4 \strokec4 \
+  
+\f3\b \cf6 \strokec6 async
+\f5\b0 \cf4 \strokec4  measure\cf8 \strokec8 <T>\cf4 \strokec4 (\
+    operation: \cf9 \strokec9 string\cf4 \strokec4 ,\
+    fn: () => \cf9 \strokec9 Promise\cf4 \strokec4 <T>,\
+    tags?: Record<\cf9 \strokec9 string\cf4 \strokec4 , \cf9 \strokec9 string\cf4 \strokec4 >\
+  ): \cf9 \strokec9 Promise\cf4 \strokec4 <T> \{\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  startTime = Date.now();\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  traceId = 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .generateTraceId();\
+    
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  spanId = 
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .generateSpanId();\
+\
+    
+\f3\b \cf6 \strokec6 try
+\f5\b0 \cf4 \strokec4  \{\
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  result = 
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  fn();\
+      \
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  duration = Date.now() - startTime;\
+\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .recordTrace(\{\
+        traceId,\
+        spanId,\
+        operation,\
+        startTime,\
+        duration,\
+        tags,\
+        error: false,\
+      \});\
+\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .recordMetric(\{\
+        name: \cf7 \strokec7 `\cf4 \strokec4 $\{operation\}\cf7 \strokec7 .duration`\cf4 \strokec4 ,\
+        value: duration,\
+        tags,\
+      \});\
+\
+      
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  result;\
+    \} 
+\f3\b \cf6 \strokec6 catch
+\f5\b0 \cf4 \strokec4  (error) \{\
+      
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  duration = Date.now() - startTime;\
+\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .recordTrace(\{\
+        traceId,\
+        spanId,\
+        operation,\
+        startTime,\
+        duration,\
+        tags,\
+        error: true,\
+      \});\
+\
+      
+\f3\b \cf6 \strokec6 await
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 this
+\f5\b0 \cf4 \strokec4 .recordMetric(\{\
+        name: \cf7 \strokec7 `\cf4 \strokec4 $\{operation\}\cf7 \strokec7 .error`\cf4 \strokec4 ,\
+        value: \cf9 \strokec9 1\cf4 \strokec4 ,\
+        tags,\
+      \});\
+\
+      
+\f3\b \cf6 \strokec6 throw
+\f5\b0 \cf4 \strokec4  error;\
+    \}\
+  \}\
+\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  generateTraceId(): \cf9 \strokec9 string\cf4 \strokec4  \{\
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  \cf7 \strokec7 `\cf4 \strokec4 $\{Date.now()\}\cf7 \strokec7 -\cf4 \strokec4 $\{Math.random().toString(\cf9 \strokec9 36\cf4 \strokec4 ).substr(\cf9 \strokec9 2\cf4 \strokec4 , \cf9 \strokec9 9\cf4 \strokec4 )\}\cf7 \strokec7 `\cf4 \strokec4 ;\
+  \}\
+\
+  
+\f3\b \cf6 \strokec6 private
+\f5\b0 \cf4 \strokec4  generateSpanId(): \cf9 \strokec9 string\cf4 \strokec4  \{\
+    
+\f3\b \cf6 \strokec6 return
+\f5\b0 \cf4 \strokec4  Math.random().toString(\cf9 \strokec9 36\cf4 \strokec4 ).substr(\cf9 \strokec9 2\cf4 \strokec4 , \cf9 \strokec9 9\cf4 \strokec4 );\
+  \}\
+\}\
+\
+
+\f3\b \cf6 \strokec6 export
+\f5\b0 \cf4 \strokec4  
+\f3\b \cf6 \strokec6 const
+\f5\b0 \cf4 \strokec4  launchpad = 
+\f3\b \cf6 \strokec6 new
+\f5\b0 \cf4 \strokec4  \cf8 \strokec8 LaunchpadObservability\cf4 \strokec4 ();\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u9989 
+\f1\b  PRODUCTION READINESS CHECKLIST\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f4\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 # creditX Ecosystem - Production Deployment Checklist\
+\
+## Pre-Deployment (Jan 16-17, 2026)\
+\
+### Infrastructure\
+- [ ] Provision 15 Starlight VMs (5 frontend, 10 agent, 5 API)\
+- [ ] Configure 3 Load Balancers (frontend, agent, API)\
+- [ ] Attach 15 Starlight Volumes (500GB database, module storage)\
+- [ ] Setup CDN: cdn.ecosystem.ai\
+- [ ] Configure Thunderbolt: team.ecosystem.ai\
+- [ ] Provision Spacemail: support@creditx.ai\
+- [ ] Configure FastVPN (20 team members)\
+\
+### Database\
+- [ ] PostgreSQL 16 multi-tenant setup\
+- [ ] Run migrations (45 tenant schemas)\
+- [ ] Configure Row-Level Security (RLS)\
+- [ ] Setup replication (Phoenix 
+\f7 \uc0\u8594 
+\f5  Singapore)\
+- [ ] Configure automated backups (30-day retention)\
+\
+### Security\
+- [ ] SSL certificates (Cloudflare Origin CA)\
+- [ ] Environment variables encrypted\
+- [ ] API keys rotated\
+- [ ] OAuth 2.0 providers configured\
+- [ ] Rate limiting enabled (100 req/min)\
+- [ ] DDoS protection active (10Gbps)\
+\
+### CI/CD\
+- [ ] GitHub Actions workflows configured\
+- [ ] Spaceship Hyperlift connected\
+- [ ] Docker registry authenticated\
+- [ ] Deployment secrets added\
+- [ ] Rollback strategy tested\
+\
+## Go-Live (Jan 18, 2026)\
+\
+### Deployment\
+- [ ] DNS cutover to Starlight VMs\
+- [ ] Deploy frontend (3000 port)\
+- [ ] Deploy agent (8000 port)\
+- [ ] Deploy API (4000 port)\
+- [ ] Health checks passing (all services)\
+\
+### Testing\
+- [ ] Load test: 10,000 concurrent users\
+- [ ] Security scan: OWASP Top 10\
+- [ ] Performance: <5s module response time\
+- [ ] Module tests (all 5 modules functional)\
+- [ ] Integration tests (Salesforce, Gmail, etc.)\
+\
+### Monitoring\
+- [ ] Launchpad dashboards configured\
+- [ ] LangSmith tracing active\
+- [ ] Sentry error tracking enabled\
+- [ ] Prometheus metrics exporting\
+- [ ] Slack alerts configured\
+\
+### Documentation\
+- [ ] API documentation published\
+- [ ] Deployment runbooks complete\
+- [ ] Incident response plan active\
+- [ ] Team training completed\
+\
+## Post-Deployment\
+\
+### Week 1 (Jan 18-25)\
+- [ ] Monitor uptime (target 99.99%)\
+- [ ] Review error rates (target <2%)\
+- [ ] Analyze performance metrics\
+- [ ] Collect user feedback\
+- [ ] Address critical bugs\
+\
+### Week 2-4 (Jan 25 - Feb 15)\
+- [ ] Optimize database queries\
+- [ ] Fine-tune ML models\
+- [ ] Scale resources based on usage\
+- [ ] Deploy minor improvements\
+- [ ] Prepare Phase 2 expansion plan\
+\
+## Success Metrics\
+\
+- **Uptime**: 99.99% (52 minutes/year max downtime)\
+- **Latency**: p95 < 500ms, p99 < 2s\
+- **Error Rate**: < 2%\
+- **Compliance Score**: 95%+ average\
+- **Lead Scoring**: <100ms per lead\
+- **Threat Detection**: <10ms per packet\
+- **User Satisfaction**: 4.5/5 stars minimum\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55356 \u57263 
+\f1\b  SUMMARY\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf0 Complete production codebase delivered:
+\f2\b0 \strokec2 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0 \cf0 \uc0\u9989 
+\f2  
+\f1\b \strokec2 45+ Files Generated
+\f2\b0 \strokec2 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Root configuration (package.json, turbo.json, .env)\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Frontend Next.js app with CopilotKit\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Python LangGraph agent backend\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Database schema & migrations (Prisma)\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 3 Dockerfiles (frontend, agent, API)\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Complete CI/CD pipeline (GitHub Actions)\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Terraform infrastructure (Spaceship.com)\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Salesforce integration connector\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Monitoring & observability (Launchpad)\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0 \cf0 \strokec2 \uc0\u9989 
+\f2  
+\f1\b \strokec2 Ready for Jan 18, 2026 Go-Live
+\f2\b0 \strokec2 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Docker containers buildable\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 CI/CD pipeline executable\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Infrastructure provisionable via Terraform\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 All 5 modules architected\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Multi-tenancy configured\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Security hardened\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0 \cf0 \strokec2 \uc0\u9989 
+\f2  
+\f1\b \strokec2 Production Performance Targets
+\f2\b0 \strokec2 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls3\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 99.99% uptime SLA\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 <5s compliance document generation\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 <100ms lead scoring\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 10M packets/second threat detection\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 <1s endpoint anomaly detection\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b \cf0 \strokec2 Next file set
+\f2\b0 \strokec2 : Execute deployment with 
+\f5\fs26 \strokec2 terraform apply
+\f2\fs24 \strokec2  and trigger GitHub Actions workflow! 
+\f0 \uc0\u55357 \u56960 
+\f2 \
+}

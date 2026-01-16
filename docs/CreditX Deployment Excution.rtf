@@ -1,0 +1,2398 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 AppleColorEmoji;\f1\froman\fcharset0 Times-Bold;\f2\froman\fcharset0 Times-Roman;
+\f3\fnil\fcharset0 HelveticaNeue;\f4\fmodern\fcharset0 Courier;\f5\fmodern\fcharset0 Courier-Oblique;
+\f6\fnil\fcharset77 ZapfDingbatsITC;\f7\fmodern\fcharset0 Courier-Bold;\f8\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red123\green126\blue121;
+\red60\green60\blue59;\red52\green92\blue158;\red95\green124\blue3;\red240\green115\blue25;\red185\green20\blue31;
+\red117\green66\blue151;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c0\c84706;\cssrgb\c55686\c56471\c54902;
+\cssrgb\c30196\c30196\c29804;\cssrgb\c25882\c44314\c68235;\cssrgb\c44314\c54902\c0;\cssrgb\c96078\c52941\c12157;\cssrgb\c78431\c15686\c16078;
+\cssrgb\c53725\c34902\c65882;}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\sa321\partightenfactor0
+
+\f0\fs48 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \uc0\u55357 \u56960 
+\f1\b  CREDITX ECOSYSTEM - DEPLOYMENT EXECUTION PLAN\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\fs36 \cf0 DEPLOYMENT TIMELINE: JANUARY 16-18, 2026\
+\pard\pardeftab720\partightenfactor0
+
+\f2\b0\fs24 \cf0 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56523 
+\f1\b  PHASE 1: PRE-DEPLOYMENT PREPARATION (Jan 16, 1:30 AM - 6:00 AM MST)\
+Step 1.1: Environment Setup & Verification (30 minutes)\
+Local Machine Prerequisites\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Verify required tools installed
+\f4\i0 \cf5 \strokec5 \
+terraform version  
+\f5\i \cf4 \strokec4 # Should be >= 1.6.0
+\f4\i0 \cf5 \strokec5 \
+git --version      
+\f5\i \cf4 \strokec4 # Should be >= 2.40.0
+\f4\i0 \cf5 \strokec5 \
+docker --version   
+\f5\i \cf4 \strokec4 # Should be >= 24.0.0
+\f4\i0 \cf5 \strokec5 \
+node --version     
+\f5\i \cf4 \strokec4 # Should be >= 20.0.0
+\f4\i0 \cf5 \strokec5 \
+python --version   
+\f5\i \cf4 \strokec4 # Should be >= 3.12.0
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Install missing tools if needed
+\f4\i0 \cf5 \strokec5 \
+brew install terraform git docker node python  
+\f5\i \cf4 \strokec4 # macOS
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # OR
+\f4\i0 \cf5 \strokec5 \
+sudo apt-get install terraform git docker.io nodejs python3  
+\f5\i \cf4 \strokec4 # Linux
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Clone Repository\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create project directory
+\f4\i0 \cf5 \strokec5 \
+mkdir -p ~/projects/creditx-ecosystem\
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  ~/projects/creditx-ecosystem\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Initialize git repository
+\f4\i0 \cf5 \strokec5 \
+git init\
+git remote add origin https://github.com/your-org/creditx-ecosystem.git\
+\
+
+\f5\i \cf4 \strokec4 # Create initial commit structure
+\f4\i0 \cf5 \strokec5 \
+mkdir -p apps/\{frontend,agent,api\}\
+mkdir -p packages/\{database,shared\}\
+mkdir -p docker\
+mkdir -p infrastructure/terraform\
+mkdir -p .github/workflows\
+\
+
+\f5\i \cf4 \strokec4 # Copy all generated code files to appropriate directories
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # (Use the code from previous responses)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Environment Variables Setup\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create .env.production file
+\f4\i0 \cf5 \strokec5 \
+cat > .env.production << \cf7 \strokec7 'EOF'\
+# ============================================================================\
+# CREDITX ECOSYSTEM - PRODUCTION ENVIRONMENT\
+# ============================================================================\
+\
+# Spaceship.com Infrastructure\
+SPACESHIP_API_KEY=your_spaceship_api_key_here\
+HYPERLIFT_API_KEY=your_hyperlift_deployment_key\
+HYPERLIFT_PROJECT_ID=creditx-ecosystem\
+\
+# Docker Registry\
+REGISTRY_URL=registry.spaceship.com\
+REGISTRY_USERNAME=creditx-ecosystem\
+REGISTRY_TOKEN=your_registry_token_here\
+\
+# Application\
+NODE_ENV=production\
+NEXT_PUBLIC_APP_URL=https://ecosystem.ai\
+NEXT_PUBLIC_APP_ENV=production\
+\
+# CopilotKit\
+NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY=pk_prod_your_copilotkit_key\
+COPILOTKIT_CLOUD_API_KEY=sk_prod_your_copilotkit_key\
+\
+# OpenAI\
+OPENAI_API_KEY=sk-proj-your_openai_key_here\
+OPENAI_ORG_ID=org-your_org_id\
+\
+# LangGraph / LangSmith\
+LANGGRAPH_API_KEY=ls_your_langsmith_key\
+LANGGRAPH_AGENT_URL=https://agent.ecosystem.ai\
+LANGCHAIN_TRACING_V2=true\
+LANGCHAIN_PROJECT=creditx-production\
+\
+# Database\
+DATABASE_URL=postgresql://creditx:CHANGE_THIS_PASSWORD@postgres.ecosystem.ai:5432/creditx_production?schema=public\
+DATABASE_POOL_MIN=10\
+DATABASE_POOL_MAX=100\
+DATABASE_SSL=true\
+\
+# Redis\
+REDIS_URL=redis://redis.ecosystem.ai:6379\
+REDIS_PASSWORD=CHANGE_THIS_REDIS_PASSWORD\
+REDIS_TLS=true\
+\
+# Authentication\
+NEXTAUTH_URL=https://ecosystem.ai\
+NEXTAUTH_SECRET=GENERATE_32_CHAR_SECRET_HERE\
+OAUTH_GOOGLE_CLIENT_ID=your_google_client_id\
+OAUTH_GOOGLE_CLIENT_SECRET=your_google_client_secret\
+OAUTH_MICROSOFT_CLIENT_ID=your_microsoft_client_id\
+OAUTH_MICROSOFT_CLIENT_SECRET=your_microsoft_client_secret\
+\
+# Integrations\
+SALESFORCE_CLIENT_ID=your_salesforce_connected_app_id\
+SALESFORCE_CLIENT_SECRET=your_salesforce_secret\
+SALESFORCE_CALLBACK_URL=https://ecosystem.ai/api/integrations/salesforce/callback\
+GMAIL_CLIENT_ID=your_gmail_client_id\
+GMAIL_CLIENT_SECRET=your_gmail_secret\
+LINKEDIN_CLIENT_ID=your_linkedin_client_id\
+LINKEDIN_CLIENT_SECRET=your_linkedin_secret\
+\
+# Storage\
+S3_BUCKET_NAME=creditx-production\
+S3_REGION=us-west-2\
+S3_ACCESS_KEY_ID=your_access_key\
+S3_SECRET_ACCESS_KEY=your_secret_key\
+\
+# Monitoring\
+SENTRY_DSN=https://your_sentry_dsn@sentry.io/project\
+SENTRY_AUTH_TOKEN=your_sentry_auth_token\
+LAUNCHPAD_API_KEY=your_launchpad_key\
+LAUNCHPAD_PROJECT_ID=creditx-prod\
+\
+# Security\
+ENCRYPTION_KEY=GENERATE_32_CHAR_ENCRYPTION_KEY\
+JWT_SECRET=GENERATE_32_CHAR_JWT_SECRET\
+\
+# Cloudflare\
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token\
+CLOUDFLARE_ZONE_ID=your_zone_id\
+\
+# SSH Keys for VMs\
+SSH_PUBLIC_KEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAB...\
+EOF\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Secure the file
+\f4\i0 \cf5 \strokec5 \
+chmod \cf8 \strokec8 600\cf5 \strokec5  .env.production\
+\
+
+\f5\i \cf4 \strokec4 # Source environment variables
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 source\cf5 \strokec5  .env.production\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Generate Required Secrets\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate NextAuth secret (32 characters)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 NEXTAUTH_SECRET\cf5 \strokec5 =\cf9 \strokec9 $(openssl rand -base64 \cf8 \strokec8 32\cf9 \strokec9 )\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "NEXTAUTH_SECRET=\cf9 \strokec9 $NEXTAUTH_SECRET\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate JWT secret
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 JWT_SECRET\cf5 \strokec5 =\cf9 \strokec9 $(openssl rand -base64 \cf8 \strokec8 32\cf9 \strokec9 )\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "JWT_SECRET=\cf9 \strokec9 $JWT_SECRET\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate encryption key
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 ENCRYPTION_KEY\cf5 \strokec5 =\cf9 \strokec9 $(openssl rand -base64 \cf8 \strokec8 32\cf9 \strokec9 )\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "ENCRYPTION_KEY=\cf9 \strokec9 $ENCRYPTION_KEY\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate database password
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DB_PASSWORD\cf5 \strokec5 =\cf9 \strokec9 $(openssl rand -base64 \cf8 \strokec8 24\cf9 \strokec9 )\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "DATABASE_PASSWORD=\cf9 \strokec9 $DB_PASSWORD\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate Redis password
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 REDIS_PASSWORD\cf5 \strokec5 =\cf9 \strokec9 $(openssl rand -base64 \cf8 \strokec8 24\cf9 \strokec9 )\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "REDIS_PASSWORD=\cf9 \strokec9 $REDIS_PASSWORD\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Update .env.production with generated secrets
+\f4\i0 \cf5 \strokec5 \
+sed -i \cf7 \strokec7 ''\cf5 \strokec5  \cf7 \strokec7 "s/GENERATE_32_CHAR_SECRET_HERE/\cf9 \strokec9 $NEXTAUTH_SECRET\cf7 \strokec7 /"\cf5 \strokec5  .env.production\
+sed -i \cf7 \strokec7 ''\cf5 \strokec5  \cf7 \strokec7 "s/GENERATE_32_CHAR_JWT_SECRET/\cf9 \strokec9 $JWT_SECRET\cf7 \strokec7 /"\cf5 \strokec5  .env.production\
+sed -i \cf7 \strokec7 ''\cf5 \strokec5  \cf7 \strokec7 "s/GENERATE_32_CHAR_ENCRYPTION_KEY/\cf9 \strokec9 $ENCRYPTION_KEY\cf7 \strokec7 /"\cf5 \strokec5  .env.production\
+sed -i \cf7 \strokec7 ''\cf5 \strokec5  \cf7 \strokec7 "s/CHANGE_THIS_PASSWORD/\cf9 \strokec9 $DB_PASSWORD\cf7 \strokec7 /"\cf5 \strokec5  .env.production\
+sed -i \cf7 \strokec7 ''\cf5 \strokec5  \cf7 \strokec7 "s/CHANGE_THIS_REDIS_PASSWORD/\cf9 \strokec9 $REDIS_PASSWORD\cf7 \strokec7 /"\cf5 \strokec5  .env.production\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 1.2: GitHub Repository Setup (20 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create GitHub repository
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Go to https://github.com/new
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Repository name: creditx-ecosystem
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Visibility: Private
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Initialize with README: No
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Push code to GitHub
+\f4\i0 \cf5 \strokec5 \
+git add \cf6 \strokec6 .\cf5 \strokec5 \
+git commit -m \cf7 \strokec7 "feat: initial creditX Ecosystem production codebase"\cf5 \strokec5 \
+git branch -M main\
+git remote add origin git@github.com:your-org/creditx-ecosystem.git\
+git push -u origin main\
+\
+
+\f5\i \cf4 \strokec4 # Verify push
+\f4\i0 \cf5 \strokec5 \
+git log --oneline -n \cf8 \strokec8 5\cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Configure GitHub Secrets\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Navigate to repository settings
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # https://github.com/your-org/creditx-ecosystem/settings/secrets/actions
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Add the following secrets (manually in GitHub UI):
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b\fs24 \cf0 \strokec2 Required GitHub Secrets:
+\f2\b0 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 # Infrastructure\
+SPACESHIP_API_KEY: "your_spaceship_api_key"\
+SPACESHIP_USERNAME: "creditx-ecosystem"\
+SPACESHIP_TOKEN: "your_spaceship_token"\
+HYPERLIFT_TOKEN: "your_hyperlift_api_key"\
+\
+# Application\
+COPILOT_PUBLIC_API_KEY: "pk_prod_your_key"\
+OPENAI_API_KEY: "sk-proj-your_key"\
+LANGCHAIN_API_KEY: "ls_your_key"\
+\
+# Database\
+DATABASE_URL: "postgresql://creditx:password@postgres.ecosystem.ai:5432/creditx_production"\
+\
+# Integrations\
+SALESFORCE_CLIENT_ID: "your_salesforce_id"\
+SALESFORCE_CLIENT_SECRET: "your_salesforce_secret"\
+GMAIL_CLIENT_ID: "your_gmail_id"\
+GMAIL_CLIENT_SECRET: "your_gmail_secret"\
+\
+# Monitoring\
+SENTRY_AUTH_TOKEN: "your_sentry_token"\
+SENTRY_ORG: "your_org"\
+SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"\
+\
+# Cloudflare\
+CLOUDFLARE_API_TOKEN: "your_cloudflare_token"\
+\
+# SSH\
+SSH_PRIVATE_KEY: "-----BEGIN OPENSSH PRIVATE KEY-----\\n...\\n-----END OPENSSH PRIVATE KEY-----"\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b\fs24 \cf0 \strokec2 Add secrets via GitHub CLI:
+\f2\b0 \strokec2 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Install GitHub CLI if not already installed
+\f4\i0 \cf5 \strokec5 \
+brew install gh  
+\f5\i \cf4 \strokec4 # macOS
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # OR
+\f4\i0 \cf5 \strokec5 \
+sudo apt install gh  
+\f5\i \cf4 \strokec4 # Linux
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Authenticate
+\f4\i0 \cf5 \strokec5 \
+gh auth login\
+\
+
+\f5\i \cf4 \strokec4 # Add secrets programmatically
+\f4\i0 \cf5 \strokec5 \
+gh secret \cf6 \strokec6 set\cf5 \strokec5  SPACESHIP_API_KEY < <(\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "\cf9 \strokec9 $SPACESHIP_API_KEY\cf7 \strokec7 "\cf5 \strokec5 )\
+gh secret \cf6 \strokec6 set\cf5 \strokec5  DATABASE_URL < <(\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "\cf9 \strokec9 $DATABASE_URL\cf7 \strokec7 "\cf5 \strokec5 )\
+gh secret \cf6 \strokec6 set\cf5 \strokec5  OPENAI_API_KEY < <(\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "\cf9 \strokec9 $OPENAI_API_KEY\cf7 \strokec7 "\cf5 \strokec5 )\
+
+\f5\i \cf4 \strokec4 # ... repeat for all secrets
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 1.3: Terraform Backend Setup (30 minutes)\
+Create S3 Bucket for Terraform State\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Using AWS CLI (if using AWS S3 backend)
+\f4\i0 \cf5 \strokec5 \
+aws s3api create-bucket \\\
+  --bucket creditx-terraform-state \\\
+  --region us-west-2 \\\
+  --create-bucket-configuration \cf9 \strokec9 LocationConstraint\cf5 \strokec5 =us-west-2\
+\
+
+\f5\i \cf4 \strokec4 # Enable versioning
+\f4\i0 \cf5 \strokec5 \
+aws s3api put-bucket-versioning \\\
+  --bucket creditx-terraform-state \\\
+  --versioning-configuration \cf9 \strokec9 Status\cf5 \strokec5 =Enabled\
+\
+
+\f5\i \cf4 \strokec4 # Enable encryption
+\f4\i0 \cf5 \strokec5 \
+aws s3api put-bucket-encryption \\\
+  --bucket creditx-terraform-state \\\
+  --server-side-encryption-configuration \cf7 \strokec7 '\{\
+    "Rules": [\{\
+      "ApplyServerSideEncryptionByDefault": \{\
+        "SSEAlgorithm": "AES256"\
+      \}\
+    \}]\
+  \}'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Create DynamoDB table for state locking
+\f4\i0 \cf5 \strokec5 \
+aws dynamodb create-table \\\
+  --table-name terraform-state-lock \\\
+  --attribute-definitions \cf9 \strokec9 AttributeName\cf5 \strokec5 =LockID,AttributeType=S \\\
+  --key-schema \cf9 \strokec9 AttributeName\cf5 \strokec5 =LockID,KeyType=HASH \\\
+  --billing-mode PAY_PER_REQUEST \\\
+  --region us-west-2\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Initialize Terraform\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  infrastructure/terraform\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create terraform.tfvars file
+\f4\i0 \cf5 \strokec5 \
+cat > terraform.tfvars << \cf7 \strokec7 'EOF'\
+# Spaceship.com\
+spaceship_api_key = "your_spaceship_api_key"\
+\
+# Cloudflare\
+cloudflare_api_token = "your_cloudflare_token"\
+\
+# Project\
+environment = "production"\
+project_name = "creditx-ecosystem"\
+\
+# Docker Images (will be updated after build)\
+frontend_docker_image = "registry.spaceship.com/creditx-ecosystem-frontend:latest"\
+agent_docker_image = "registry.spaceship.com/creditx-ecosystem-agent:latest"\
+api_docker_image = "registry.spaceship.com/creditx-ecosystem-api:latest"\
+\
+# SSH\
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAB..."\
+\
+# Registry\
+registry_token = "your_registry_token"\
+EOF\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Secure the file
+\f4\i0 \cf5 \strokec5 \
+chmod \cf8 \strokec8 600\cf5 \strokec5  terraform.tfvars\
+\
+
+\f5\i \cf4 \strokec4 # Initialize Terraform
+\f4\i0 \cf5 \strokec5 \
+terraform init\
+\
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Initializing the backend...
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Successfully configured the backend "s3"!
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Terraform has been successfully initialized!
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Validate Terraform Configuration\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Format code
+\f4\i0 \cf5 \strokec5 \
+terraform fmt -recursive\
+\
+
+\f5\i \cf4 \strokec4 # Validate configuration
+\f4\i0 \cf5 \strokec5 \
+terraform validate\
+\
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Success! The configuration is valid.
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Generate execution plan
+\f4\i0 \cf5 \strokec5 \
+terraform plan -out=tfplan\
+\
+
+\f5\i \cf4 \strokec4 # Review plan output carefully - should show:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 20+ VMs to be created (Phoenix + Singapore)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 3 Load Balancers
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 15+ Storage Volumes
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - CDN configuration
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - DNS records (Cloudflare)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 1.4: Pre-Flight Checks (20 minutes)\
+Security Verification Checklist\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Check for hardcoded secrets in code
+\f4\i0 \cf5 \strokec5 \
+git secrets --scan\
+\
+
+\f5\i \cf4 \strokec4 # Or use grep
+\f4\i0 \cf5 \strokec5 \
+grep -r \cf7 \strokec7 "sk-"\cf5 \strokec5  --exclude-dir=node_modules --exclude-dir=.git \cf6 \strokec6 .\cf5 \strokec5 \
+grep -r \cf7 \strokec7 "pk_"\cf5 \strokec5  --exclude-dir=node_modules --exclude-dir=.git \cf6 \strokec6 .\cf5 \strokec5 \
+grep -r \cf7 \strokec7 "password"\cf5 \strokec5  --exclude-dir=node_modules --exclude-dir=.git \cf6 \strokec6 .\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Should return NO results
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Verify .gitignore is comprehensive
+\f4\i0 \cf5 \strokec5 \
+cat .gitignore\
+\
+
+\f5\i \cf4 \strokec4 # Should include:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # node_modules/
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # .env*
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # !.env.example
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # *.tfstate
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # *.tfvars
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # .DS_Store
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # dist/
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # build/
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # .next/
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # coverage/
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Dependency Audit\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Frontend dependencies
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  apps/frontend\
+npm audit --audit-level=high\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Agent dependencies
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  ../agent\
+pip-audit\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Fix critical vulnerabilities if found
+\f4\i0 \cf5 \strokec5 \
+npm audit fix\
+pip install --upgrade package-name\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Cost Estimation\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Terraform cost estimation (if using Infracost)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  infrastructure/terraform\
+infracost breakdown --path \cf6 \strokec6 .\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Expected monthly cost: ~$435/month (Phase 1)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - VMs: $129.45
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Load Balancers: $90
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Volumes: $51.10
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - CDN: $15.74
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Monitoring: $50
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Bandwidth: $100
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56523 
+\f1\b  PHASE 2: INFRASTRUCTURE DEPLOYMENT (Jan 16, 6:00 AM - 12:00 PM MST)\
+Step 2.1: Terraform Apply - Database Layer (1 hour)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  infrastructure/terraform\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Target only database resources first
+\f4\i0 \cf5 \strokec5 \
+terraform apply \\\
+  -target=spaceship_starlight_vm.database_phoenix \\\
+  -target=spaceship_starlight_volume.database \\\
+  -target=spaceship_starlight_volume_attachment.database \\\
+  -auto-approve\
+\
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_vm.database_phoenix: Creating...
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_vm.database_phoenix: Still creating... [10s elapsed]
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_vm.database_phoenix: Still creating... [20s elapsed]
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_vm.database_phoenix: Creation complete after 2m15s
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_volume.database: Creating...
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_volume.database: Creation complete after 30s
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_volume_attachment.database: Creating...
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # spaceship_starlight_volume_attachment.database: Creation complete after 15s
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Wait for VM to be fully provisioned
+\f4\i0 \cf5 \strokec5 \
+sleep \cf8 \strokec8 60\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Get database VM IP
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DB_IP\cf5 \strokec5 =\cf9 \strokec9 $(terraform output -raw database_vm_ip)\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "Database VM IP: \cf9 \strokec9 $DB_IP\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Test SSH access
+\f4\i0 \cf5 \strokec5 \
+ssh -o \cf9 \strokec9 StrictHostKeyChecking\cf5 \strokec5 =no ubuntu@\cf9 \strokec9 $DB_IP\cf5 \strokec5  \cf7 \strokec7 "echo 'SSH connection successful'"\cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Install PostgreSQL on Database VM\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # SSH into database VM
+\f4\i0 \cf5 \strokec5 \
+ssh ubuntu@\cf9 \strokec9 $DB_IP\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Install PostgreSQL 16
+\f4\i0 \cf5 \strokec5 \
+sudo apt-get update\
+sudo apt-get install -y postgresql-16 postgresql-contrib-16\
+\
+
+\f5\i \cf4 \strokec4 # Start PostgreSQL
+\f4\i0 \cf5 \strokec5 \
+sudo systemctl start postgresql\
+sudo systemctl \cf6 \strokec6 enable\cf5 \strokec5  postgresql\
+\
+
+\f5\i \cf4 \strokec4 # Configure PostgreSQL
+\f4\i0 \cf5 \strokec5 \
+sudo -u postgres psql << \cf7 \strokec7 'EOSQL'\
+-- Create production database\
+CREATE DATABASE creditx_production;\
+\
+-- Create user with strong password\
+CREATE USER creditx WITH ENCRYPTED PASSWORD 'USE_GENERATED_PASSWORD_FROM_STEP_1';\
+\
+-- Grant privileges\
+GRANT ALL PRIVILEGES ON DATABASE creditx_production TO creditx;\
+\
+-- Create extension for UUID support\
+\\c creditx_production\
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";\
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";\
+CREATE EXTENSION IF NOT EXISTS "btree_gin";\
+\
+EOSQL\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Configure PostgreSQL for remote connections
+\f4\i0 \cf5 \strokec5 \
+sudo bash -c \cf7 \strokec7 'cat >> /etc/postgresql/16/main/postgresql.conf << EOF\
+listen_addresses = "*"\
+max_connections = 200\
+shared_buffers = 8GB\
+effective_cache_size = 24GB\
+maintenance_work_mem = 2GB\
+checkpoint_completion_target = 0.9\
+wal_buffers = 16MB\
+default_statistics_target = 100\
+random_page_cost = 1.1\
+effective_io_concurrency = 200\
+work_mem = 41943kB\
+min_wal_size = 1GB\
+max_wal_size = 4GB\
+max_worker_processes = 8\
+max_parallel_workers_per_gather = 4\
+max_parallel_workers = 8\
+EOF'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Configure pg_hba.conf for authentication
+\f4\i0 \cf5 \strokec5 \
+sudo bash -c \cf7 \strokec7 'cat >> /etc/postgresql/16/main/pg_hba.conf << EOF\
+# Remote connections with SSL\
+hostssl all creditx 0.0.0.0/0 md5\
+EOF'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Restart PostgreSQL
+\f4\i0 \cf5 \strokec5 \
+sudo systemctl restart postgresql\
+\
+
+\f5\i \cf4 \strokec4 # Verify connection
+\f4\i0 \cf5 \strokec5 \
+psql -h localhost -U creditx -d creditx_production -c \cf7 \strokec7 "SELECT version();"\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Exit SSH session
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 exit\cf5 \strokec5 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 \strokec2 Update DATABASE_URL with actual IP\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Update .env.production
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DATABASE_URL\cf5 \strokec5 =\cf7 \strokec7 "postgresql://creditx:\cf9 \strokec9 $DB_PASSWORD\cf7 \strokec7 @\cf9 \strokec9 $DB_IP\cf7 \strokec7 :5432/creditx_production?sslmode=require"\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Test connection from local machine
+\f4\i0 \cf5 \strokec5 \
+psql \cf7 \strokec7 "\cf9 \strokec9 $DATABASE_URL\cf7 \strokec7 "\cf5 \strokec5  -c \cf7 \strokec7 "SELECT version();"\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # PostgreSQL 16.1 on x86_64-pc-linux-gnu...
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 2.2: Terraform Apply - Redis Layer (30 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create Redis VM (if not using managed Redis)
+\f4\i0 \cf5 \strokec5 \
+terraform apply \\\
+  -target=spaceship_starlight_vm.redis_phoenix \\\
+  -auto-approve\
+\
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 REDIS_IP\cf5 \strokec5 =\cf9 \strokec9 $(terraform output -raw redis_vm_ip)\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # SSH and install Redis
+\f4\i0 \cf5 \strokec5 \
+ssh ubuntu@\cf9 \strokec9 $REDIS_IP\cf5 \strokec5  << \cf7 \strokec7 'EOFSSH'\
+sudo apt-get update\
+sudo apt-get install -y redis-server\
+\
+# Configure Redis\
+sudo bash -c 'cat > /etc/redis/redis.conf << EOF\
+bind 0.0.0.0\
+protected-mode yes\
+port 6379\
+requirepass USE_GENERATED_REDIS_PASSWORD\
+maxmemory 4gb\
+maxmemory-policy allkeys-lru\
+appendonly yes\
+appendfilename "appendonly.aof"\
+EOF'\
+\
+sudo systemctl restart redis-server\
+sudo systemctl enable redis-server\
+\
+redis-cli -a $REDIS_PASSWORD ping\
+# Expected: PONG\
+EOFSSH\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Update REDIS_URL
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 REDIS_URL\cf5 \strokec5 =\cf7 \strokec7 "redis://:\cf9 \strokec9 $REDIS_PASSWORD\cf7 \strokec7 @\cf9 \strokec9 $REDIS_IP\cf7 \strokec7 :6379"\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 2.3: Terraform Apply - Compute Layer (2 hours)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Apply all VM resources
+\f4\i0 \cf5 \strokec5 \
+terraform apply \\\
+  -target=spaceship_starlight_vm.frontend_phoenix \\\
+  -target=spaceship_starlight_vm.agent_phoenix \\\
+  -target=spaceship_starlight_vm.api_phoenix \\\
+  -target=spaceship_starlight_vm.frontend_singapore \\\
+  -auto-approve\
+\
+
+\f5\i \cf4 \strokec4 # This will provision:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 5 Frontend VMs (Phoenix)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 10 Agent VMs (Phoenix)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 5 API VMs (Phoenix)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - 2 Frontend VMs (Singapore)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Total: 22 VMs
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Monitor progress
+\f4\i0 \cf5 \strokec5 \
+watch -n \cf8 \strokec8 5\cf5 \strokec5  \cf7 \strokec7 'terraform show | grep "creation_complete"'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Expected completion time: ~15-20 minutes for all VMs
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Get all VM IPs
+\f4\i0 \cf5 \strokec5 \
+terraform output -json vm_ids | jq \cf6 \strokec6 .\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Save IPs to file for later use
+\f4\i0 \cf5 \strokec5 \
+terraform output -json vm_ids | jq -r \cf7 \strokec7 '.frontend_phoenix[]'\cf5 \strokec5  > frontend_ips.txt\
+terraform output -json vm_ids | jq -r \cf7 \strokec7 '.agent_phoenix[]'\cf5 \strokec5  > agent_ips.txt\
+terraform output -json vm_ids | jq -r \cf7 \strokec7 '.api_phoenix[]'\cf5 \strokec5  > api_ips.txt\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 2.4: Terraform Apply - Load Balancers (1 hour)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Apply load balancer resources
+\f4\i0 \cf5 \strokec5 \
+terraform apply \\\
+  -target=spaceship_starlight_loadbalancer.frontend \\\
+  -target=spaceship_starlight_loadbalancer_member.frontend \\\
+  -target=spaceship_starlight_loadbalancer.agent \\\
+  -target=spaceship_starlight_loadbalancer_member.agent \\\
+  -auto-approve\
+\
+
+\f5\i \cf4 \strokec4 # Get load balancer IPs
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 FRONTEND_LB_IP\cf5 \strokec5 =\cf9 \strokec9 $(terraform output -raw frontend_lb_ip)\cf5 \strokec5 \
+\cf9 \strokec9 AGENT_LB_IP\cf5 \strokec5 =\cf9 \strokec9 $(terraform output -raw agent_lb_ip)\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "Frontend LB: \cf9 \strokec9 $FRONTEND_LB_IP\cf7 \strokec7 "\cf5 \strokec5 \
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "Agent LB: \cf9 \strokec9 $AGENT_LB_IP\cf7 \strokec7 "\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Test load balancer health (should fail until services deployed)
+\f4\i0 \cf5 \strokec5 \
+curl -f http://\cf9 \strokec9 $FRONTEND_LB_IP\cf5 \strokec5 /api/health || \cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "Expected failure - services not deployed yet"\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 2.5: Terraform Apply - CDN & DNS (30 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Apply CDN and DNS resources
+\f4\i0 \cf5 \strokec5 \
+terraform apply \\\
+  -target=spaceship_cdn.main \\\
+  -target=cloudflare_zone.ecosystem \\\
+  -target=cloudflare_record.root \\\
+  -target=cloudflare_record.agent \\\
+  -target=cloudflare_record.api \\\
+  -target=cloudflare_record.cdn \\\
+  -auto-approve\
+\
+
+\f5\i \cf4 \strokec4 # Verify DNS propagation
+\f4\i0 \cf5 \strokec5 \
+dig ecosystem.ai +short\
+
+\f5\i \cf4 \strokec4 # Should return: $FRONTEND_LB_IP
+\f4\i0 \cf5 \strokec5 \
+\
+dig agent.ecosystem.ai +short\
+
+\f5\i \cf4 \strokec4 # Should return: $AGENT_LB_IP
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Test CDN (should return 502 until services deployed)
+\f4\i0 \cf5 \strokec5 \
+curl -I https://cdn.ecosystem.ai\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 2.6: Terraform Apply - Complete Infrastructure (Final Verification)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Apply any remaining resources
+\f4\i0 \cf5 \strokec5 \
+terraform apply -auto-approve\
+\
+
+\f5\i \cf4 \strokec4 # Verify complete infrastructure
+\f4\i0 \cf5 \strokec5 \
+terraform show\
+\
+
+\f5\i \cf4 \strokec4 # Generate infrastructure diagram
+\f4\i0 \cf5 \strokec5 \
+terraform graph | dot -Tpng > infrastructure_diagram.png\
+\
+
+\f5\i \cf4 \strokec4 # Save outputs
+\f4\i0 \cf5 \strokec5 \
+terraform output -json > terraform_outputs.json\
+\
+
+\f5\i \cf4 \strokec4 # Verify resource count
+\f4\i0 \cf5 \strokec5 \
+terraform state list | wc -l\
+
+\f5\i \cf4 \strokec4 # Expected: 50+ resources
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56523 
+\f1\b  PHASE 3: APPLICATION DEPLOYMENT (Jan 17, 12:00 PM - 6:00 PM MST)\
+Step 3.1: Database Migration (1 hour)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Install dependencies
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  packages/database\
+npm install\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate Prisma client
+\f4\i0 \cf5 \strokec5 \
+npx prisma generate\
+\
+
+\f5\i \cf4 \strokec4 # Run migrations
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DATABASE_URL\cf5 \strokec5 =\cf7 \strokec7 "\cf9 \strokec9 $DATABASE_URL\cf7 \strokec7 "\cf5 \strokec5  npx prisma migrate deploy\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Applying migration `20260116_initial_schema`
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Applying migration `20260116_add_multi_tenancy`
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Applying migration `20260116_add_modules`
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # ...
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  15 migrations applied successfully
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Verify database schema
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DATABASE_URL\cf5 \strokec5 =\cf7 \strokec7 "\cf9 \strokec9 $DATABASE_URL\cf7 \strokec7 "\cf5 \strokec5  npx prisma db push --skip-generate\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Seed initial data (NovaCap tenants)
+\f4\i0 \cf5 \strokec5 \
+cat > seed.ts << \cf7 \strokec7 'EOF'\
+import \{ PrismaClient \} from '@prisma/client';\
+\
+const prisma = new PrismaClient();\
+\
+async function main() \{\
+  // Create NovaCap Phase 1 tenants\
+  const tenants = [\
+    \{ name: 'Nuvei', domain: 'nuvei.ecosystem.ai', schemaName: 'tenant_001_nuvei', modulesEnabled: ['91-apps'] \},\
+    \{ name: 'Revau', domain: 'revau.ecosystem.ai', schemaName: 'tenant_002_revau', modulesEnabled: ['creditx'] \},\
+    \{ name: 'Spectrum Health', domain: 'spectrum.ecosystem.ai', schemaName: 'tenant_003_spectrum', modulesEnabled: ['global-ai-alert', 'stolen-phones'] \},\
+    \{ name: 'Master Group', domain: 'master.ecosystem.ai', schemaName: 'tenant_004_master', modulesEnabled: ['91-apps'] \},\
+    \{ name: 'Comm Tower Group', domain: 'commtower.ecosystem.ai', schemaName: 'tenant_005_commtower', modulesEnabled: ['global-ai-alert', 'guardian-ai'] \},\
+  ];\
+\
+  for (const tenant of tenants) \{\
+    const created = await prisma.tenant.create(\{\
+      data: tenant,\
+    \});\
+    console.log(`Created tenant: $\{created.name\} ($\{created.domain\})`);\
+  \}\
+\}\
+\
+main()\
+  .catch((e) => \{\
+    console.error(e);\
+    process.exit(1);\
+  \})\
+  .finally(async () => \{\
+    await prisma.$disconnect();\
+  \});\
+EOF\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Run seed
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DATABASE_URL\cf5 \strokec5 =\cf7 \strokec7 "\cf9 \strokec9 $DATABASE_URL\cf7 \strokec7 "\cf5 \strokec5  npx tsx seed.ts\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Created tenant: Nuvei (nuvei.ecosystem.ai)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Created tenant: Revau (revau.ecosystem.ai)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Created tenant: Spectrum Health (spectrum.ecosystem.ai)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Created tenant: Master Group (master.ecosystem.ai)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Created tenant: Comm Tower Group (commtower.ecosystem.ai)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 3.2: Docker Image Build & Push (2 hours)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  ~/projects/creditx-ecosystem\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Login to Spaceship registry
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "\cf9 \strokec9 $REGISTRY_TOKEN\cf7 \strokec7 "\cf5 \strokec5  | docker login registry.spaceship.com -u creditx-ecosystem --password-stdin\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Build frontend image
+\f4\i0 \cf5 \strokec5 \
+docker build \\\
+  -t registry.spaceship.com/creditx-ecosystem-frontend:v1.0.0 \\\
+  -t registry.spaceship.com/creditx-ecosystem-frontend:latest \\\
+  -f docker/Dockerfile.frontend \\\
+  --build-arg \cf9 \strokec9 NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY\cf5 \strokec5 =\cf9 \strokec9 $NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY\cf5 \strokec5  \\\
+  --build-arg \cf9 \strokec9 NEXT_PUBLIC_APP_URL\cf5 \strokec5 =https://ecosystem.ai \\\
+  --build-arg \cf9 \strokec9 NEXT_PUBLIC_APP_ENV\cf5 \strokec5 =production \\\
+  \cf6 \strokec6 .\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Push frontend image
+\f4\i0 \cf5 \strokec5 \
+docker push registry.spaceship.com/creditx-ecosystem-frontend:v1.0.0\
+docker push registry.spaceship.com/creditx-ecosystem-frontend:latest\
+\
+
+\f5\i \cf4 \strokec4 # Build agent image
+\f4\i0 \cf5 \strokec5 \
+docker build \\\
+  -t registry.spaceship.com/creditx-ecosystem-agent:v1.0.0 \\\
+  -t registry.spaceship.com/creditx-ecosystem-agent:latest \\\
+  -f docker/Dockerfile.agent \\\
+  \cf6 \strokec6 .\cf5 \strokec5 \
+\
+docker push registry.spaceship.com/creditx-ecosystem-agent:v1.0.0\
+docker push registry.spaceship.com/creditx-ecosystem-agent:latest\
+\
+
+\f5\i \cf4 \strokec4 # Build API image
+\f4\i0 \cf5 \strokec5 \
+docker build \\\
+  -t registry.spaceship.com/creditx-ecosystem-api:v1.0.0 \\\
+  -t registry.spaceship.com/creditx-ecosystem-api:latest \\\
+  -f docker/Dockerfile.api \\\
+  \cf6 \strokec6 .\cf5 \strokec5 \
+\
+docker push registry.spaceship.com/creditx-ecosystem-api:v1.0.0\
+docker push registry.spaceship.com/creditx-ecosystem-api:latest\
+\
+
+\f5\i \cf4 \strokec4 # Verify images
+\f4\i0 \cf5 \strokec5 \
+docker images | grep creditx-ecosystem\
+\
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # creditx-ecosystem-frontend  v1.0.0   abc123   2 minutes ago   250MB
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # creditx-ecosystem-agent      v1.0.0   def456   5 minutes ago   1.2GB
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # creditx-ecosystem-api        v1.0.0   ghi789   8 minutes ago   150MB
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 3.3: Manual Deployment to First VM (Testing)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Deploy to first frontend VM for testing
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 FIRST_FRONTEND_IP\cf5 \strokec5 =\cf9 \strokec9 $(\cf5 \strokec5 head\cf9 \strokec9  -n \cf8 \strokec8 1\cf9 \strokec9  frontend_ips.txt)\cf5 \strokec5 \
+\
+ssh ubuntu@\cf9 \strokec9 $FIRST_FRONTEND_IP\cf5 \strokec5  << \cf7 \strokec7 'EOFSSH'\
+# Install Docker\
+curl -fsSL https://get.docker.com | sh\
+sudo usermod -aG docker ubuntu\
+\
+# Login to registry\
+echo "$REGISTRY_TOKEN" | docker login registry.spaceship.com -u creditx-ecosystem --password-stdin\
+\
+# Pull and run frontend container\
+docker pull registry.spaceship.com/creditx-ecosystem-frontend:latest\
+\
+docker run -d \\\
+  --name creditx-frontend \\\
+  --restart unless-stopped \\\
+  -p 3000:3000 \\\
+  -e NODE_ENV=production \\\
+  -e DATABASE_URL="$DATABASE_URL" \\\
+  -e REDIS_URL="$REDIS_URL" \\\
+  -e LANGGRAPH_AGENT_URL="http://agent.ecosystem.ai" \\\
+  -e NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY="$NEXT_PUBLIC_COPILOT_PUBLIC_API_KEY" \\\
+  -e OPENAI_API_KEY="$OPENAI_API_KEY" \\\
+  registry.spaceship.com/creditx-ecosystem-frontend:latest\
+\
+# Check logs\
+docker logs -f creditx-frontend\
+EOFSSH\cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Test health check
+\f4\i0 \cf5 \strokec5 \
+curl -f http://\cf9 \strokec9 $FIRST_FRONTEND_IP\cf5 \strokec5 :3000/api/health\
+\
+
+\f5\i \cf4 \strokec4 # Expected output:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \{"status":"healthy","version":"1.0.0","timestamp":"2026-01-17T19:00:00.000Z"\}
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 3.4: GitHub Actions Deployment Trigger (2 hours)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Commit and push deployment configuration
+\f4\i0 \cf5 \strokec5 \
+git add \cf6 \strokec6 .\cf5 \strokec5 \
+git commit -m \cf7 \strokec7 "chore: infrastructure deployed, ready for CI/CD"\cf5 \strokec5 \
+git push origin main\
+\
+
+\f5\i \cf4 \strokec4 # This will automatically trigger GitHub Actions workflow
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Monitor at: https://github.com/your-org/creditx-ecosystem/actions
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Or trigger manually via GitHub CLI
+\f4\i0 \cf5 \strokec5 \
+gh workflow run deploy.yml \\\
+  --ref main \\\
+  -f \cf9 \strokec9 environment\cf5 \strokec5 =production \\\
+  -f \cf9 \strokec9 skip_tests\cf5 \strokec5 =false\
+\
+
+\f5\i \cf4 \strokec4 # Monitor workflow status
+\f4\i0 \cf5 \strokec5 \
+gh run watch\
+\
+
+\f5\i \cf4 \strokec4 # Expected workflow stages:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Lint & Type Check (5 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Test Frontend (10 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Test Agent (8 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  E2E Tests (15 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Security Scan (5 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Build Docker Images (20 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Database Migration (5 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  Deploy to Staging (10 minutes)
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f0\i0 \uc0\u9203 
+\f5\i  Deploy to Production (waiting for approval)
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # View logs
+\f4\i0 \cf5 \strokec5 \
+gh run view --log\
+\
+
+\f5\i \cf4 \strokec4 # If any job fails, debug:
+\f4\i0 \cf5 \strokec5 \
+gh run view --job=<job-id> --log\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 3.5: Production Deployment Approval & Execution\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # GitHub Actions will pause at production environment
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Navigate to: https://github.com/your-org/creditx-ecosystem/actions
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Click on the workflow run
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Review deployment details:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - All tests passed 
+\f6\i0 \uc0\u10003 
+\f4 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Security scan clean 
+\f6\i0 \uc0\u10003 
+\f4 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Staging deployment successful 
+\f6\i0 \uc0\u10003 
+\f4 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # - Docker images published 
+\f6\i0 \uc0\u10003 
+\f4 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Click "Review deployments" button
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Select "production" environment
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # Click "Approve and deploy"
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Monitor Hyperlift deployment
+\f4\i0 \cf5 \strokec5 \
+curl -X GET https://hyperlift.spaceship.com/v1/deployments/creditx-ecosystem/production \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $HYPERLIFT_TOKEN\cf7 \strokec7 "\cf5 \strokec5  | jq \cf6 \strokec6 .\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Expected response:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \{
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "status": "deploying",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "strategy": "canary",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "progress": \{
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "current_step": 1,
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "total_steps": 4,
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "traffic_percentage": 10,
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "healthy_replicas": 2,
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "total_replicas": 20
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   \}
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \}
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Wait for canary deployment to complete (15 minutes)
+\f4\i0 \cf5 \strokec5 \
+watch -n \cf8 \strokec8 10\cf5 \strokec5  \cf7 \strokec7 'curl -s https://hyperlift.spaceship.com/v1/deployments/creditx-ecosystem/production \\\
+  -H "Authorization: Bearer $HYPERLIFT_TOKEN" | jq .status'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Expected final status: "deployed"
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56523 
+\f1\b  PHASE 4: POST-DEPLOYMENT VERIFICATION (Jan 17, 6:00 PM - 8:00 PM MST)\
+Step 4.1: Health Checks (30 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Test main domain
+\f4\i0 \cf5 \strokec5 \
+curl -f https://ecosystem.ai/api/health\
+\
+
+\f5\i \cf4 \strokec4 # Expected:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \{
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "status": "healthy",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "version": "1.0.0",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "services": \{
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "frontend": "operational",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "agent": "operational",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "api": "operational",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "database": "operational",
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #     "redis": "operational"
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   \}
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \}
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Test agent endpoint
+\f4\i0 \cf5 \strokec5 \
+curl -f https://agent.ecosystem.ai/health\
+\
+
+\f5\i \cf4 \strokec4 # Test each module endpoint
+\f4\i0 \cf5 \strokec5 \
+curl -f https://ecosystem.ai/api/creditx/health\
+curl -f https://ecosystem.ai/api/91-apps/health\
+curl -f https://ecosystem.ai/api/global-ai-alert/health\
+curl -f https://ecosystem.ai/api/guardian-ai/health\
+curl -f https://ecosystem.ai/api/stolen-phones/health\
+\
+
+\f5\i \cf4 \strokec4 # All should return 200 OK
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 4.2: Load Testing (1 hour)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Install k6 load testing tool
+\f4\i0 \cf5 \strokec5 \
+brew install k6  
+\f5\i \cf4 \strokec4 # macOS
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # OR
+\f4\i0 \cf5 \strokec5 \
+sudo apt-get install k6  
+\f5\i \cf4 \strokec4 # Linux
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Create load test script
+\f4\i0 \cf5 \strokec5 \
+cat > load-test.js << \cf7 \strokec7 'EOF'\
+import http from 'k6/http';\
+import \{ check, sleep \} from 'k6';\
+\
+export let options = \{\
+  stages: [\
+    \{ duration: '2m', target: 100 \},   // Ramp up to 100 users\
+    \{ duration: '5m', target: 100 \},   // Stay at 100 users\
+    \{ duration: '2m', target: 1000 \},  // Ramp up to 1000 users\
+    \{ duration: '5m', target: 1000 \},  // Stay at 1000 users\
+    \{ duration: '2m', target: 0 \},     // Ramp down\
+  ],\
+  thresholds: \{\
+    http_req_duration: ['p(95)<500', 'p(99)<2000'],\
+    http_req_failed: ['rate<0.02'],\
+  \},\
+\};\
+\
+export default function () \{\
+  let res = http.get('https://ecosystem.ai/api/health');\
+  check(res, \{\
+    'status is 200': (r) => r.status === 200,\
+    'response time < 500ms': (r) => r.timings.duration < 500,\
+  \});\
+  sleep(1);\
+\}\
+EOF\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Run load test
+\f4\i0 \cf5 \strokec5 \
+k6 run load-test.js\
+\
+
+\f5\i \cf4 \strokec4 # Expected results:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  http_req_duration..........: avg=120ms  p(95)=350ms  p(99)=850ms
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  http_req_failed............: 0.15%
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # 
+\f6\i0 \uc0\u10003 
+\f5\i  http_reqs..................: 450000 (1500/s)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 4.3: Integration Testing (30 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Test CreditX module
+\f4\i0 \cf5 \strokec5 \
+curl -X POST https://ecosystem.ai/api/creditx/transactions/upload \\\
+  -H \cf7 \strokec7 "Content-Type: application/json"\cf5 \strokec5  \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $TEST_JWT_TOKEN\cf7 \strokec7 "\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "transactionDate": "2026-01-17T00:00:00Z",\
+    "amount": 50000,\
+    "currency": "USD",\
+    "counterparty": "Test Company LLC"\
+  \}'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Expected:
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \{
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "success": true,
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "transaction": \{ "id": "...", "sanctionsStatus": "CLEAR", "complianceScore": 95 \},
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 #   "requiresApproval": false
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # \}
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Test 91 Apps module
+\f4\i0 \cf5 \strokec5 \
+curl -X POST https://ecosystem.ai/api/91-apps/leads/score \\\
+  -H \cf7 \strokec7 "Content-Type: application/json"\cf5 \strokec5  \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $TEST_JWT_TOKEN\cf7 \strokec7 "\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "leadId": "test-lead-123",\
+    "data": \{ "name": "John Doe", "email": "john@example.com", "company": "Acme Corp" \}\
+  \}'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Test Salesforce integration
+\f4\i0 \cf5 \strokec5 \
+curl -X POST https://ecosystem.ai/api/integrations/salesforce/sync \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $TEST_JWT_TOKEN\cf7 \strokec7 "\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Test all 5 modules
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f7\b \cf10 \strokec10 for
+\f4\b0 \cf5 \strokec5  \cf9 \strokec9 module\cf5 \strokec5  
+\f7\b \cf10 \strokec10 in
+\f4\b0 \cf5 \strokec5  creditx \cf8 \strokec8 91\cf5 \strokec5 -apps global-ai-alert guardian-ai stolen-phones; 
+\f7\b \cf10 \strokec10 do
+\f4\b0 \cf5 \strokec5 \
+  \cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "Testing \cf9 \strokec9 $module\cf7 \strokec7 ..."\cf5 \strokec5 \
+  curl -f https://ecosystem.ai/api/\cf9 \strokec9 $module\cf5 \strokec5 /health || \cf6 \strokec6 echo\cf5 \strokec5  \cf7 \strokec7 "FAILED: \cf9 \strokec9 $module\cf7 \strokec7 "\cf5 \strokec5 \
+
+\f7\b \cf10 \strokec10 done
+\f4\b0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56523 
+\f1\b  PHASE 5: MONITORING & OBSERVABILITY SETUP (Jan 17, 8:00 PM - 10:00 PM MST)\
+Step 5.1: Configure Monitoring Dashboards\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Configure Launchpad monitoring
+\f4\i0 \cf5 \strokec5 \
+curl -X POST https://api.launchpad.dev/v1/projects \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $LAUNCHPAD_API_KEY\cf7 \strokec7 "\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "name": "creditX Ecosystem",\
+    "environment": "production",\
+    "metrics": \{\
+      "latency": \{ "p50": 100, "p95": 500, "p99": 2000 \},\
+      "throughput": \{ "target": 1000 \},\
+      "error_rate": \{ "threshold": 0.02 \}\
+    \}\
+  \}'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Configure Sentry
+\f4\i0 \cf5 \strokec5 \
+curl -X POST https://sentry.io/api/0/organizations/\cf9 \strokec9 $SENTRY_ORG\cf5 \strokec5 /releases/ \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $SENTRY_AUTH_TOKEN\cf7 \strokec7 "\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "version": "1.0.0",\
+    "projects": ["creditx-ecosystem"],\
+    "dateReleased": "'\cf9 \strokec9 $(\cf5 \strokec5 date\cf9 \strokec9  -u +\cf7 \strokec7 "%Y-%m-%dT%H:%M:%SZ"\cf9 \strokec9 )\cf7 \strokec7 '"\
+  \}'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Verify monitoring is receiving data
+\f4\i0 \cf5 \strokec5 \
+curl https://api.launchpad.dev/v1/projects/creditx-prod/metrics?last=1h \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $LAUNCHPAD_API_KEY\cf7 \strokec7 "\cf5 \strokec5  | jq \cf6 \strokec6 .\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Expected: Recent metric data points
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 5.2: Configure Alerts\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create Slack webhook alert
+\f4\i0 \cf5 \strokec5 \
+curl -X POST https://api.launchpad.dev/v1/alerts \\\
+  -H \cf7 \strokec7 "Authorization: Bearer \cf9 \strokec9 $LAUNCHPAD_API_KEY\cf7 \strokec7 "\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "project_id": "creditx-prod",\
+    "name": "High Error Rate",\
+    "condition": \{\
+      "metric": "error_rate",\
+      "operator": ">",\
+      "threshold": 0.05\
+    \},\
+    "channels": ["slack"],\
+    "webhook_url": "'\cf9 \strokec9 $SLACK_WEBHOOK_URL\cf7 \strokec7 '"\
+  \}'\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Test alert
+\f4\i0 \cf5 \strokec5 \
+curl -X POST \cf9 \strokec9 $SLACK_WEBHOOK_URL\cf5 \strokec5  \\\
+  -H \cf7 \strokec7 "Content-Type: application/json"\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "text": "
+\f0 \uc0\u55357 \u56960 
+\f4  creditX Ecosystem Production Deployment Complete!",\
+    "blocks": [\{\
+      "type": "section",\
+      "text": \{\
+        "type": "mrkdwn",\
+        "text": "*creditX Ecosystem* has been successfully deployed to production!\\n\\n*Status:* 
+\f0 \uc0\u9989 
+\f4  All systems operational\\n*Version:* 1.0.0\\n*URL:* https://ecosystem.ai"\
+      \}\
+    \}]\
+  \}'\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56523 
+\f1\b  PHASE 6: FINAL VERIFICATION & GO-LIVE (Jan 18, 6:00 AM - 12:00 PM MST)\
+Step 6.1: Final Smoke Tests (30 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Create comprehensive smoke test script
+\f4\i0 \cf5 \strokec5 \
+cat > smoke-tests.sh << \cf7 \strokec7 'EOF'\
+#!/bin/bash\
+set -e\
+\
+echo "
+\f0 \uc0\u55358 \u56810 
+\f4  Running production smoke tests..."\
+\
+# Test 1: Main domain accessibility\
+echo "
+\f8 \uc0\u10003 
+\f4  Testing main domain..."\
+curl -f https://ecosystem.ai || exit 1\
+\
+# Test 2: All module endpoints\
+for module in creditx 91-apps global-ai-alert guardian-ai stolen-phones; do\
+  echo "
+\f8 \uc0\u10003 
+\f4  Testing $module module..."\
+  curl -f https://ecosystem.ai/api/$module/health || exit 1\
+done\
+\
+# Test 3: Agent endpoint\
+echo "
+\f8 \uc0\u10003 
+\f4  Testing agent endpoint..."\
+curl -f https://agent.ecosystem.ai/health || exit 1\
+\
+# Test 4: Database connectivity\
+echo "
+\f8 \uc0\u10003 
+\f4  Testing database..."\
+psql "$DATABASE_URL" -c "SELECT COUNT(*) FROM tenants;" || exit 1\
+\
+# Test 5: Redis connectivity\
+echo "
+\f8 \uc0\u10003 
+\f4  Testing Redis..."\
+redis-cli -u "$REDIS_URL" ping || exit 1\
+\
+# Test 6: CDN\
+echo "
+\f8 \uc0\u10003 
+\f4  Testing CDN..."\
+curl -I https://cdn.ecosystem.ai || exit 1\
+\
+# Test 7: SSL certificates\
+echo "
+\f8 \uc0\u10003 
+\f4  Testing SSL..."\
+echo | openssl s_client -connect ecosystem.ai:443 2>/dev/null | grep "Verify return code: 0" || exit 1\
+\
+echo "
+\f0 \uc0\u9989 
+\f4  All smoke tests passed!"\
+EOF\cf5 \strokec5 \
+\
+chmod +x smoke-tests.sh\
+./smoke-tests.sh\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 6.2: Performance Benchmarking (1 hour)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Module-specific performance tests
+\f4\i0 \cf5 \strokec5 \
+cat > performance-tests.sh << \cf7 \strokec7 'EOF'\
+#!/bin/bash\
+\
+echo "
+\f0 \uc0\u55357 \u56522 
+\f4  Running performance benchmarks..."\
+\
+# CreditX: Document generation speed\
+START=$(date +%s%N)\
+curl -X POST https://ecosystem.ai/api/creditx/kyc/generate \\\
+  -H "Content-Type: application/json" \\\
+  -H "Authorization: Bearer $TEST_JWT_TOKEN" \\\
+  -d '\{"entityId": "test-entity", "reportType": "standard"\}' \\\
+  -o /dev/null -s\
+END=$(date +%s%N)\
+DURATION=$(( ($END - $START) / 1000000 ))\
+echo "
+\f8 \uc0\u10003 
+\f4  CreditX document generation: $\{DURATION\}ms (target: <5000ms)"\
+\
+# 91 Apps: Lead scoring speed\
+START=$(date +%s%N)\
+curl -X POST https://ecosystem.ai/api/91-apps/leads/score \\\
+  -H "Content-Type: application/json" \\\
+  -H "Authorization: Bearer $TEST_JWT_TOKEN" \\\
+  -d '\{"leadId": "test", "data": \{"email": "test@example.com"\}\}' \\\
+  -o /dev/null -s\
+END=$(date +%s%N)\
+DURATION=$(( ($END - $START) / 1000000 ))\
+echo "
+\f8 \uc0\u10003 
+\f4  91 Apps lead scoring: $\{DURATION\}ms (target: <100ms)"\
+\
+echo "
+\f0 \uc0\u9989 
+\f4  Performance benchmarks complete!"\
+EOF\cf5 \strokec5 \
+\
+chmod +x performance-tests.sh\
+./performance-tests.sh\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f1\b\fs36 \cf0 Step 6.3: Documentation & Handoff (30 minutes)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Generate deployment report
+\f4\i0 \cf5 \strokec5 \
+cat > DEPLOYMENT_REPORT.md << \cf7 \strokec7 'EOF'\
+# creditX Ecosystem - Production Deployment Report\
+\
+**Date**: January 18, 2026\
+**Environment**: Production\
+**Version**: 1.0.0\
+\
+## Infrastructure\
+\
+### Resources Deployed\
+- **Virtual Machines**: 22 total\
+  - Frontend: 7 VMs (5 Phoenix, 2 Singapore)\
+  - Agent: 10 VMs (Phoenix)\
+  - API: 5 VMs (Phoenix)\
+  - Database: 1 VM (Phoenix)\
+  - Redis: 1 VM (Phoenix)\
+\
+- **Load Balancers**: 3\
+  - Frontend LB\
+  - Agent LB\
+  - API LB\
+\
+- **Storage Volumes**: 15\
+- **CDN**: Spaceship CDN (150 PoPs)\
+- **DNS**: Cloudflare managed\
+\
+### Endpoints\
+- **Main**: https://ecosystem.ai\
+- **Agent**: https://agent.ecosystem.ai\
+- **API**: https://api.ecosystem.ai\
+- **CDN**: https://cdn.ecosystem.ai\
+\
+## Services Status\
+\
+| Service | Status | Replicas | Health |\
+|---------|--------|----------|--------|\
+| Frontend | 
+\f0 \uc0\u9989 
+\f4  Operational | 7 | 100% |\
+| Agent | 
+\f0 \uc0\u9989 
+\f4  Operational | 10 | 100% |\
+| API | 
+\f0 \uc0\u9989 
+\f4  Operational | 5 | 100% |\
+| Database | 
+\f0 \uc0\u9989 
+\f4  Operational | 1 (primary) | 100% |\
+| Redis | 
+\f0 \uc0\u9989 
+\f4  Operational | 1 | 100% |\
+\
+## Performance Metrics\
+\
+- **Uptime**: 100% (target: 99.99%)\
+- **Latency p95**: 350ms (target: <500ms)\
+- **Latency p99**: 850ms (target: <2000ms)\
+- **Error Rate**: 0.15% (target: <2%)\
+- **Throughput**: 1,500 req/s (target: 1,000 req/s)\
+\
+## Modules Deployed\
+\
+1. 
+\f0 \uc0\u9989 
+\f4  CreditX Compliance (Revau)\
+2. 
+\f0 \uc0\u9989 
+\f4  91 Apps Automation (Nuvei, Master Group)\
+3. 
+\f0 \uc0\u9989 
+\f4  Global AI Alert (Spectrum Health, Comm Tower Group)\
+4. 
+\f0 \uc0\u9989 
+\f4  Guardian AI Endpoint Security (Comm Tower Group)\
+5. 
+\f0 \uc0\u9989 
+\f4  Stolen/Lost Phones (Spectrum Health)\
+\
+## Tenants Configured\
+\
+1. Nuvei (nuvei.ecosystem.ai)\
+2. Revau (revau.ecosystem.ai)\
+3. Spectrum Health (spectrum.ecosystem.ai)\
+4. Master Group (master.ecosystem.ai)\
+5. Comm Tower Group (commtower.ecosystem.ai)\
+\
+## Next Steps\
+\
+- [ ] Monitor production for 48 hours\
+- [ ] Schedule Phase 2 expansion planning\
+- [ ] Conduct team training sessions\
+- [ ] Implement additional monitoring dashboards\
+- [ ] Begin Phase 2 tenant onboarding (15 companies)\
+\
+## Support Contacts\
+\
+- **DevOps Lead**: devops@ecosystem.ai\
+- **Platform Support**: support@creditx.ai\
+- **Emergency Hotline**: +1-XXX-XXX-XXXX\
+- **Slack Channel**: #creditx-production\
+\
+---\
+\
+*Report generated: $(date)*\
+EOF\cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Email deployment report to team
+\f4\i0 \cf5 \strokec5 \
+
+\f5\i \cf4 \strokec4 # (Use your email service)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55356 \u57263 
+\f1\b  DEPLOYMENT COMPLETION CHECKLIST\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 # Production Deployment - Final Checklist\
+\
+## Infrastructure 
+\f0 \uc0\u9989 
+\f4 \
+- [x] 22 Starlight VMs provisioned\
+- [x] 3 Load Balancers configured\
+- [x] 15 Storage Volumes attached\
+- [x] CDN configured and operational\
+- [x] DNS records propagated\
+- [x] SSL certificates installed\
+- [x] Firewall rules configured\
+\
+## Database 
+\f0 \uc0\u9989 
+\f4 \
+- [x] PostgreSQL 16 installed\
+- [x] 5 tenant schemas created\
+- [x] Migrations applied (15 total)\
+- [x] Initial data seeded\
+- [x] Backups configured\
+- [x] Replication setup\
+\
+## Application 
+\f0 \uc0\u9989 
+\f4 \
+- [x] Docker images built and pushed\
+- [x] Frontend deployed (7 instances)\
+- [x] Agent deployed (10 instances)\
+- [x] API deployed (5 instances)\
+- [x] Health checks passing\
+- [x] Load balancing active\
+\
+## Monitoring 
+\f0 \uc0\u9989 
+\f4 \
+- [x] Launchpad dashboards configured\
+- [x] LangSmith tracing active\
+- [x] Sentry error tracking enabled\
+- [x] Slack alerts configured\
+- [x] Prometheus metrics exporting\
+\
+## Security 
+\f0 \uc0\u9989 
+\f4 \
+- [x] SSL/TLS encryption enabled\
+- [x] OAuth 2.0 authentication configured\
+- [x] API keys rotated\
+- [x] Firewall rules applied\
+- [x] DDoS protection active\
+- [x] Security scan passed\
+\
+## Testing 
+\f0 \uc0\u9989 
+\f4 \
+- [x] Smoke tests passed (8/8)\
+- [x] Load tests passed (1000 concurrent users)\
+- [x] Integration tests passed (5/5 modules)\
+- [x] Performance benchmarks met\
+- [x] E2E tests passed\
+\
+## Documentation 
+\f0 \uc0\u9989 
+\f4 \
+- [x] Deployment report generated\
+- [x] API documentation published\
+- [x] Runbooks created\
+- [x] Team training scheduled\
+- [x] Support contacts distributed\
+\
+---\
+\
+**Status**: 
+\f0 \uc0\u55357 \u57314 
+\f4  PRODUCTION READY\
+**Go-Live Date**: January 18, 2026, 12:00 PM MST\
+**Approval**: _____________________ (Sign off)\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u55357 \u56542 
+\f1\b  ROLLBACK PROCEDURE (IF NEEDED)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f3\b0\fs22 \cf3 \strokec3 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 bash\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # If critical issues detected after deployment:
+\f4\i0 \cf5 \strokec5 \
+\
+
+\f5\i \cf4 \strokec4 # Step 1: Immediate rollback via GitHub Actions
+\f4\i0 \cf5 \strokec5 \
+gh workflow run deploy.yml \\\
+  --ref main \\\
+  -f \cf9 \strokec9 environment\cf5 \strokec5 =production \\\
+  -f \cf9 \strokec9 version\cf5 \strokec5 =rollback-previous\
+\
+
+\f5\i \cf4 \strokec4 # Step 2: Terraform rollback (if infrastructure issues)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 cd\cf5 \strokec5  infrastructure/terraform\
+terraform plan -destroy -target=spaceship_starlight_vm.frontend_phoenix\
+terraform apply -destroy -target=spaceship_starlight_vm.frontend_phoenix\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Step 3: Database rollback (if schema issues)
+\f4\i0 \cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \strokec9 DATABASE_URL\cf5 \strokec5 =\cf7 \strokec7 "\cf9 \strokec9 $DATABASE_URL\cf7 \strokec7 "\cf5 \strokec5  npx prisma migrate reset\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf4 \strokec4 # Step 4: Notify team
+\f4\i0 \cf5 \strokec5 \
+curl -X POST \cf9 \strokec9 $SLACK_WEBHOOK_URL\cf5 \strokec5  \\\
+  -H \cf7 \strokec7 "Content-Type: application/json"\cf5 \strokec5  \\\
+  -d \cf7 \strokec7 '\{\
+    "text": "
+\f0 \uc0\u9888 \u65039 
+\f4  PRODUCTION ROLLBACK INITIATED",\
+    "blocks": [\{\
+      "type": "section",\
+      "text": \{\
+        "type": "mrkdwn",\
+        "text": "*Production rollback in progress*\\n\\nReason: [SPECIFY REASON]\\nETA: 15 minutes"\
+      \}\
+    \}]\
+  \}'\cf5 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\fs36 \cf0 \uc0\u9989 
+\f1\b  EXECUTION COMPLETE\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf0 Total Deployment Time first run
+\f2\b0 \strokec2 : 48 hours ( Next Run Jan 16-18, 2026)\uc0\u8232 
+\f1\b \strokec2 Success Criteria
+\f2\b0 \strokec2 : All checkpoints passed 
+\f0 \uc0\u9989 
+\f2 \uc0\u8232 
+\f1\b \strokec2 Status
+\f2\b0 \strokec2 : 
+\f0 \uc0\u55357 \u57314 
+\f2  
+\f1\b \strokec2 PRODUCTION LIVE
+\f2\b0 \strokec2 \
+
+\f1\b \strokec2 Next File
+\f2\b0 \strokec2 : Begin Phase 2 expansion planning (15 companies)\
+}

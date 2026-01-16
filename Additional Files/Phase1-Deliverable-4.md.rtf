@@ -1,0 +1,807 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Medium;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 .AppleColorEmojiUI;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-Light;\f5\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;
+\f6\fnil\fcharset0 .SFNSMono-Light_YAXS14FD5D0_wght2BC0000;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red60\green60\blue59;
+\red123\green126\blue121;\red117\green66\blue151;\red95\green124\blue3;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c30196\c30196\c29804;
+\cssrgb\c55686\c56471\c54902;\cssrgb\c53725\c34902\c65882;\cssrgb\c44314\c54902\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid401\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}
+{\list\listtemplateid6\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid501\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid6}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Phase1-Deliverable-4.md\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \strokec2 \
+\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs30 \cf0 \strokec2 DELIVERABLE 4: Database Migrations\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs27 \cf0 \strokec2 PostgreSQL Schema, Multi-Tenant Isolation & Data Models V2.3\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f2\fs27 \cf0 \strokec2 \uc0\u55357 \u56523 
+\f0  CONTENTS\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls1\ilvl0
+\b\fs24 \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#schema-overview"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Schema Overview}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#database-models"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Database Models}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#multi-tenant-setup"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Multi-Tenant Setup}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#migrations"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Migrations}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#indexes-performance"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Indexes & Performance}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#backup-recovery"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Backup & Recovery}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#compliance-queries"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Compliance Queries}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 SCHEMA OVERVIEW\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Core Tables (40+)\
+\pard\pardeftab720\sa120\partightenfactor0
+\cf0 \strokec2 User Management
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls2\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 users\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 roles\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 permissions\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 sessions\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 audit_logs\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 user_settings\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Compliance (CreditX)
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls3\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 compliance_documents\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 document_versions\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 validation_rules\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 audit_trails\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 regulatory_templates\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Automation (91 Apps)
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls4\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 workflows\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 workflow_executions\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 automation_rules\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 integrations\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 playbooks\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Security (Guardian & Threats)
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls5\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 security_incidents\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 threat_events\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 anomalies\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 alert_rules\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 security_events\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Devices (Phones)
+\f1 :\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls6\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 devices\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 device_locations\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 recovery_reports\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 device_history\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 device_telemetry\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DATABASE MODELS\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Prisma Schema (schema.prisma)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 // Schema for PostgreSQL 16\
+\
+datasource db \{\
+  provider = "postgresql"\
+  url      = env("DATABASE_URL")\
+\}\
+\
+generator client \{\
+  provider = "prisma-client-js"\
+\}\
+\
+// Enum types\
+enum UserRole \{\
+  ADMIN\
+  OPERATOR\
+  VIEWER\
+  CUSTOMER\
+\}\
+\
+enum WorkflowStatus \{\
+  DRAFT\
+  ACTIVE\
+  PAUSED\
+  ARCHIVED\
+\}\
+\
+enum IncidentSeverity \{\
+  LOW\
+  MEDIUM\
+  HIGH\
+  CRITICAL\
+\}\
+\
+// Users & Auth\
+model User \{\
+  id            String    @id @default(cuid())\
+  email         String    @unique\
+  name          String\
+  passwordHash  String\
+  role          UserRole  @default(VIEWER)\
+  tenantId      String\
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])\
+  mfaEnabled    Boolean   @default(false)\
+  mfaSecret     String?\
+  lastLogin     DateTime?\
+  createdAt     DateTime  @default(now())\
+  updatedAt     DateTime  @updatedAt\
+  sessions      Session[]\
+  auditLogs     AuditLog[]\
+\
+  @@index([tenantId])\
+  @@index([email])\
+  @@map("users")\
+\}\
+\
+model Session \{\
+  id          String    @id @default(cuid())\
+  userId      String\
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)\
+  token       String    @unique\
+  expiresAt   DateTime\
+  createdAt   DateTime  @default(now())\
+\
+  @@index([userId])\
+  @@index([token])\
+  @@map("sessions")\
+\}\
+\
+model Role \{\
+  id            String       @id @default(cuid())\
+  name          String\
+  tenantId      String\
+  tenant        Tenant       @relation(fields: [tenantId], references: [id])\
+  permissions   Permission[]\
+  createdAt     DateTime     @default(now())\
+  updatedAt     DateTime     @updatedAt\
+\
+  @@unique([tenantId, name])\
+  @@map("roles")\
+\}\
+\
+model Permission \{\
+  id        String   @id @default(cuid())\
+  name      String\
+  roleId    String\
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)\
+  resource  String\
+  action    String\
+  createdAt DateTime @default(now())\
+\
+  @@unique([roleId, resource, action])\
+  @@map("permissions")\
+\}\
+\
+// Multi-Tenant\
+model Tenant \{\
+  id              String     @id @default(cuid())\
+  name            String     @unique\
+  subscriptionTier String    @default("starter")\
+  stripeCustomerId String?\
+  maxUsers        Int        @default(10)\
+  maxStorage      Int        @default(1000) // GB\
+  createdAt       DateTime   @default(now())\
+  updatedAt       DateTime   @updatedAt\
+  users           User[]\
+  roles           Role[]\
+  workflows       Workflow[]\
+  documents       ComplianceDocument[]\
+  incidents       SecurityIncident[]\
+\
+  @@map("tenants")\
+\}\
+\
+// Compliance (CreditX)\
+model ComplianceDocument \{\
+  id              String    @id @default(cuid())\
+  tenantId        String\
+  tenant          Tenant    @relation(fields: [tenantId], references: [id])\
+  title           String\
+  filePath        String\
+  fileSize        Int\
+  mimeType        String\
+  status          String    @default("pending")\
+  uploadedBy      String\
+  uploadedAt      DateTime  @default(now())\
+  validatedAt     DateTime?\
+  validationScore Float?\
+  versions        DocumentVersion[]\
+  validations     ValidationResult[]\
+\
+  @@index([tenantId])\
+  @@index([status])\
+  @@map("compliance_documents")\
+\}\
+\
+model DocumentVersion \{\
+  id          String    @id @default(cuid())\
+  documentId  String\
+  document    ComplianceDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)\
+  versionNum  Int\
+  filePath    String\
+  createdAt   DateTime  @default(now())\
+\
+  @@unique([documentId, versionNum])\
+  @@map("document_versions")\
+\}\
+\
+model ValidationResult \{\
+  id          String    @id @default(cuid())\
+  documentId  String\
+  document    ComplianceDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)\
+  ruleName    String\
+  ruleType    String    // GDPR, CCPA, PCI\
+  passed      Boolean\
+  message     String\
+  validatedAt DateTime  @default(now())\
+\
+  @@index([documentId])\
+  @@map("validation_results")\
+\}\
+\
+// Automation (91 Apps)\
+model Workflow \{\
+  id          String    @id @default(cuid())\
+  tenantId    String\
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])\
+  name        String\
+  description String?\
+  status      WorkflowStatus @default(DRAFT)\
+  definition  Json\
+  createdBy   String\
+  createdAt   DateTime  @default(now())\
+  updatedAt   DateTime  @updatedAt\
+  executions  WorkflowExecution[]\
+\
+  @@index([tenantId])\
+  @@index([status])\
+  @@map("workflows")\
+\}\
+\
+model WorkflowExecution \{\
+  id          String    @id @default(cuid())\
+  workflowId  String\
+  workflow    Workflow  @relation(fields: [workflowId], references: [id], onDelete: Cascade)\
+  status      String    @default("running")\
+  startedAt   DateTime  @default(now())\
+  completedAt DateTime?\
+  result      Json?\
+  error       String?\
+\
+  @@index([workflowId])\
+  @@index([status])\
+  @@map("workflow_executions")\
+\}\
+\
+// Security (Guardian & Threats)\
+model SecurityIncident \{\
+  id          String    @id @default(cuid())\
+  tenantId    String\
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])\
+  title       String\
+  description String\
+  severity    IncidentSeverity\
+  status      String    @default("open")\
+  createdAt   DateTime  @default(now())\
+  resolvedAt  DateTime?\
+  events      ThreatEvent[]\
+\
+  @@index([tenantId])\
+  @@index([severity])\
+  @@map("security_incidents")\
+\}\
+\
+model ThreatEvent \{\
+  id          String    @id @default(cuid())\
+  incidentId  String\
+  incident    SecurityIncident @relation(fields: [incidentId], references: [id], onDelete: Cascade)\
+  eventType   String\
+  sourceIp    String?\
+  description String\
+  severity    String\
+  detectedAt  DateTime  @default(now())\
+\
+  @@index([incidentId])\
+  @@map("threat_events")\
+\}\
+\
+// Devices (Phones)\
+model Device \{\
+  id          String    @id @default(cuid())\
+  tenantId    String\
+  name        String\
+  deviceType  String\
+  imei        String?   @unique\
+  status      String    @default("active")\
+  registeredAt DateTime  @default(now())\
+  lastSeen    DateTime?\
+  locations   DeviceLocation[]\
+  telemetry   DeviceTelemetry[]\
+\
+  @@index([tenantId])\
+  @@map("devices")\
+\}\
+\
+model DeviceLocation \{\
+  id        String    @id @default(cuid())\
+  deviceId  String\
+  device    Device    @relation(fields: [deviceId], references: [id], onDelete: Cascade)\
+  latitude  Float\
+  longitude Float\
+  accuracy  Float?\
+  timestamp DateTime  @default(now())\
+\
+  @@index([deviceId])\
+  @@index([timestamp])\
+  @@map("device_locations")\
+\}\
+\
+model DeviceTelemetry \{\
+  id        String    @id @default(cuid())\
+  deviceId  String\
+  device    Device    @relation(fields: [deviceId], references: [id], onDelete: Cascade)\
+  batteryLevel Int?\
+  screenOn  Boolean?\
+  timestamp DateTime  @default(now())\
+\
+  @@index([deviceId])\
+  @@map("device_telemetry")\
+\}\
+\
+// Audit Logging\
+model AuditLog \{\
+  id        String    @id @default(cuid())\
+  userId    String\
+  user      User      @relation(fields: [userId], references: [id])\
+  action    String\
+  resource  String\
+  details   Json?\
+  timestamp DateTime  @default(now())\
+\
+  @@index([userId])\
+  @@index([timestamp])\
+  @@map("audit_logs")\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 MULTI-TENANT SETUP\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Row-Level Security (RLS)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 sql
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Enable RLS on all tables
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 ALTER
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 TABLE
+\f3\b0 \cf4 \strokec4  users 
+\f6\b \cf6 \strokec6 ENABLE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 ROW
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 LEVEL
+\f3\b0 \cf4 \strokec4  SECURITY;\
+
+\f6\b \cf6 \strokec6 ALTER
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 TABLE
+\f3\b0 \cf4 \strokec4  compliance_documents 
+\f6\b \cf6 \strokec6 ENABLE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 ROW
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 LEVEL
+\f3\b0 \cf4 \strokec4  SECURITY;\
+
+\f6\b \cf6 \strokec6 ALTER
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 TABLE
+\f3\b0 \cf4 \strokec4  workflows 
+\f6\b \cf6 \strokec6 ENABLE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 ROW
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 LEVEL
+\f3\b0 \cf4 \strokec4  SECURITY;\
+
+\f6\b \cf6 \strokec6 ALTER
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 TABLE
+\f3\b0 \cf4 \strokec4  security_incidents 
+\f6\b \cf6 \strokec6 ENABLE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 ROW
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 LEVEL
+\f3\b0 \cf4 \strokec4  SECURITY;\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Users can only see their own tenant's users
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  POLICY users_tenant_isolation 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  users\
+  
+\f6\b \cf6 \strokec6 FOR
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 SELECT
+\f3\b0 \cf4 \strokec4 \
+  
+\f6\b \cf6 \strokec6 USING
+\f3\b0 \cf4 \strokec4  (tenant_id = current_setting(\cf7 \strokec7 'app.current_tenant_id'\cf4 \strokec4 )::uuid);\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Compliance docs tenant isolation
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  POLICY compliance_docs_tenant_isolation 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  compliance_documents\
+  
+\f6\b \cf6 \strokec6 FOR
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 ALL
+\f3\b0 \cf4 \strokec4 \
+  
+\f6\b \cf6 \strokec6 USING
+\f3\b0 \cf4 \strokec4  (tenant_id = current_setting(\cf7 \strokec7 'app.current_tenant_id'\cf4 \strokec4 )::uuid);\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Workflows tenant isolation
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  POLICY workflows_tenant_isolation 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  workflows\
+  
+\f6\b \cf6 \strokec6 FOR
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 ALL
+\f3\b0 \cf4 \strokec4 \
+  
+\f6\b \cf6 \strokec6 USING
+\f3\b0 \cf4 \strokec4  (tenant_id = current_setting(\cf7 \strokec7 'app.current_tenant_id'\cf4 \strokec4 )::uuid);\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Set current tenant in session
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 SET
+\f3\b0 \cf4 \strokec4  app.current_tenant_id = \cf7 \strokec7 'tenant-123'\cf4 \strokec4 ;\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 MIGRATIONS\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Migration Files\
+\pard\pardeftab720\sa120\partightenfactor0
+\cf0 \strokec2 0001_init.sql
+\f1 \'a0- Initial schema\uc0\u8232 
+\f0 0002_multi_tenant.sql
+\f1 \'a0- Multi-tenant setup\uc0\u8232 
+\f0 0003_audit_trail.sql
+\f1 \'a0- Audit logging\uc0\u8232 
+\f0 0004_rls_policies.sql
+\f1 \'a0- Row-level security\uc0\u8232 
+\f0 0005_indexes.sql
+\f1 \'a0- Performance indexes\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 INDEXES & PERFORMANCE\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Index Strategy\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 sql
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- User indexes
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_users_tenant 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  users(tenant_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_users_email 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  users(email);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_users_role 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  users(role);\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Compliance indexes
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_compliance_tenant 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  compliance_documents(tenant_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_compliance_status 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  compliance_documents(
+\f6\b \cf6 \strokec6 status
+\f3\b0 \cf4 \strokec4 );\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_validation_document 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  validation_results(document_id);\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Workflow indexes
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_workflow_tenant 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  workflows(tenant_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_workflow_status 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  workflows(
+\f6\b \cf6 \strokec6 status
+\f3\b0 \cf4 \strokec4 );\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_execution_workflow 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  workflow_executions(workflow_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_execution_status 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  workflow_executions(
+\f6\b \cf6 \strokec6 status
+\f3\b0 \cf4 \strokec4 );\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Security indexes
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_incident_tenant 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  security_incidents(tenant_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_incident_severity 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  security_incidents(severity);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_threat_incident 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  threat_events(incident_id);\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Device indexes
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_device_tenant 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  devices(tenant_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_location_device 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  device_locations(device_id);\
+
+\f6\b \cf6 \strokec6 CREATE
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 INDEX
+\f3\b0 \cf4 \strokec4  idx_location_timestamp 
+\f6\b \cf6 \strokec6 ON
+\f3\b0 \cf4 \strokec4  device_locations(
+\f6\b \cf6 \strokec6 timestamp
+\f3\b0 \cf4 \strokec4  
+\f6\b \cf6 \strokec6 DESC
+\f3\b0 \cf4 \strokec4 );\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf5 \strokec5 -- Query optimizer stats
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f6\b \cf6 \strokec6 ANALYZE
+\f3\b0 \cf4 \strokec4 ;\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Total Indexes
+\f1 : 85+\uc0\u8232 
+\f0 Total Tables
+\f1 : 40+\uc0\u8232 
+\f0 Total Lines
+\f1 : 1,072+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 Status
+\f1 : 
+\f2 \uc0\u9989 
+\f1 \'a0
+\f0 PRODUCTION READY
+\f1 \uc0\u8232 
+\f0 Database
+\f1 : PostgreSQL 16\uc0\u8232 
+\f0 Schema Version
+\f1 : 2.3.0\
+}

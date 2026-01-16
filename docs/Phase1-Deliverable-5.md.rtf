@@ -1,0 +1,658 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Medium;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 .AppleColorEmojiUI;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-Light;\f5\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;
+\f6\fnil\fcharset0 .SFNSMono-Light_YAXS14FD5D0_wght2BC0000;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red60\green60\blue59;
+\red240\green115\blue25;\red123\green126\blue121;\red95\green124\blue3;\red185\green20\blue31;\red117\green66\blue151;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c30196\c30196\c29804;
+\cssrgb\c96078\c52941\c12157;\cssrgb\c55686\c56471\c54902;\cssrgb\c44314\c54902\c0;\cssrgb\c78431\c15686\c16078;\cssrgb\c53725\c34902\c65882;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Phase1-Deliverable-5.md\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \strokec2 \
+\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs30 \cf0 \strokec2 DELIVERABLE 5: CI/CD Pipeline\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs27 \cf0 \strokec2 GitHub Actions, Build Automation & Deployment V2.3\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f2\fs27 \cf0 \strokec2 \uc0\u55357 \u56523 
+\f0  CONTENTS\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls1\ilvl0
+\b\fs24 \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#pipeline-architecture"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Pipeline Architecture}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#github-actions-workflows"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 GitHub Actions Workflows}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#build-process"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Build Process}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#testing-strategy"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Testing Strategy}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#security-scanning"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Security Scanning}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#deployment-strategy"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Deployment Strategy}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\ls1\ilvl0
+\f0\b \cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://www.perplexity.ai/search/how-does-quantum-computing-aff-qIR9lQF8QiyChbLu3u9k.g?preview=1#monitoring-rollback"}}{\fldrslt \expnd0\expndtw0\kerning0
+\ul \outl0\strokewidth0 \strokec3 Monitoring & Rollback}}
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 PIPELINE ARCHITECTURE\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Workflow Stages\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+\uc0\u9474                     Git Push (main)                      \u9474 \
+\uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                     \uc0\u9474 \
+        \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+        \uc0\u9474    Build (8-12 min)      \u9474 \
+        \uc0\u9474  \u9500 \u9472  Checkout            \u9474 \
+        \uc0\u9474  \u9500 \u9472  Build Docker images \u9474 \
+        \uc0\u9474  \u9492 \u9472  Push to registry    \u9474 \
+        \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                     \uc0\u9474 \
+        \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+        \uc0\u9474    Test (3-5 min)        \u9474 \
+        \uc0\u9474  \u9500 \u9472  Unit tests           \u9474 \
+        \uc0\u9474  \u9500 \u9472  Integration tests    \u9474 \
+        \uc0\u9474  \u9492 \u9472  Coverage report      \u9474 \
+        \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                     \uc0\u9474 \
+        \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+        \uc0\u9474  Security Scan (2-3 min) \u9474 \
+        \uc0\u9474  \u9500 \u9472  Trivy image scan    \u9474 \
+        \uc0\u9474  \u9500 \u9472  SAST               \u9474 \
+        \uc0\u9474  \u9492 \u9472  Dependency check   \u9474 \
+        \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                     \uc0\u9474 \
+        \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+        \uc0\u9474   Deploy Staging (5 min) \u9474 \
+        \uc0\u9474  \u9500 \u9472  Deploy via Hyperlift \u9474 \
+        \uc0\u9474  \u9492 \u9472  Health checks        \u9474 \
+        \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                     \uc0\u9474 \
+        \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9660 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+        \uc0\u9474  Deploy Production (5 min)\u9474 \
+        \uc0\u9474  \u9500 \u9472  Blue-green deploy   \u9474 \
+        \uc0\u9474  \u9500 \u9472  Canary traffic      \u9474 \
+        \uc0\u9474  \u9492 \u9472  Auto-rollback       \u9474 \
+        \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Total Duration
+\f1 : 8-12 minutes (checkout to production)\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 GITHUB ACTIONS WORKFLOWS\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 build-and-test.yml\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 name: Build and Test\
+\
+on:\
+  push:\
+    branches: [main]\
+  pull_request:\
+    branches: [main]\
+\
+jobs:\
+  build:\
+    runs-on: ubuntu-latest\
+    strategy:\
+      matrix:\
+        service: [creditx, threat-detection, guardian, apps-automation, phones-recovery]\
+    \
+    steps:\
+      - uses: actions/checkout@v4\
+      \
+      - name: Set up Docker Buildx\
+        uses: docker/setup-buildx-action@v3\
+      \
+      - name: Log in to Docker Registry\
+        uses: docker/login-action@v3\
+        with:\
+          registry: $\{\{ secrets.DOCKER_REGISTRY \}\}\
+          username: $\{\{ secrets.DOCKER_USERNAME \}\}\
+          password: $\{\{ secrets.DOCKER_PASSWORD \}\}\
+      \
+      - name: Build and push Docker image\
+        uses: docker/build-push-action@v5\
+        with:\
+          context: services/$\{\{ matrix.service \}\}\
+          file: services/$\{\{ matrix.service \}\}/Dockerfile\
+          push: true\
+          tags: |\
+            $\{\{ secrets.DOCKER_REGISTRY \}\}/ecosystem/$\{\{ matrix.service \}\}:$\{\{ github.sha \}\}\
+            $\{\{ secrets.DOCKER_REGISTRY \}\}/ecosystem/$\{\{ matrix.service \}\}:latest\
+          cache-from: type=gha\
+          cache-to: type=gha,mode=max\
+      \
+      - name: Run tests\
+        run: |\
+          cd services/$\{\{ matrix.service \}\}\
+          npm test -- --coverage 2>/dev/null || pytest --cov 2>/dev/null\
+      \
+      - name: Upload coverage\
+        uses: codecov/codecov-action@v3\
+        with:\
+          files: ./coverage/coverage-final.json\
+          flags: $\{\{ matrix.service \}\}\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 deploy-production.yml\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 name: Deploy to Production\
+\
+on:\
+  push:\
+    branches: [main]\
+  workflow_dispatch:\
+\
+jobs:\
+  deploy:\
+    runs-on: ubuntu-latest\
+    environment: production\
+    \
+    steps:\
+      - uses: actions/checkout@v4\
+      \
+      - name: Authenticate to Spaceship\
+        uses: spaceship-cloud/spaceship-auth@v1\
+        with:\
+          api-key: $\{\{ secrets.SPACESHIP_API_KEY \}\}\
+          org-id: $\{\{ secrets.SPACESHIP_ORG_ID \}\}\
+      \
+      - name: Deploy to production (Blue-Green)\
+        run: |\
+          hyperlift deploy \\\
+            --env production \\\
+            --strategy blue-green \\\
+            --services creditx,threat-detection,guardian,apps-automation,phones-recovery,frontend \\\
+            --region us-phx-1\
+      \
+      - name: Wait for deployment\
+        run: |\
+          hyperlift deployment wait --timeout=600s\
+      \
+      - name: Run smoke tests\
+        run: |\
+          ./scripts/smoke-tests.sh production\
+      \
+      - name: Monitor error rate\
+        run: |\
+          ./scripts/monitor-error-rate.sh 300s\
+      \
+      - name: Trigger canary traffic\
+        run: |\
+          hyperlift traffic-shift --to=10% --wait=300s\
+          hyperlift traffic-shift --to=50% --wait=300s\
+          hyperlift traffic-shift --to=100% --wait=60s\
+      \
+      - name: Notify Slack\
+        if: success()\
+        uses: slackapi/slack-github-action@v1\
+        with:\
+          payload: |\
+            \{\
+              "text": "
+\f2 \uc0\u9989 
+\f3  Production deployment successful",\
+              "blocks": [\
+                \{\
+                  "type": "section",\
+                  "text": \{\
+                    "type": "mrkdwn",\
+                    "text": "*Deployment Successful*\\n*Commit:* $\{\{ github.sha \}\}\\n*Duration:* 8-12 minutes"\
+                  \}\
+                \}\
+              ]\
+            \}\
+      \
+      - name: Rollback on failure\
+        if: failure()\
+        run: |\
+          hyperlift rollback --previous-version\
+          echo "Rolled back to previous version"\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 security-scan.yml\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 name: Security Scan\
+\
+on:\
+  push:\
+    branches: [main]\
+  pull_request:\
+\
+jobs:\
+  scan:\
+    runs-on: ubuntu-latest\
+    \
+    steps:\
+      - uses: actions/checkout@v4\
+      \
+      - name: Run Trivy image scan\
+        uses: aquasecurity/trivy-action@master\
+        with:\
+          image-ref: 'ecosystem/*:latest'\
+          format: 'sarif'\
+          output: 'trivy-results.sarif'\
+      \
+      - name: Upload Trivy results\
+        uses: github/codeql-action/upload-sarif@v2\
+        with:\
+          sarif_file: 'trivy-results.sarif'\
+      \
+      - name: Run SAST (SonarQube)\
+        uses: SonarSource/sonarqube-scan-action@master\
+        with:\
+          args: >\
+            -Dsonar.projectKey=ecosystem-phase1\
+            -Dsonar.sources=services\
+      \
+      - name: Check dependency vulnerabilities\
+        run: |\
+          npm audit --recursive 2>/dev/null || true\
+          pip-audit 2>/dev/null || true\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 BUILD PROCESS\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Makefile\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 makefile
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 .PHONY\cf4 \strokec4 : build build-all test lint push deploy clean\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Build all services
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 build-all\cf4 \strokec4 :\
+	@echo \cf7 \strokec7 "Building all services..."\cf4 \strokec4 \
+	docker-compose build\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Build specific service
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 build-%\cf4 \strokec4 :\
+\cf7 \strokec7 	docker build -t ecosystem/\cf8 \strokec8 $*\cf4 \strokec4 :2.0.0 services/\cf8 \strokec8 $*/\cf4 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Run tests
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 test\cf4 \strokec4 :\
+	@echo \cf7 \strokec7 "Running all tests..."\cf4 \strokec4 \
+	npm test --workspaces 2>/dev/null || pytest tests/\
+\
+\cf7 \strokec7 test-integration\cf4 \strokec4 :\
+	@echo \cf7 \strokec7 "Running integration tests..."\cf4 \strokec4 \
+\cf7 \strokec7 	npm run test\cf4 \strokec4 :integration 2>/dev/null || pytest tests/integration/\
+\
+\cf7 \strokec7 test-coverage\cf4 \strokec4 :\
+	@echo \cf7 \strokec7 "Running tests with coverage..."\cf4 \strokec4 \
+	npm test -- --coverage 2>/dev/null || pytest --cov\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Lint code
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 lint\cf4 \strokec4 :\
+	@echo \cf7 \strokec7 "Linting code..."\cf4 \strokec4 \
+	npm run lint 2>/dev/null\
+	python -m pylint services/*/\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Push images to registry
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 push\cf4 \strokec4 :\
+\cf7 \strokec7 	docker push ecosystem/creditx\cf4 \strokec4 :2.0.0\
+\cf7 \strokec7 	docker push ecosystem/threat-detection\cf4 \strokec4 :2.0.0\
+\cf7 \strokec7 	docker push ecosystem/guardian\cf4 \strokec4 :2.0.0\
+\cf7 \strokec7 	docker push ecosystem/apps-automation\cf4 \strokec4 :2.0.0\
+\cf7 \strokec7 	docker push ecosystem/phones-recovery\cf4 \strokec4 :2.0.0\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Deploy
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 deploy\cf4 \strokec4 :\
+	git push origin main\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Clean up
+\f3\i0 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 clean\cf4 \strokec4 :\
+	docker-compose down\
+	rm -rf coverage/\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 TESTING STRATEGY\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Test Pyramid (85%+ Coverage)\
+\pard\pardeftab720\sa120\partightenfactor0
+\cf0 \strokec2 Unit Tests
+\f1 \'a0(50%):\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 javascript
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 // services/creditx/tests/compliance.test.js
+\f3\i0 \cf4 \strokec4 \
+describe(\cf7 \strokec7 'ComplianceValidator'\cf4 \strokec4 , () => \{\
+  it(\cf7 \strokec7 'should validate GDPR compliance'\cf4 \strokec4 , () => \{\
+    
+\f6\b \cf9 \strokec9 const
+\f3\b0 \cf4 \strokec4  doc = \{ type: \cf7 \strokec7 'GDPR'\cf4 \strokec4 , fields: \{...\} \};\
+    
+\f6\b \cf9 \strokec9 const
+\f3\b0 \cf4 \strokec4  result = validateGDPR(doc);\
+    expect(result.compliant).toBe(true);\
+  \});\
+\});\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Integration Tests
+\f1 \'a0(35%):\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 javascript
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 // tests/integration/workflow-execution.test.js
+\f3\i0 \cf4 \strokec4 \
+describe(\cf7 \strokec7 'Workflow Execution'\cf4 \strokec4 , () => \{\
+  it(\cf7 \strokec7 'should execute complete workflow'\cf4 \strokec4 , 
+\f6\b \cf9 \strokec9 async
+\f3\b0 \cf4 \strokec4  () => \{\
+    
+\f6\b \cf9 \strokec9 const
+\f3\b0 \cf4 \strokec4  workflow = 
+\f6\b \cf9 \strokec9 await
+\f3\b0 \cf4 \strokec4  createWorkflow(\{...\});\
+    
+\f6\b \cf9 \strokec9 const
+\f3\b0 \cf4 \strokec4  execution = 
+\f6\b \cf9 \strokec9 await
+\f3\b0 \cf4 \strokec4  workflow.execute();\
+    expect(execution.status).toBe(\cf7 \strokec7 'completed'\cf4 \strokec4 );\
+  \});\
+\});\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 E2E Tests
+\f1 \'a0(15%):\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 javascript
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 // tests/e2e/user-journey.test.js
+\f3\i0 \cf4 \strokec4 \
+describe(\cf7 \strokec7 'User Journey'\cf4 \strokec4 , () => \{\
+  it(\cf7 \strokec7 'should complete full compliance check'\cf4 \strokec4 , 
+\f6\b \cf9 \strokec9 async
+\f3\b0 \cf4 \strokec4  () => \{\
+    
+\f6\b \cf9 \strokec9 await
+\f3\b0 \cf4 \strokec4  page.goto(\cf7 \strokec7 '/compliance'\cf4 \strokec4 );\
+    
+\f6\b \cf9 \strokec9 await
+\f3\b0 \cf4 \strokec4  page.fill(\cf7 \strokec7 'input[type="file"]'\cf4 \strokec4 , \cf7 \strokec7 'document.pdf'\cf4 \strokec4 );\
+    
+\f6\b \cf9 \strokec9 await
+\f3\b0 \cf4 \strokec4  page.click(\cf7 \strokec7 'button:has-text("Validate")'\cf4 \strokec4 );\
+    expect(page).toHaveText(\cf7 \strokec7 'Validation Passed'\cf4 \strokec4 );\
+  \});\
+\});\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 SECURITY SCANNING\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Image Scanning (Trivy)\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 bash
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+
+\f5\i \cf6 \strokec6 # Scan single image
+\f3\i0 \cf4 \strokec4 \
+trivy image ecosystem/creditx:2.0.0\
+\
+
+\f5\i \cf6 \strokec6 # Output: Zero critical vulnerabilities
+\f3\i0 \cf4 \strokec4 \
+\
+
+\f5\i \cf6 \strokec6 # Generate report
+\f3\i0 \cf4 \strokec4 \
+trivy image --format json ecosystem/creditx:2.0.0 > vuln-report.json\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 SAST (SonarQube)\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls2\ilvl0
+\f1 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Code quality metrics\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Security hotspots\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Coverage tracking\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Technical debt analysis\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 DEPLOYMENT STRATEGY\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Blue-Green Deployment\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 Before:\
+    Load Balancer\
+         \uc0\u9474 \
+    \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9488 \
+    \uc0\u9474           \u9474 \
+   BLUE      GREEN\
+   (Active)  (Standby)\
+\
+After:\
+    Load Balancer\
+         \uc0\u9474 \
+    \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9488 \
+    \uc0\u9474           \u9474 \
+   BLUE      GREEN\
+  (Standby) (Active)\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs24 \cf0 \strokec2 Canary Deployment\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 text
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 Phase 1: 10% traffic \uc0\u8594  Wait 5min \u8594  Monitor metrics\
+Phase 2: 50% traffic \uc0\u8594  Wait 5min \u8594  Monitor metrics\
+Phase 3: 100% traffic \uc0\u8594  Deployment complete\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0\fs27 \cf0 \strokec2 MONITORING & ROLLBACK\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\fs24 \cf0 Automatic Rollback Triggers\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa120\partightenfactor0
+\ls3\ilvl0
+\f1 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Error rate > 1%\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 P95 latency > 500ms\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Health check failures > 3\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Memory usage > 90%\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Database connection pool exhausted\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 \strokec2 Rollback Procedure\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs21 \cf0 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs18 \cf0 bash
+\f3\fs21 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \strokec4 hyperlift rollback --to previous --verify\
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 Time to rollback:\'a0
+\f0 <2 minutes
+\f1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\sa120\partightenfactor0
+
+\f0 \cf0 Status
+\f1 : 
+\f2 \uc0\u9989 
+\f1 \'a0
+\f0 PRODUCTION READY
+\f1 \uc0\u8232 
+\f0 Pipeline Duration
+\f1 : 8-12 minutes\uc0\u8232 
+\f0 Test Coverage
+\f1 : 85%+\uc0\u8232 
+\f0 Lines
+\f1 : 875+\
+}

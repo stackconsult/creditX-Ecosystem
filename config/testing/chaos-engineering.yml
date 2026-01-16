@@ -1,0 +1,243 @@
+# ============================================================================
+# CreditX Ecosystem - Chaos Engineering Configuration
+# LitmusChaos / Chaos Mesh Experiments
+# ============================================================================
+
+chaos_engineering:
+  enabled: true
+  platform: litmus
+  
+  game_days:
+    schedule: "0 10 * * 3"  # Wednesdays at 10am
+    duration: 2h
+    notifications:
+      slack_channel: "#chaos-engineering"
+      email: "sre@ecosystem.ai"
+
+# Experiment Categories
+experiments:
+  # Pod-level chaos
+  pod_chaos:
+    - name: pod-kill-creditx
+      description: "Kill creditx-service pods to test recovery"
+      kind: PodChaos
+      action: pod-kill
+      target:
+        selector:
+          app: creditx-service
+        mode: one
+      scheduler:
+        cron: "0 */4 * * *"
+      duration: 30s
+      
+    - name: pod-failure-random
+      description: "Random pod failure across services"
+      kind: PodChaos
+      action: pod-failure
+      target:
+        selector:
+          tier: backend
+        mode: fixed-percent
+        value: 25
+      duration: 2m
+
+  # Network chaos
+  network_chaos:
+    - name: network-delay-db
+      description: "Add latency to database connections"
+      kind: NetworkChaos
+      action: delay
+      target:
+        selector:
+          app: postgresql
+      delay:
+        latency: 100ms
+        jitter: 20ms
+        correlation: 50
+      duration: 5m
+      
+    - name: network-partition-cache
+      description: "Network partition to Dragonfly cache"
+      kind: NetworkChaos
+      action: partition
+      target:
+        selector:
+          app: dragonfly
+      direction: both
+      duration: 1m
+      
+    - name: network-loss
+      description: "Packet loss simulation"
+      kind: NetworkChaos
+      action: loss
+      target:
+        selector:
+          tier: backend
+        mode: all
+      loss:
+        loss: 10
+        correlation: 50
+      duration: 3m
+
+  # Stress testing
+  stress_chaos:
+    - name: cpu-stress
+      description: "CPU stress on backend services"
+      kind: StressChaos
+      target:
+        selector:
+          tier: backend
+        mode: one
+      stressors:
+        cpu:
+          workers: 2
+          load: 80
+      duration: 5m
+      
+    - name: memory-stress
+      description: "Memory pressure simulation"
+      kind: StressChaos
+      target:
+        selector:
+          app: creditx-service
+        mode: one
+      stressors:
+        memory:
+          workers: 2
+          size: 256MB
+      duration: 3m
+
+  # IO chaos
+  io_chaos:
+    - name: io-latency
+      description: "Disk IO latency injection"
+      kind: IOChaos
+      action: latency
+      target:
+        selector:
+          app: postgresql
+      delay: 50ms
+      path: /var/lib/postgresql/data
+      percent: 50
+      duration: 5m
+      
+    - name: io-fault
+      description: "IO fault injection"
+      kind: IOChaos
+      action: fault
+      target:
+        selector:
+          app: creditx-service
+      errno: 5
+      path: /app/logs
+      percent: 20
+      duration: 2m
+
+  # DNS chaos
+  dns_chaos:
+    - name: dns-error
+      description: "DNS resolution failures"
+      kind: DNSChaos
+      action: error
+      target:
+        selector:
+          tier: backend
+        mode: fixed-percent
+        value: 30
+      patterns:
+        - "*.internal"
+      duration: 2m
+
+  # Time chaos
+  time_chaos:
+    - name: clock-skew
+      description: "Clock skew for time-sensitive operations"
+      kind: TimeChaos
+      target:
+        selector:
+          app: creditx-service
+        mode: one
+      timeOffset: 5m
+      duration: 10m
+
+# Steady state hypotheses
+steady_state:
+  probes:
+    - name: api-available
+      type: http
+      endpoint: http://creditx-service:8000/health/live
+      expectedStatus: 200
+      interval: 5s
+      
+    - name: response-time
+      type: http
+      endpoint: http://creditx-service:8000/api/v1/compliance/documents
+      expectedResponseTime: 1000ms
+      interval: 10s
+      
+    - name: error-rate
+      type: prometheus
+      query: rate(http_requests_total{status=~"5.."}[1m]) / rate(http_requests_total[1m])
+      threshold: "< 0.05"
+      interval: 30s
+
+# Rollback triggers
+rollback:
+  enabled: true
+  triggers:
+    - type: error_rate
+      threshold: 0.20
+      window: 1m
+      
+    - type: latency_p99
+      threshold: 5000ms
+      window: 1m
+      
+    - type: availability
+      threshold: 0.95
+      window: 1m
+
+# Reporting
+reporting:
+  enabled: true
+  
+  output:
+    - format: json
+      path: chaos-reports/
+      
+    - format: html
+      path: chaos-reports/
+      
+  metrics:
+    prometheus:
+      enabled: true
+      pushgateway: http://prometheus-pushgateway:9091
+      
+  notifications:
+    slack:
+      enabled: true
+      webhook_env: SLACK_CHAOS_WEBHOOK
+      on_start: true
+      on_complete: true
+      on_failure: true
+
+# Safety controls
+safety:
+  max_concurrent_experiments: 1
+  
+  excluded_namespaces:
+    - kube-system
+    - monitoring
+    
+  excluded_labels:
+    critical: "true"
+    
+  time_windows:
+    allowed_hours: "09:00-17:00"
+    allowed_days: "Mon-Fri"
+    timezone: "America/Phoenix"
+    
+  circuit_breaker:
+    enabled: true
+    max_failures: 3
+    reset_timeout: 1h

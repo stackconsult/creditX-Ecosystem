@@ -1,0 +1,189 @@
+# ============================================================================
+# CreditX Ecosystem - Security Scanning Configuration
+# OWASP ZAP + Trivy + Bandit Security Scans
+# ============================================================================
+
+security_scan:
+  enabled: true
+  run_on:
+    - pre_deploy
+    - nightly
+    - weekly_full
+
+# OWASP ZAP Configuration
+zap:
+  enabled: true
+  api_url: http://zap:8080
+  
+  scan_types:
+    baseline:
+      enabled: true
+      max_duration: 5m
+      rules_to_disable:
+        - 10015  # Incomplete or No Cache-control
+        
+    active:
+      enabled: true
+      max_duration: 30m
+      strength: MEDIUM
+      
+    api:
+      enabled: true
+      openapi_spec: /api/v1/openapi.json
+      
+  targets:
+    - name: creditx-service
+      url: http://creditx-service:8000
+      context: api
+      
+    - name: frontend
+      url: http://frontend:3000
+      context: webapp
+
+  alerts:
+    fail_on_high: true
+    fail_on_medium: false
+    ignore_alerts:
+      - "X-Content-Type-Options Header Missing"
+
+# Trivy Container Scanning
+trivy:
+  enabled: true
+  
+  scan_types:
+    - image
+    - filesystem
+    - config
+    
+  severity:
+    - CRITICAL
+    - HIGH
+    
+  ignore_unfixed: true
+  
+  images:
+    - creditx-service:latest
+    - threat-service:latest
+    - guardian-service:latest
+    - apps-service:latest
+    - phones-service:latest
+    - frontend:latest
+    
+  compliance:
+    - docker-cis
+    
+  exit_code: 1
+
+# Bandit Python Security Linting
+bandit:
+  enabled: true
+  
+  paths:
+    - services/creditx-service
+    - services/threat-service
+    - services/guardian-service
+    - services/apps-service
+    - services/phones-service
+    - services/shared
+    
+  exclude:
+    - "**/tests/**"
+    - "**/__pycache__/**"
+    
+  severity:
+    min_level: MEDIUM
+    
+  confidence:
+    min_level: MEDIUM
+    
+  skip:
+    - B101  # assert_used
+    - B311  # random
+    
+  format: json
+  output: security-reports/bandit-results.json
+
+# Dependency Scanning
+dependency_scan:
+  enabled: true
+  
+  python:
+    tool: safety
+    requirements_files:
+      - services/creditx-service/requirements.txt
+      - services/threat-service/requirements.txt
+      - services/guardian-service/requirements.txt
+      
+  javascript:
+    tool: npm_audit
+    package_files:
+      - apps/frontend/package.json
+      
+  fail_on_vulnerable: true
+
+# Secret Detection
+secret_scan:
+  enabled: true
+  
+  tool: gitleaks
+  
+  paths:
+    - .
+    
+  exclude:
+    - "**/*.md"
+    - "**/node_modules/**"
+    - "**/__pycache__/**"
+    - ".git/**"
+    
+  rules:
+    - aws-access-key
+    - aws-secret-key
+    - github-token
+    - private-key
+    - api-key
+    - password-in-url
+
+# Reporting
+reporting:
+  output_dir: security-reports
+  
+  formats:
+    - json
+    - html
+    - sarif
+    
+  upload:
+    enabled: true
+    destination: s3://creditx-security-reports
+    
+  notifications:
+    slack:
+      enabled: true
+      webhook_env: SLACK_SECURITY_WEBHOOK
+      on_failure: true
+      on_high_severity: true
+      
+    email:
+      enabled: true
+      recipients:
+        - security@ecosystem.ai
+      on_failure: true
+
+# Compliance Checks
+compliance:
+  enabled: true
+  
+  standards:
+    - name: PCI-DSS
+      enabled: true
+      
+    - name: SOC2
+      enabled: true
+      
+    - name: HIPAA
+      enabled: true
+      
+  audit_logging:
+    enabled: true
+    retention_days: 365

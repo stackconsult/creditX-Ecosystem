@@ -1,0 +1,151 @@
+# ============================================================================
+# CreditX Ecosystem - Load Testing Configuration
+# k6 Load Test Scenarios for Production Hardening
+# ============================================================================
+
+scenarios:
+  smoke:
+    description: "Quick smoke test to verify system is operational"
+    executor: constant-vus
+    vus: 5
+    duration: 1m
+    thresholds:
+      http_req_duration: ['p(95)<500']
+      http_req_failed: ['rate<0.01']
+
+  load:
+    description: "Standard load test for typical traffic patterns"
+    executor: ramping-vus
+    startVUs: 0
+    stages:
+      - duration: 2m
+        target: 50
+      - duration: 5m
+        target: 100
+      - duration: 2m
+        target: 0
+    thresholds:
+      http_req_duration: ['p(95)<1000', 'p(99)<2000']
+      http_req_failed: ['rate<0.05']
+
+  stress:
+    description: "Stress test to find breaking points"
+    executor: ramping-vus
+    startVUs: 0
+    stages:
+      - duration: 2m
+        target: 100
+      - duration: 3m
+        target: 200
+      - duration: 3m
+        target: 300
+      - duration: 2m
+        target: 0
+    thresholds:
+      http_req_duration: ['p(95)<3000']
+      http_req_failed: ['rate<0.10']
+
+  spike:
+    description: "Spike test for sudden traffic bursts"
+    executor: ramping-vus
+    startVUs: 0
+    stages:
+      - duration: 30s
+        target: 10
+      - duration: 30s
+        target: 500
+      - duration: 1m
+        target: 500
+      - duration: 30s
+        target: 10
+    thresholds:
+      http_req_duration: ['p(95)<5000']
+      http_req_failed: ['rate<0.15']
+
+  soak:
+    description: "Long-running soak test for memory leaks"
+    executor: constant-vus
+    vus: 50
+    duration: 30m
+    thresholds:
+      http_req_duration: ['p(95)<1000']
+      http_req_failed: ['rate<0.01']
+
+endpoints:
+  - name: health_check
+    url: /health/live
+    method: GET
+    weight: 10
+    
+  - name: list_documents
+    url: /api/v1/compliance/documents
+    method: GET
+    weight: 30
+    headers:
+      X-Tenant-ID: test-tenant
+      
+  - name: create_document
+    url: /api/v1/compliance/documents
+    method: POST
+    weight: 20
+    headers:
+      X-Tenant-ID: test-tenant
+    body:
+      document_type: kyc
+      title: "Load Test Document"
+      metadata: {}
+      
+  - name: list_agents
+    url: /api/v1/agents
+    method: GET
+    weight: 15
+    headers:
+      X-Face: internal
+      
+  - name: execute_agent
+    url: /api/v1/agents/execute
+    method: POST
+    weight: 10
+    headers:
+      X-Face: internal
+      X-Tenant-ID: test-tenant
+    body:
+      agent_id: cross.explainer.v1
+      input_data:
+        topic: load test
+        
+  - name: threat_alerts
+    url: /api/v1/alerts
+    method: GET
+    weight: 15
+    service: threat-service
+    headers:
+      X-Tenant-ID: test-tenant
+
+services:
+  creditx-service:
+    base_url: http://localhost:8000
+    
+  threat-service:
+    base_url: http://localhost:8001
+    
+  guardian-service:
+    base_url: http://localhost:8002
+    
+  apps-service:
+    base_url: http://localhost:8003
+    
+  phones-service:
+    base_url: http://localhost:8004
+
+reporting:
+  output_formats:
+    - json
+    - html
+  influxdb:
+    enabled: false
+    url: http://localhost:8086
+    database: k6
+  prometheus:
+    enabled: true
+    pushgateway: http://localhost:9091

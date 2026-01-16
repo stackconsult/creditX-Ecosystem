@@ -1,0 +1,132 @@
+# ============================================================================
+# CreditX Ecosystem - Spaceship CDN Configuration
+# Included in Hyperlift Medium Solution Bundle
+# ============================================================================
+
+cdn:
+  enabled: true
+  provider: spaceship_cdn
+  
+  # Primary domain configuration
+  domains:
+    - domain: cdn.ecosystem.ai
+      ssl: true
+      http2: true
+      http3: true
+    - domain: assets.ecosystem.ai
+      ssl: true
+      http2: true
+
+  # Origin configuration
+  origin:
+    type: s3_compatible
+    endpoint: https://storage.spaceship.com
+    bucket: creditx-ecosystem
+    region: us-phx-1
+    path_prefix: /static
+
+  # Cache rules by content type
+  cache_rules:
+    # Static assets - long cache
+    - pattern: "*.js"
+      ttl: 31536000
+      cache_control: "public, max-age=31536000, immutable"
+      compress: true
+      
+    - pattern: "*.css"
+      ttl: 31536000
+      cache_control: "public, max-age=31536000, immutable"
+      compress: true
+      
+    - pattern: "*.woff2"
+      ttl: 31536000
+      cache_control: "public, max-age=31536000, immutable"
+      compress: false
+      
+    - pattern: "*.woff"
+      ttl: 31536000
+      cache_control: "public, max-age=31536000, immutable"
+      compress: false
+      
+    # Images - medium cache
+    - pattern: "*.png"
+      ttl: 2592000
+      cache_control: "public, max-age=2592000"
+      compress: false
+      
+    - pattern: "*.jpg"
+      ttl: 2592000
+      cache_control: "public, max-age=2592000"
+      compress: false
+      
+    - pattern: "*.webp"
+      ttl: 2592000
+      cache_control: "public, max-age=2592000"
+      compress: false
+      
+    - pattern: "*.svg"
+      ttl: 2592000
+      cache_control: "public, max-age=2592000"
+      compress: true
+      
+    # HTML - short cache with revalidation
+    - pattern: "*.html"
+      ttl: 300
+      cache_control: "public, max-age=300, stale-while-revalidate=86400"
+      compress: true
+      
+    # JSON/API responses - no cache by default
+    - pattern: "/api/*"
+      ttl: 0
+      cache_control: "no-store, no-cache, must-revalidate"
+      bypass: true
+
+  # Security headers
+  security_headers:
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: "1; mode=block"
+    Referrer-Policy: strict-origin-when-cross-origin
+    Content-Security-Policy: >
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: https:;
+      font-src 'self';
+      connect-src 'self' https://api.ecosystem.ai wss://api.ecosystem.ai;
+      frame-ancestors 'none';
+
+  # Performance optimizations
+  performance:
+    minify_js: true
+    minify_css: true
+    minify_html: true
+    image_optimization: true
+    webp_conversion: true
+    brotli_compression: true
+    gzip_fallback: true
+
+  # Edge locations
+  edge_locations:
+    - region: us-west
+      pop: phoenix
+      primary: true
+    - region: us-east
+      pop: new-york
+    - region: eu-west
+      pop: london
+    - region: asia-pacific
+      pop: singapore
+
+  # Purge configuration
+  purge:
+    api_endpoint: https://cdn-api.spaceship.com/v1/purge
+    auth_header: X-CDN-Token
+    batch_size: 100
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    metrics_endpoint: /cdn/metrics
+    log_requests: true
+    sample_rate: 0.1

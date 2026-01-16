@@ -1,0 +1,1012 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;\f2\froman\fcharset0 Times-Bold;
+\f3\fnil\fcharset0 LucidaGrande;\f4\fmodern\fcharset0 Courier;\f5\fnil\fcharset0 HelveticaNeue;
+\f6\fmodern\fcharset0 Courier-Oblique;\f7\fmodern\fcharset0 Courier-Bold;\f8\ftech\fcharset77 Symbol;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red0\green0\blue0;
+\red60\green60\blue59;\red123\green126\blue121;\red117\green66\blue151;\red52\green92\blue158;\red95\green124\blue3;
+\red240\green115\blue25;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c0\c0\c0\c84706;
+\cssrgb\c30196\c30196\c29804;\cssrgb\c55686\c56471\c54902;\cssrgb\c53725\c34902\c65882;\cssrgb\c25882\c44314\c68235;\cssrgb\c44314\c54902\c0;
+\cssrgb\c96078\c52941\c12157;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{circle\}}{\leveltext\leveltemplateid2\'01\uc0\u9702 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{circle\}}{\leveltext\leveltemplateid102\'01\uc0\u9702 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww15620\viewh12500\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 codebase repo file updates: \
+\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Phase 1 is now a 
+\f2\b \strokec2 Dragonfly\uc0\u8209 backed, Spaceship\u8209 native
+\f1\b0 \strokec2  production build: Redis is removed from the design, the cache layer is standardized on Dragonfly, and all agents, services, and deployment controls are wired around that reality.[{\field{\*\fldinst{HYPERLINK "https://www.dragonflydb.io/redis-alternative"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 dragonflydb}}]\
+Below is a consolidated v2 spec you can treat as the new source of truth for the Phase 1 platform.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Overview of Phase 1 v2 mod 3\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0
+\fs24 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Current state:
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls1\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 All 15 services are containerized and running on 
+\f2\b Spaceship Starlight VMs
+\f1\b0  with 99.99% uptime targets.[{\field{\*\fldinst{HYPERLINK "https://www.whtop.com/review/spaceship.com"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 whtop}}] \
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 CI/CD is handled by 
+\f2\b Starlight Hyperlift
+\f1\b0 , deploying straight from GitHub repos with Dockerfiles.[{\field{\*\fldinst{HYPERLINK "https://www.spaceship.com/knowledgebase/deploy-app-with-hyperlift-demo/"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 spaceship}}] \
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The in\uc0\u8209 memory layer is now 
+\f2\b Dragonfly
+\f1\b0 , a drop\uc0\u8209 in Redis replacement that is fully Redis\u8209 API compatible and up to 25x faster.[{\field{\*\fldinst{HYPERLINK "https://www.dragonflydb.io/dragonfly-vs-redis"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 dragonflydb}}] [{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=j1PkkSddZcE"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 youtube}}] \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Phase 1 modules (unchanged conceptually):
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls1\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 CreditX (compliance) \'96 Python/FastAPI.\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 91 Apps (automation) \'96 Node.js.\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Global AI Alert (threat) \'96 Python/FastAPI.\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Guardian AI (endpoint) \'96 Python/FastAPI.\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Stolen/Lost Phones (devices) \'96 Node.js.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Key v2 changes vs original spec:
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls1\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 All 
+\f4\fs26 redis://
+\f1\fs24  references are now 
+\f2\b Dragonfly
+\f1\b0  hosted on 
+\f4\fs26 dragonfly-cache.internal:6379
+\f1\fs24 .\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Circuit\uc0\u8209 breaker and retry configs assume Dragonfly\'92s multithreaded, higher\u8209 throughput profile.\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Agent prompts and orchestration logic acknowledge \'93cache degradation fallback\'94 instead of \'93Redis outage.\'94\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Deployment manifests and env mappings are updated to use a 
+\f2\b shared Dragonfly cluster
+\f1\b0  with per\uc0\u8209 DB logical separation.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Platform & dependency spec (v2)\
+Global environment contract\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 \strokec2 All services share this core environment contract:\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 # Common ENV (injected via Hyperlift)\
+\
+# Core infrastructure\
+SPACES_ENV: "production"\
+SPACES_REGION: "us-phx-1"\
+\
+# Database\
+DATABASE_URL: "postgresql+psycopg2://ecosystem:***@postgres.internal:5432/ecosystem"\
+\
+# Cache (Dragonfly)\
+CACHE_HOST: "dragonfly-cache.internal"\
+CACHE_PORT: "6379"\
+CACHE_SSL: "false"\
+CACHE_DB_MAIN: "0"       # default; each service may override\
+CACHE_TIMEOUT_MS: "30000"\
+CACHE_MAX_POOL_SIZE: "50"\
+\
+# Observability\
+PROMETHEUS_ENDPOINT: "http://prometheus.internal:9090"\
+JAEGER_AGENT_HOST: "jaeger.internal"\
+JAEGER_AGENT_PORT: "6831"\
+\
+# Agent mesh\
+AGENT_REGISTRY_URL: "http://agent-mesh.internal"\
+ORCHESTRATOR_URL: "http://orchestrator.internal"\
+\
+# Security\
+JWT_PUBLIC_KEY: "-----BEGIN PUBLIC KEY-----\'85"\
+OAUTH_ISSUER: "https://auth.ecosystem.ai"\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 \strokec2 Per\uc0\u8209 service cache mapping\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 \strokec2 Each service gets its own logical DB inside the 
+\f2\b \strokec2 same Dragonfly instance
+\f1\b0 \strokec2 :\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 creditx-service:\
+  CACHE_DB: 0\
+  CACHE_KEY_PREFIX: "creditx:"\
+\
+threat-service:\
+  CACHE_DB: 1\
+  CACHE_KEY_PREFIX: "threat:"\
+\
+guardian-service:\
+  CACHE_DB: 2\
+  CACHE_KEY_PREFIX: "guardian:"\
+\
+apps-service:\
+  CACHE_DB: 3\
+  CACHE_KEY_PREFIX: "apps:"\
+\
+phones-service:\
+  CACHE_DB: 4\
+  CACHE_KEY_PREFIX: "phones:"\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f2\b\fs24 \cf0 \strokec2 Why this works now:
+\f1\b0 \strokec2  Dragonfly is a Redis\uc0\u8209 protocol server that supports multiple DBs and the Redis 5.0 API, so you keep existing commands, clients, and key patterns with no code\u8209 level API change.[{\field{\*\fldinst{HYPERLINK "http://github.com/dragonflydb/dragonfly"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github}}] [{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=j1PkkSddZcE"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 youtube}}]\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Updated shared infrastructure & deployment controls\
+Dragonfly cluster on Starlight\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 dragonfly-cluster:\
+  vm:\
+    name: cache-prod-01\
+    tier: Standard-3\
+    cpu: 4\
+    ram_gb: 8\
+    storage_volume:\
+      name: dragonfly-cache-volume\
+      size_gb: 100\
+      mount_path: /mnt/volumes/dragonfly\
+      encrypted: true     # AES-256\
+  container:\
+    image: "dragonflydb/dragonfly:latest"\
+    ports:\
+      - 6379\
+    env:\
+      DFLY_aof_fsync_sec: 1\
+      DFLY_max_memory_policy: "allkeys_lru"\
+    restart_policy: "unless-stopped"\
+  monitoring:\
+    prometheus_exporter: true\
+    alerts:\
+      - rule: "cache_mem_usage > 80%"\
+      - rule: "cache_latency_p95_ms > 10"\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 \strokec2 Hyperlift deployment manifest (cache\uc0\u8209 aware)\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 \strokec2 Example for CreditX:\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 apiVersion: spaceship/v1\
+kind: Service\
+metadata:\
+  name: creditx-service\
+  namespace: ecosystem-prod\
+spec:\
+  image:\
+    repository: spaceship.registry.io/ecosystem/creditx-service\
+    tag: v2.0.0-dragonfly\
+  replicas:\
+    min: 3\
+    max: 10\
+    target_cpu_utilization: 70\
+  env:\
+    - name: CACHE_HOST\
+      value: "dragonfly-cache.internal"\
+    - name: CACHE_PORT\
+      value: "6379"\
+    - name: CACHE_DB\
+      value: "0"\
+    - name: CACHE_KEY_PREFIX\
+      value: "creditx:"\
+  health_checks:\
+    liveness:\
+      http_get:\
+        path: /health/live\
+        port: 8000\
+    readiness:\
+      http_get:\
+        path: /health/ready\
+        port: 8000\
+  update_strategy:\
+    type: rolling_update\
+    max_surge: 1\
+    max_unavailable: 0\
+  guards:       # deployment guards\
+    error_rate_threshold: 0.01\
+    latency_p95_ms_threshold: 2000\
+    auto_rollback: true\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 Hyperlift still performs GitHub\uc0\u8209 triggered Docker builds and blue\u8209 green cutovers; what changed is the image tag (
+\f4\fs26 \strokec2 \'85-dragonfly
+\f1\fs24 \strokec2 ) and the cache env wiring.[{\field{\*\fldinst{HYPERLINK "https://www.spaceship.com/knowledgebase/hyperlift-deploy-app-github-dockerfile/"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 spaceship}}]\
+\pard\pardeftab720\partightenfactor0
+\cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Service\uc0\u8209 level code updates (cache & guards)\
+Python services (CreditX, Threat, Guardian) \'96 shared cache client\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 python\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf6 \strokec6 # core/cache.py
+\f4\i0 \cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f7\b \cf7 \strokec7 import
+\f4\b0 \cf5 \strokec5  aioredis\
+
+\f7\b \cf7 \strokec7 import
+\f4\b0 \cf5 \strokec5  json\
+
+\f7\b \cf7 \strokec7 import
+\f4\b0 \cf5 \strokec5  logging\
+
+\f7\b \cf7 \strokec7 import
+\f4\b0 \cf5 \strokec5  os\
+\
+logger = logging.getLogger(__name__)\
+\
+
+\f7\b \cf7 \strokec7 class
+\f4\b0 \cf5 \strokec5  \cf8 \strokec8 DragonflyCache\cf5 \strokec5 :\
+    
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  __init__(self):\
+        host = os.getenv(\cf9 \strokec9 "CACHE_HOST"\cf5 \strokec5 , \cf9 \strokec9 "dragonfly-cache.internal"\cf5 \strokec5 )\
+        port = os.getenv(\cf9 \strokec9 "CACHE_PORT"\cf5 \strokec5 , \cf9 \strokec9 "6379"\cf5 \strokec5 )\
+        db = \cf10 \strokec10 int\cf5 \strokec5 (os.getenv(\cf9 \strokec9 "CACHE_DB"\cf5 \strokec5 , \cf9 \strokec9 "0"\cf5 \strokec5 ))\
+        self.prefix = os.getenv(\cf9 \strokec9 "CACHE_KEY_PREFIX"\cf5 \strokec5 , \cf9 \strokec9 ""\cf5 \strokec5 )\
+        self._dsn = \cf9 \strokec9 f"redis://\cf5 \strokec5 \{host\}\cf9 \strokec9 :\cf5 \strokec5 \{port\}\cf9 \strokec9 /\cf5 \strokec5 \{db\}\cf9 \strokec9 "\cf5 \strokec5 \
+        self._pool = None\
+\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  connect(self):\
+        
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  self._pool 
+\f7\b \cf7 \strokec7 is
+\f4\b0 \cf5 \strokec5  None:\
+            self._pool = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  aioredis.create_redis_pool(\
+                self._dsn, maxsize=\cf10 \strokec10 int\cf5 \strokec5 (os.getenv(\cf9 \strokec9 "CACHE_MAX_POOL_SIZE"\cf5 \strokec5 , \cf9 \strokec9 "50"\cf5 \strokec5 ))\
+            )\
+            logger.info(\cf9 \strokec9 "Connected to Dragonfly cache at %s"\cf5 \strokec5 , self._dsn)\
+\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  close(self):\
+        
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  self._pool:\
+            self._pool.close()\
+            
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  self._pool.wait_closed()\
+\
+    
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  _k(self, key: \cf10 \strokec10 str\cf5 \strokec5 ) -> \cf10 \strokec10 str\cf5 \strokec5 :\
+        
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  \cf9 \strokec9 f"\cf5 \strokec5 \{self.prefix\}\{key\}\cf9 \strokec9 "\cf5 \strokec5 \
+\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  get(self, key: \cf10 \strokec10 str\cf5 \strokec5 ):\
+        
+\f7\b \cf7 \strokec7 try
+\f4\b0 \cf5 \strokec5 :\
+            raw = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  self._pool.get(self._k(key))\
+            
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  raw 
+\f7\b \cf7 \strokec7 is
+\f4\b0 \cf5 \strokec5  None:\
+                
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  None\
+            
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  json.loads(raw)\
+        
+\f7\b \cf7 \strokec7 except
+\f4\b0 \cf5 \strokec5  Exception 
+\f7\b \cf7 \strokec7 as
+\f4\b0 \cf5 \strokec5  e:\
+            logger.warning(\cf9 \strokec9 "Cache GET failed for %s: %s"\cf5 \strokec5 , key, e)\
+            
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  None\
+\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  set(self, key: \cf10 \strokec10 str\cf5 \strokec5 , value, ttl_sec: \cf10 \strokec10 int\cf5 \strokec5  = \cf10 \strokec10 3600\cf5 \strokec5 ):\
+        
+\f7\b \cf7 \strokec7 try
+\f4\b0 \cf5 \strokec5 :\
+            raw = json.dumps(value)\
+            
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  self._pool.setex(self._k(key), ttl_sec, raw)\
+        
+\f7\b \cf7 \strokec7 except
+\f4\b0 \cf5 \strokec5  Exception 
+\f7\b \cf7 \strokec7 as
+\f4\b0 \cf5 \strokec5  e:\
+            logger.warning(\cf9 \strokec9 "Cache SET failed for %s: %s"\cf5 \strokec5 , key, e)\
+\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  delete(self, key: \cf10 \strokec10 str\cf5 \strokec5 ):\
+        
+\f7\b \cf7 \strokec7 try
+\f4\b0 \cf5 \strokec5 :\
+            
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  self._pool.delete(self._k(key))\
+        
+\f7\b \cf7 \strokec7 except
+\f4\b0 \cf5 \strokec5  Exception 
+\f7\b \cf7 \strokec7 as
+\f4\b0 \cf5 \strokec5  e:\
+            logger.warning(\cf9 \strokec9 "Cache DEL failed for %s: %s"\cf5 \strokec5 , key, e)\
+\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  cache_aside(self, key: \cf10 \strokec10 str\cf5 \strokec5 , ttl_sec: \cf10 \strokec10 int\cf5 \strokec5 , fetch_fn):\
+        cached = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  self.get(key)\
+        
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  cached 
+\f7\b \cf7 \strokec7 is
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 not
+\f4\b0 \cf5 \strokec5  None:\
+            
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  cached\
+        value = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  fetch_fn()\
+        
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  self.\cf10 \strokec10 set\cf5 \strokec5 (key, value, ttl_sec)\
+        
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  value\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 All prior 
+\f4\fs26 \strokec2 redis
+\f1\fs24 \strokec2  clients now import this shared DragonflyCache; no other code needs to know it\'92s not Redis because Dragonfly supports the same wire protocol and commands.[{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=j1PkkSddZcE"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 youtube}}] [{\field{\*\fldinst{HYPERLINK "https://www.dragonflydb.io/redis-alternative"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 dragonflydb}}]\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 \strokec2 Node.js services (91 Apps, Phones) \'96 cache wrapper\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 ts\
+\pard\pardeftab720\partightenfactor0
+
+\f6\i \cf6 \strokec6 // core/cache.ts
+\f4\i0 \cf5 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f7\b \cf7 \strokec7 import
+\f4\b0 \cf5 \strokec5  Redis 
+\f7\b \cf7 \strokec7 from
+\f4\b0 \cf5 \strokec5  \cf9 \strokec9 "ioredis"\cf5 \strokec5 ;\
+\
+
+\f7\b \cf7 \strokec7 const
+\f4\b0 \cf5 \strokec5  host = process.env.CACHE_HOST || \cf9 \strokec9 "dragonfly-cache.internal"\cf5 \strokec5 ;\
+
+\f7\b \cf7 \strokec7 const
+\f4\b0 \cf5 \strokec5  port = Number(process.env.CACHE_PORT || \cf10 \strokec10 6379\cf5 \strokec5 );\
+
+\f7\b \cf7 \strokec7 const
+\f4\b0 \cf5 \strokec5  db   = Number(process.env.CACHE_DB || \cf10 \strokec10 3\cf5 \strokec5 );\
+
+\f7\b \cf7 \strokec7 const
+\f4\b0 \cf5 \strokec5  prefix = process.env.CACHE_KEY_PREFIX || \cf9 \strokec9 "apps:"\cf5 \strokec5 ;\
+\
+
+\f7\b \cf7 \strokec7 const
+\f4\b0 \cf5 \strokec5  client = 
+\f7\b \cf7 \strokec7 new
+\f4\b0 \cf5 \strokec5  \cf8 \strokec8 Redis\cf5 \strokec5 (\{ host, port, db, lazyConnect: true \});\
+\
+client.on(\cf9 \strokec9 "error"\cf5 \strokec5 , (err) => \{\
+  \cf10 \strokec10 console\cf5 \strokec5 .warn(\cf9 \strokec9 "Dragonfly cache error:"\cf5 \strokec5 , err.message);\
+\});\
+\
+
+\f7\b \cf7 \strokec7 export
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 function
+\f4\b0 \cf5 \strokec5  connectCache() \{\
+  
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  (!client.status || client.status !== \cf9 \strokec9 "ready"\cf5 \strokec5 ) \{\
+    
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  client.connect();\
+  \}\
+\}\
+\
+
+\f7\b \cf7 \strokec7 function
+\f4\b0 \cf5 \strokec5  k(key: \cf10 \strokec10 string\cf5 \strokec5 ) \{\
+  
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  \cf9 \strokec9 `\cf5 \strokec5 $\{prefix\}$\{key\}\cf9 \strokec9 `\cf5 \strokec5 ;\
+\}\
+\
+
+\f7\b \cf7 \strokec7 export
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 function
+\f4\b0 \cf5 \strokec5  cacheGet\cf8 \strokec8 <T>\cf5 \strokec5 (key: \cf10 \strokec10 string\cf5 \strokec5 ): \cf10 \strokec10 Promise\cf5 \strokec5 <T | 
+\f7\b \cf7 \strokec7 null
+\f4\b0 \cf5 \strokec5 > \{\
+  
+\f7\b \cf7 \strokec7 try
+\f4\b0 \cf5 \strokec5  \{\
+    
+\f7\b \cf7 \strokec7 const
+\f4\b0 \cf5 \strokec5  raw = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  client.get(k(key));\
+    
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  raw ? (JSON.parse(raw) 
+\f7\b \cf7 \strokec7 as
+\f4\b0 \cf5 \strokec5  T) : 
+\f7\b \cf7 \strokec7 null
+\f4\b0 \cf5 \strokec5 ;\
+  \} 
+\f7\b \cf7 \strokec7 catch
+\f4\b0 \cf5 \strokec5  (err) \{\
+    \cf10 \strokec10 console\cf5 \strokec5 .warn(\cf9 \strokec9 "cacheGet failed:"\cf5 \strokec5 , err);\
+    
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 null
+\f4\b0 \cf5 \strokec5 ;\
+  \}\
+\}\
+\
+
+\f7\b \cf7 \strokec7 export
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 function
+\f4\b0 \cf5 \strokec5  cacheSet(key: \cf10 \strokec10 string\cf5 \strokec5 , value: \cf10 \strokec10 any\cf5 \strokec5 , ttlSec = \cf10 \strokec10 3600\cf5 \strokec5 ) \{\
+  
+\f7\b \cf7 \strokec7 try
+\f4\b0 \cf5 \strokec5  \{\
+    
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  client.set(k(key), JSON.stringify(value), \cf9 \strokec9 "EX"\cf5 \strokec5 , ttlSec);\
+  \} 
+\f7\b \cf7 \strokec7 catch
+\f4\b0 \cf5 \strokec5  (err) \{\
+    \cf10 \strokec10 console\cf5 \strokec5 .warn(\cf9 \strokec9 "cacheSet failed:"\cf5 \strokec5 , err);\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Agent prompts, wiring, and guards (v2)\
+System\uc0\u8209 level prompt (orchestrator agent)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 system_prompt: |\
+  You are the Orchestration Agent for the Ecosystem platform.\
+  The platform is live in production on Spaceship Starlight with Dragonfly as the\
+  shared in-memory cache layer.\
+\
+  Your job is to coordinate domain agents (CreditX, 91 Apps, Global AI Alert,\
+  Guardian AI, Stolen Phones) to complete workflows reliably.\
+\
+  Core rules:\
+  - ALWAYS check dependency readiness (DB, Dragonfly, event bus) before dispatching.\
+  - If Dragonfly is degraded, continue workflows using PostgreSQL and mark\
+    results as "cache_degraded" for observability.\
+  - Use exponential backoff and circuit breakers to avoid cascading failures.\
+  - Never drop a customer workflow silently; on repeated failure, escalate to\
+    Recovery Agent and queue for manual review.\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 \strokec2 Recovery agent prompt snippet (cache\uc0\u8209 aware)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 task: |\
+  When called with a failure event, classify the failure as:\
+  - transient_network\
+  - dragonfly_degraded\
+  - database_issue\
+  - application_bug\
+  - configuration_error\
+\
+  For dragonfly_degraded:\
+  - Open cache-related circuit breakers.\
+  - Instruct callers to use database-only code paths.\
+  - Schedule a health probe against Dragonfly every 30 seconds.\
+  - When 3 consecutive probes succeed with p95 latency < 5ms, allow cache use again.\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 The orchestration and recovery logic stays the same; the semantic change is that \'93Redis down\'94 becomes \'93Dragonfly degraded,\'94 but the mitigation pattern (fallback to DB, backoff, circuit breaker) is identical.\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 \strokec2 Agent wiring (example)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 agent_registry:\
+  orchestrator-agent:\
+    url: http://orchestrator.internal\
+  recovery-agent:\
+    url: http://recovery.internal\
+  tuning-agent:\
+    url: http://tuning.internal\
+\
+  creditx-compliance-agent:\
+    url: http://creditx-service.internal\
+    dependencies: [postgres, dragonfly]\
+\
+  threat-agent:\
+    url: http://threat-service.internal\
+    dependencies: [postgres, dragonfly]\
+\
+  guardian-agent:\
+    url: http://guardian-service.internal\
+    dependencies: [postgres, dragonfly]\
+\
+  apps-agent:\
+    url: http://apps-service.internal\
+    dependencies: [postgres, dragonfly]\
+\
+  phones-agent:\
+    url: http://phones-service.internal\
+    dependencies: [postgres, dragonfly]\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Data modelling & mapping (unchanged, but cache\uc0\u8209 optimized)\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 \strokec2 The 
+\f2\b \strokec2 PostgreSQL schemas
+\f1\b0 \strokec2  you already defined remain the system of record; for v2, you align cache keys/tags by table and primary key:\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 cache_key_conventions:\
+  compliance_documents:\
+    key: "creditx:doc:\{document_id\}"\
+    ttl_sec: 7 * 24 * 3600\
+  automation_jobs:\
+    key: "apps:job:\{job_id\}"\
+    ttl_sec: 24 * 3600\
+  threat_events:\
+    key: "threat:event:\{event_id\}"\
+    ttl_sec: 15 * 60\
+  device_telemetry:\
+    key: "guardian:device:\{device_id\}"\
+    ttl_sec: 24 * 3600\
+  phone_locations:\
+    key: "phones:loc:\{device_id\}"\
+    ttl_sec: 24 * 3600\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 Representative pattern in Python:\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 python\
+\pard\pardeftab720\partightenfactor0
+
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  get_compliance_doc(doc_id: \cf10 \strokec10 str\cf5 \strokec5 ) -> \cf10 \strokec10 dict\cf5 \strokec5 :\
+    
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  fetch():\
+        row = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  db.fetch_one(\
+            \cf9 \strokec9 "SELECT * FROM compliance_documents WHERE document_id = :id"\cf5 \strokec5 ,\
+            \{\cf9 \strokec9 "id"\cf5 \strokec5 : doc_id\},\
+        )\
+        
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  \cf10 \strokec10 dict\cf5 \strokec5 (row) 
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  row 
+\f7\b \cf7 \strokec7 else
+\f4\b0 \cf5 \strokec5  None\
+\
+    key = \cf9 \strokec9 f"doc:\cf5 \strokec5 \{doc_id\}\cf9 \strokec9 "\cf5 \strokec5 \
+    
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  cache.cache_aside(key, ttl_sec=\cf10 \strokec10 7\cf5 \strokec5  * \cf10 \strokec10 24\cf5 \strokec5  * \cf10 \strokec10 3600\cf5 \strokec5 , fetch_fn=fetch)\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 Deployment controls and guards (production\uc0\u8209 focused)\
+Circuit breaker wrapper (creditx 
+\f8\b0 \uc0\u8594 
+\f2\b  Dragonfly)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 python\
+\pard\pardeftab720\partightenfactor0
+
+\f7\b \cf7 \strokec7 from
+\f4\b0 \cf5 \strokec5  pybreaker 
+\f7\b \cf7 \strokec7 import
+\f4\b0 \cf5 \strokec5  CircuitBreaker, CircuitBreakerError\
+\
+cache_breaker = CircuitBreaker(\
+    fail_max=\cf10 \strokec10 5\cf5 \strokec5 ,\
+    reset_timeout=\cf10 \strokec10 60\cf5 \strokec5 ,          
+\f6\i \cf6 \strokec6 # 1 minute
+\f4\i0 \cf5 \strokec5 \
+    exclude=[ValueError],      
+\f6\i \cf6 \strokec6 # e.g., validation issues not infra failures
+\f4\i0 \cf5 \strokec5 \
+)\
+\
+@cache_breaker\
+
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  safe_cache_get(key: \cf10 \strokec10 str\cf5 \strokec5 ):\
+    
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  cache.get(key)\
+\
+
+\f7\b \cf7 \strokec7 async
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 def
+\f4\b0 \cf5 \strokec5  get_with_guard(key: \cf10 \strokec10 str\cf5 \strokec5 , fetch_fn, ttl_sec: \cf10 \strokec10 int\cf5 \strokec5 ):\
+    
+\f7\b \cf7 \strokec7 try
+\f4\b0 \cf5 \strokec5 :\
+        cached = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  safe_cache_get(key)\
+        
+\f7\b \cf7 \strokec7 if
+\f4\b0 \cf5 \strokec5  cached 
+\f7\b \cf7 \strokec7 is
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 not
+\f4\b0 \cf5 \strokec5  None:\
+            
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  cached\
+    
+\f7\b \cf7 \strokec7 except
+\f4\b0 \cf5 \strokec5  CircuitBreakerError:\
+        
+\f6\i \cf6 \strokec6 # Cache considered degraded, fall back directly to DB
+\f4\i0 \cf5 \strokec5 \
+        logger.warning(\cf9 \strokec9 "Cache circuit OPEN, using DB for %s"\cf5 \strokec5 , key)\
+        
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  fetch_fn()\
+\
+    value = 
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  fetch_fn()\
+    
+\f6\i \cf6 \strokec6 # best-effort cache set (no breaker to avoid suppression)
+\f4\i0 \cf5 \strokec5 \
+    
+\f7\b \cf7 \strokec7 await
+\f4\b0 \cf5 \strokec5  cache.\cf10 \strokec10 set\cf5 \strokec5 (key, value, ttl_sec)\
+    
+\f7\b \cf7 \strokec7 return
+\f4\b0 \cf5 \strokec5  value\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 \strokec2 Hyperlift deploy pipeline (Dragonfly\uc0\u8209 aware)\
+\pard\pardeftab720\qc\partightenfactor0
+
+\f5\b0\fs22 \cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs26 \cf0 \strokec2 text\
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 deployment_config:\
+  builds:\
+    - stage: build\
+      docker_file: ./Dockerfile\
+    - stage: test\
+      commands:\
+        - pytest -q\
+    - stage: security_scan\
+      commands:\
+        - trivy image $IMAGE\
+  deployments:\
+    production:\
+      strategy: blue_green\
+      prechecks:\
+        - "redis-cli -h dragonfly-cache.internal ping"   # must be PONG\
+        - "curl -sf http://creditx-service.internal/health/ready"\
+      traffic_shift:\
+        - \{ blue: 10, green: 90, wait_sec: 300 \}\
+        - \{ blue: 50, green: 50, wait_sec: 300 \}\
+        - \{ blue: 100, green: 0, wait_sec: 600 \}\
+      guards:\
+        error_rate_threshold: 0.01\
+        latency_p95_ms_threshold: 2000\
+        dragonfly_mem_util_threshold: 0.85\
+      rollback:\
+        on:\
+          - "error_rate > 0.01"\
+          - "latency_p95_ms > 2000"\
+          - "dragonfly_unreachable"\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf0 \strokec2 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f2\b\fs36 \cf0 How to apply this to your Phase 1 repos\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 \strokec2 For each service repo:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Dependencies
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls2\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Python: ensure 
+\f4\fs26 aioredis
+\f1\fs24  (or 
+\f4\fs26 redis-py
+\f1\fs24  async) is configured to point at 
+\f4\fs26 dragonfly-cache.internal:6379
+\f1\fs24  instead of any Redis host.\
+\ls2\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Node.js: ensure 
+\f4\fs26 ioredis
+\f1\fs24  client points at 
+\f4\fs26 dragonfly-cache.internal:6379
+\f1\fs24 .\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Config
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls2\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Add 
+\f4\fs26 CACHE_HOST
+\f1\fs24 , 
+\f4\fs26 CACHE_PORT
+\f1\fs24 , 
+\f4\fs26 CACHE_DB
+\f1\fs24 , 
+\f4\fs26 CACHE_KEY_PREFIX
+\f1\fs24  env vars and use them in a single shared cache module per language.\
+\ls2\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Remove any hardcoded 
+\f4\fs26 redis://\'85
+\f1\fs24  URLs from code and YAML.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Agents
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls2\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Update prompts to refer to \'93Dragonfly cache\'94 and \'93cache_degraded\'94 state, but keep behavior identical.\
+\ls2\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Ensure orchestrator checks Dragonfly health before large fan\uc0\u8209 out workflows.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Deployment
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls2\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Tag images as 
+\f4\fs26 v2.0.0-dragonfly
+\f1\fs24  for clarity.\
+\ls2\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Add pre\uc0\u8209 flight 
+\f4\fs26 redis-cli ping
+\f1\fs24  checks to Hyperlift pipelines.\
+\ls2\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Enable auto\uc0\u8209 rollback based on error/latency thresholds.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	5	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Monitoring
+\f1\b0 \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sa240\partightenfactor0
+\ls2\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Add Dragonfly metrics (
+\f4\fs26 ops/sec
+\f1\fs24 , 
+\f4\fs26 latency_p95
+\f1\fs24 , 
+\f4\fs26 mem_usage
+\f1\fs24 ) to Grafana dashboards.\
+\ls2\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f3 \uc0\u9702 
+\f1 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Set at least two alerts: 
+\f2\b cache latency high
+\f1\b0 , 
+\f2\b cache hit ratio low
+\f1\b0 .\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 \strokec2 This set of updates gives you a 
+\f2\b \strokec2 coherent, production\uc0\u8209 ready Phase 1 build
+\f1\b0 \strokec2  fully aligned with the Dragonfly migration and Spaceship stack, ready to run live and accept platform updates without rework.[{\field{\*\fldinst{HYPERLINK "https://www.spaceship.com/hosting/virtual-machines/"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 spaceship}}]\
+}
