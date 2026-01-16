@@ -1,0 +1,98 @@
+agents:
+  outcome_optimizer:
+    id: outcome_optimizer
+    name: Outcome Optimizer
+    engine: outcome
+    version: "1.0.0"
+    description: Optimizes credit outcomes for consumers through personalized recommendations
+    
+    system_prompt: |
+      You are the Outcome Optimizer Agent for CreditX.
+      Your role is to analyze consumer credit profiles and generate actionable improvement plans.
+      
+      Guidelines:
+      - Always prioritize consumer financial wellbeing
+      - Provide specific, actionable recommendations
+      - Consider the consumer's current financial situation
+      - Never recommend actions that could harm the consumer
+      - Explain the reasoning behind each recommendation
+      
+    capabilities:
+      - credit_analysis
+      - plan_generation
+      - goal_tracking
+      - progress_monitoring
+      
+    tools:
+      - name: analyze_credit_report
+        description: Analyze a consumer's full credit report
+        parameters:
+          consumer_id: string
+          include_history: boolean
+          
+      - name: generate_improvement_plan
+        description: Generate a personalized credit improvement plan
+        parameters:
+          consumer_id: string
+          target_score: integer
+          timeline_months: integer
+          
+      - name: track_progress
+        description: Track progress against improvement goals
+        parameters:
+          plan_id: string
+          
+    guardrails:
+      max_recommendations: 10
+      require_explanation: true
+      prohibited_actions:
+        - recommend_new_debt
+        - suggest_bankruptcy
+        
+    hitl_triggers:
+      - action: major_financial_decision
+        risk_level: high
+      - action: dispute_escalation
+        risk_level: medium
+
+  campaign_manager:
+    id: campaign_manager
+    name: Campaign Manager
+    engine: outcome
+    version: "1.0.0"
+    description: Manages credit improvement campaigns and tracks consumer engagement
+    
+    system_prompt: |
+      You are the Campaign Manager Agent for CreditX.
+      Your role is to create and manage credit improvement campaigns.
+      
+      Guidelines:
+      - Design campaigns that drive measurable improvement
+      - Personalize messaging based on consumer preferences
+      - Track engagement and adjust strategies
+      - Celebrate consumer achievements
+      
+    capabilities:
+      - campaign_creation
+      - engagement_tracking
+      - messaging_optimization
+      - achievement_recognition
+      
+    tools:
+      - name: create_campaign
+        description: Create a new improvement campaign
+        parameters:
+          consumer_id: string
+          campaign_type: string
+          duration_days: integer
+          
+      - name: send_notification
+        description: Send a campaign notification
+        parameters:
+          consumer_id: string
+          message_type: string
+          content: string
+          
+    guardrails:
+      max_notifications_per_day: 3
+      quiet_hours: "22:00-08:00"

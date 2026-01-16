@@ -1,0 +1,64 @@
+apiVersion: spaceship.io/v1
+kind: Application
+metadata:
+  name: creditx-agent-orchestrator
+  namespace: creditx-production
+  labels:
+    app: creditx
+    component: agent-orchestrator
+    tier: backend
+
+spec:
+  replicas: 2
+  
+  container:
+    image: creditx/agent-orchestrator:latest
+    port: 8010
+    
+    resources:
+      cpu: 2000m
+      memory: 4Gi
+      
+    env:
+      - name: ENVIRONMENT
+        value: production
+      - name: LLM_PROVIDER
+        value: anthropic
+      - name: LLM_MODEL
+        value: claude-3-sonnet-20240229
+      - name: ANTHROPIC_API_KEY
+        valueFrom:
+          secretRef: llm-credentials
+          key: anthropic_api_key
+      - name: DRAGONFLY_HOST
+        valueFrom:
+          secretRef: dragonfly-credentials
+          key: host
+      - name: DRAGONFLY_PASSWORD
+        valueFrom:
+          secretRef: dragonfly-credentials
+          key: password
+      - name: CREDITX_SERVICE_URL
+        value: http://creditx-service:8000
+        
+    healthcheck:
+      path: /health/live
+      interval: 30s
+      timeout: 10s
+      
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilization: 50
+    
+  networking:
+    ingress:
+      enabled: true
+      host: agent.creditx.io
+      tls: true
+      
+  monitoring:
+    metrics: true
+    logging: true
+    tracing: true

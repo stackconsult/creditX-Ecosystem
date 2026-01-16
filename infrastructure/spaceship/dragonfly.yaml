@@ -1,0 +1,47 @@
+apiVersion: spaceship.io/v1
+kind: Database
+metadata:
+  name: creditx-dragonfly
+  namespace: creditx-production
+  labels:
+    app: creditx
+    component: cache
+    tier: data
+
+spec:
+  engine: dragonfly
+  version: "1.12"
+  
+  resources:
+    cpu: 2000m
+    memory: 8Gi
+    storage: 50Gi
+    
+  config:
+    maxmemory-policy: allkeys-lru
+    tcp-keepalive: 300
+    timeout: 0
+    
+  highAvailability:
+    enabled: true
+    replicas: 3
+    
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"
+    retention: 7
+    
+  monitoring:
+    metrics: true
+    alerts:
+      - name: high-memory
+        condition: memory_usage > 80%
+        severity: warning
+      - name: connection-limit
+        condition: connected_clients > 1000
+        severity: warning
+        
+  networking:
+    service:
+      type: ClusterIP
+      port: 6379

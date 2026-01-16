@@ -1,0 +1,152 @@
+agents:
+  risk_assessor:
+    id: risk_assessor
+    name: Risk Assessment Agent
+    engine: risk_security
+    version: "1.0.0"
+    description: Assesses credit and fraud risk for applications and accounts
+    
+    system_prompt: |
+      You are the Risk Assessment Agent for CreditX.
+      Your role is to evaluate credit and fraud risk.
+      
+      Guidelines:
+      - Use multiple data points for risk assessment
+      - Ensure fair lending compliance
+      - Document all risk factors
+      - Provide actionable risk mitigation recommendations
+      
+    capabilities:
+      - risk_scoring
+      - fraud_detection
+      - anomaly_detection
+      - risk_mitigation
+      
+    tools:
+      - name: calculate_risk_score
+        description: Calculate risk score for an application
+        parameters:
+          application_id: string
+          include_fraud_check: boolean
+          
+      - name: detect_fraud_patterns
+        description: Detect potential fraud patterns
+        parameters:
+          entity_type: string
+          entity_id: string
+          lookback_days: integer
+          
+      - name: recommend_mitigation
+        description: Recommend risk mitigation actions
+        parameters:
+          risk_id: string
+          
+    guardrails:
+      min_data_points: 5
+      fairness_check_required: true
+      explainability_required: true
+      
+    hitl_triggers:
+      - action: high_risk_approval
+        risk_level: high
+      - action: fraud_confirmation
+        risk_level: critical
+
+  threat_detector:
+    id: threat_detector
+    name: Threat Detection Agent
+    engine: risk_security
+    version: "1.0.0"
+    description: Detects and responds to security threats
+    
+    system_prompt: |
+      You are the Threat Detection Agent for CreditX.
+      Your role is to identify and respond to security threats.
+      
+      Guidelines:
+      - Monitor all system activities for threats
+      - Respond quickly to detected threats
+      - Minimize false positives
+      - Document all incidents
+      
+    capabilities:
+      - threat_detection
+      - incident_response
+      - pattern_analysis
+      - alert_management
+      
+    tools:
+      - name: analyze_threat
+        description: Analyze a potential threat
+        parameters:
+          threat_id: string
+          severity: string
+          
+      - name: trigger_response
+        description: Trigger an incident response
+        parameters:
+          incident_id: string
+          response_type: string
+          
+      - name: block_entity
+        description: Block a malicious entity
+        parameters:
+          entity_type: string
+          entity_id: string
+          duration_hours: integer
+          
+    guardrails:
+      auto_block_threshold: critical
+      require_confirmation_for_permanent: true
+      
+    hitl_triggers:
+      - action: permanent_block
+        risk_level: high
+      - action: system_lockdown
+        risk_level: critical
+
+  guardian_endpoint:
+    id: guardian_endpoint
+    name: Guardian Endpoint Agent
+    engine: risk_security
+    version: "1.0.0"
+    description: Manages endpoint security and device protection
+    
+    system_prompt: |
+      You are the Guardian Endpoint Agent for CreditX.
+      Your role is to protect endpoints and manage device security.
+      
+      Guidelines:
+      - Monitor all connected devices
+      - Enforce security policies
+      - Respond to endpoint threats
+      - Maintain device inventory
+      
+    capabilities:
+      - endpoint_monitoring
+      - policy_enforcement
+      - device_management
+      - threat_response
+      
+    tools:
+      - name: scan_endpoint
+        description: Scan an endpoint for vulnerabilities
+        parameters:
+          device_id: string
+          scan_type: string
+          
+      - name: enforce_policy
+        description: Enforce a security policy on a device
+        parameters:
+          device_id: string
+          policy_id: string
+          
+      - name: isolate_device
+        description: Isolate a compromised device
+        parameters:
+          device_id: string
+          reason: string
+          
+    guardrails:
+      scan_frequency_hours: 24
+      auto_isolate_on_critical: true

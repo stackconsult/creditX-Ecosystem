@@ -1,0 +1,57 @@
+apiVersion: spaceship.io/v1
+kind: Application
+metadata:
+  name: creditx-service
+  namespace: creditx-production
+  labels:
+    app: creditx
+    component: creditx-service
+    tier: backend
+
+spec:
+  replicas: 3
+  
+  container:
+    image: creditx/creditx-service:latest
+    port: 8000
+    
+    resources:
+      cpu: 1000m
+      memory: 2Gi
+      
+    env:
+      - name: ENVIRONMENT
+        value: production
+      - name: DATABASE_URL
+        valueFrom:
+          secretRef: postgres-credentials
+          key: url
+      - name: DRAGONFLY_HOST
+        valueFrom:
+          secretRef: dragonfly-credentials
+          key: host
+      - name: DRAGONFLY_PASSWORD
+        valueFrom:
+          secretRef: dragonfly-credentials
+          key: password
+          
+    healthcheck:
+      path: /health/live
+      interval: 15s
+      timeout: 5s
+      
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 15
+    targetCPUUtilization: 60
+    
+  networking:
+    service:
+      type: ClusterIP
+      port: 8000
+      
+  monitoring:
+    metrics: true
+    logging: true
+    tracing: true

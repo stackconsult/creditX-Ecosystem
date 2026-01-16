@@ -1,0 +1,144 @@
+agents:
+  underwriting_agent:
+    id: underwriting_agent
+    name: Underwriting Agent
+    engine: market_capital
+    version: "1.0.0"
+    description: Automated underwriting decisions for loan applications
+    
+    system_prompt: |
+      You are the Underwriting Agent for CreditX.
+      Your role is to make fair, accurate underwriting decisions.
+      
+      Guidelines:
+      - Evaluate all applications consistently
+      - Ensure fair lending compliance
+      - Document decision rationale
+      - Provide clear terms when approving
+      - Give helpful feedback when declining
+      
+    capabilities:
+      - application_review
+      - decision_making
+      - terms_generation
+      - feedback_provision
+      
+    tools:
+      - name: evaluate_application
+        description: Evaluate a loan application
+        parameters:
+          application_id: string
+          
+      - name: make_decision
+        description: Make an underwriting decision
+        parameters:
+          application_id: string
+          decision: string
+          terms: object
+          
+      - name: generate_adverse_action
+        description: Generate adverse action notice
+        parameters:
+          application_id: string
+          reasons: array
+          
+    guardrails:
+      require_fairness_check: true
+      max_auto_approve_amount: 50000
+      require_explanation: true
+      
+    hitl_triggers:
+      - action: approve_loan
+        risk_level: high
+        condition: amount > 25000
+      - action: override_decline
+        risk_level: high
+
+  portfolio_analyzer:
+    id: portfolio_analyzer
+    name: Portfolio Analyzer Agent
+    engine: market_capital
+    version: "1.0.0"
+    description: Analyzes loan portfolio performance and risk
+    
+    system_prompt: |
+      You are the Portfolio Analyzer Agent for CreditX.
+      Your role is to analyze portfolio performance and risk.
+      
+      Guidelines:
+      - Monitor portfolio health continuously
+      - Identify risk concentrations
+      - Predict delinquency trends
+      - Recommend portfolio adjustments
+      
+    capabilities:
+      - performance_analysis
+      - risk_monitoring
+      - trend_prediction
+      - recommendation_generation
+      
+    tools:
+      - name: analyze_portfolio
+        description: Analyze portfolio performance
+        parameters:
+          partner_id: string
+          period: string
+          
+      - name: identify_risk_concentrations
+        description: Identify risk concentrations
+        parameters:
+          partner_id: string
+          
+      - name: predict_delinquencies
+        description: Predict potential delinquencies
+        parameters:
+          partner_id: string
+          horizon_days: integer
+          
+    guardrails:
+      refresh_frequency_hours: 6
+      alert_on_concentration: true
+
+  pricing_optimizer:
+    id: pricing_optimizer
+    name: Pricing Optimizer Agent
+    engine: market_capital
+    version: "1.0.0"
+    description: Optimizes loan pricing and terms
+    
+    system_prompt: |
+      You are the Pricing Optimizer Agent for CreditX.
+      Your role is to optimize loan pricing while ensuring profitability and fairness.
+      
+      Guidelines:
+      - Balance profitability with competitiveness
+      - Ensure pricing is fair across demographics
+      - Consider risk-based pricing carefully
+      - Monitor market conditions
+      
+    capabilities:
+      - pricing_optimization
+      - margin_analysis
+      - competitive_analysis
+      - fairness_validation
+      
+    tools:
+      - name: optimize_pricing
+        description: Optimize pricing for a loan product
+        parameters:
+          product_id: string
+          constraints: object
+          
+      - name: validate_fairness
+        description: Validate pricing fairness
+        parameters:
+          pricing_model_id: string
+          
+    guardrails:
+      max_apr: 36.0
+      require_fairness_validation: true
+      
+    hitl_triggers:
+      - action: pricing_change
+        risk_level: medium
+        condition: change_percent > 10

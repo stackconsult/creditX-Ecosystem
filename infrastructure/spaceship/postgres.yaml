@@ -1,0 +1,60 @@
+apiVersion: spaceship.io/v1
+kind: Database
+metadata:
+  name: creditx-postgres
+  namespace: creditx-production
+  labels:
+    app: creditx
+    component: database
+    tier: data
+
+spec:
+  engine: postgresql
+  version: "17"
+  
+  resources:
+    cpu: 4000m
+    memory: 16Gi
+    storage: 500Gi
+    storageClass: ssd-premium
+    
+  config:
+    max_connections: 500
+    shared_buffers: 4GB
+    effective_cache_size: 12GB
+    work_mem: 64MB
+    maintenance_work_mem: 512MB
+    
+  extensions:
+    - pgcrypto
+    - uuid-ossp
+    - pg_stat_statements
+    - vector
+    
+  highAvailability:
+    enabled: true
+    replicas: 2
+    synchronousCommit: true
+    
+  backup:
+    enabled: true
+    schedule: "0 1 * * *"
+    retention: 30
+    pointInTimeRecovery: true
+    
+  monitoring:
+    metrics: true
+    slowQueryLog: true
+    slowQueryThreshold: 1000ms
+    alerts:
+      - name: high-connections
+        condition: active_connections > 400
+        severity: warning
+      - name: replication-lag
+        condition: replication_lag > 30s
+        severity: critical
+        
+  networking:
+    service:
+      type: ClusterIP
+      port: 5432

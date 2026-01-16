@@ -1,0 +1,153 @@
+agents:
+  dispute_resolution:
+    id: dispute_resolution
+    name: Dispute Resolution Agent
+    engine: rights_trust
+    version: "1.0.0"
+    description: Handles credit dispute workflows and bureau communications
+    
+    system_prompt: |
+      You are the Dispute Resolution Agent for CreditX.
+      Your role is to help consumers dispute inaccurate items on their credit reports.
+      
+      Guidelines:
+      - Always verify the consumer's identity before proceeding
+      - Document all evidence thoroughly
+      - Follow FCRA guidelines strictly
+      - Communicate clearly with credit bureaus
+      - Keep the consumer informed of progress
+      
+    capabilities:
+      - dispute_filing
+      - evidence_analysis
+      - bureau_communication
+      - status_tracking
+      
+    tools:
+      - name: file_dispute
+        description: File a dispute with a credit bureau
+        parameters:
+          consumer_id: string
+          bureau: string
+          item_id: string
+          reason: string
+          evidence: array
+          
+      - name: check_dispute_status
+        description: Check the status of an existing dispute
+        parameters:
+          dispute_id: string
+          
+      - name: escalate_dispute
+        description: Escalate a dispute to supervisor review
+        parameters:
+          dispute_id: string
+          reason: string
+          
+    guardrails:
+      require_evidence: true
+      max_disputes_per_item: 3
+      cooling_period_days: 30
+      
+    hitl_triggers:
+      - action: escalate_dispute
+        risk_level: medium
+      - action: legal_referral
+        risk_level: high
+
+  data_rights_agent:
+    id: data_rights_agent
+    name: Data Rights Agent
+    engine: rights_trust
+    version: "1.0.0"
+    description: Manages CCPA/GDPR data rights requests
+    
+    system_prompt: |
+      You are the Data Rights Agent for CreditX.
+      Your role is to process consumer data rights requests.
+      
+      Guidelines:
+      - Verify consumer identity before processing requests
+      - Complete requests within regulatory timeframes
+      - Ensure complete data export when requested
+      - Handle deletion requests securely
+      - Maintain audit trail of all actions
+      
+    capabilities:
+      - data_export
+      - data_deletion
+      - consent_management
+      - access_logging
+      
+    tools:
+      - name: export_consumer_data
+        description: Export all consumer data
+        parameters:
+          consumer_id: string
+          format: string
+          scope: array
+          
+      - name: delete_consumer_data
+        description: Delete consumer data
+        parameters:
+          consumer_id: string
+          scope: string
+          
+      - name: update_consent
+        description: Update consumer consent preferences
+        parameters:
+          consumer_id: string
+          consent_type: string
+          granted: boolean
+          
+    guardrails:
+      verification_required: true
+      audit_all_actions: true
+      retention_period_days: 30
+      
+    hitl_triggers:
+      - action: delete_consumer_data
+        risk_level: high
+      - action: bulk_export
+        risk_level: medium
+
+  compliance_monitor:
+    id: compliance_monitor
+    name: Compliance Monitor
+    engine: rights_trust
+    version: "1.0.0"
+    description: Monitors regulatory compliance across the platform
+    
+    system_prompt: |
+      You are the Compliance Monitor Agent for CreditX.
+      Your role is to ensure platform compliance with regulations.
+      
+      Guidelines:
+      - Monitor all transactions for compliance
+      - Flag potential violations immediately
+      - Generate compliance reports
+      - Track regulatory changes
+      
+    capabilities:
+      - compliance_monitoring
+      - violation_detection
+      - report_generation
+      - regulation_tracking
+      
+    tools:
+      - name: run_compliance_check
+        description: Run a compliance check on an entity
+        parameters:
+          entity_type: string
+          entity_id: string
+          regulations: array
+          
+      - name: generate_compliance_report
+        description: Generate a compliance report
+        parameters:
+          report_type: string
+          period: string
+          
+    guardrails:
+      real_time_monitoring: true
+      alert_on_violation: true

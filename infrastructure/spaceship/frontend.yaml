@@ -1,0 +1,54 @@
+apiVersion: spaceship.io/v1
+kind: Application
+metadata:
+  name: creditx-frontend
+  namespace: creditx-production
+  labels:
+    app: creditx
+    component: frontend
+    tier: presentation
+
+spec:
+  replicas: 3
+  
+  container:
+    image: creditx/frontend:latest
+    port: 3000
+    
+    resources:
+      cpu: 500m
+      memory: 512Mi
+      
+    env:
+      - name: NODE_ENV
+        value: production
+      - name: NEXT_PUBLIC_API_URL
+        value: https://api.creditx.io
+      - name: NEXT_PUBLIC_COPILOTKIT_URL
+        value: https://agent.creditx.io
+        
+    healthcheck:
+      path: /api/health
+      interval: 30s
+      timeout: 5s
+      
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilization: 70
+    
+  networking:
+    ingress:
+      enabled: true
+      host: app.creditx.io
+      tls: true
+      
+    cdn:
+      enabled: true
+      cacheStatic: true
+      
+  monitoring:
+    metrics: true
+    logging: true
+    tracing: true
