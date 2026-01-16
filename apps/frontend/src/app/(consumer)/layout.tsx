@@ -18,9 +18,12 @@ export default function ConsumerLayout({
             <span className="font-semibold text-lg">Consumer OS</span>
           </div>
           <nav className="flex items-center gap-6">
-            <a href="/consumer/dashboard" className="hover:opacity-80">Dashboard</a>
-            <a href="/consumer/credit" className="hover:opacity-80">Credit</a>
-            <a href="/consumer/disputes" className="hover:opacity-80">Disputes</a>
+            <a href="/dashboard" className="hover:opacity-80">Dashboard</a>
+            <a href="/credit" className="hover:opacity-80">Credit</a>
+            <a href="/disputes" className="hover:opacity-80">Disputes</a>
+            <a href="/plans" className="hover:opacity-80">Plans</a>
+            <a href="/rights" className="hover:opacity-80">Rights</a>
+            <a href="/settings" className="hover:opacity-80">Settings</a>
           </nav>
         </div>
       </header>
