@@ -1,7 +1,17 @@
 # SKILLS.md - AI Agent Memory Document
 
-> Persistent context for Windsurf Cascade to remember project state
-> **Updated: January 19, 2026**
+> Persistent context for Windsurf Cascade to remember project state  
+> **Updated: January 19, 2026 @ 2:05 PM MST**
+
+---
+
+## 🚦 Current Status
+
+**ALL CODE COMPLETE** - Waiting on Hyperlift technical team for:
+- Dashboard access
+- Managed PostgreSQL provisioning
+- Managed Dragonfly provisioning
+- GitHub secrets integration confirmation
 
 ---
 
@@ -13,127 +23,176 @@
 | **Domain** | creditx.credit |
 | **Platform** | Spaceship Hyperlift (Medium plan) |
 | **GitHub** | stackconsult/creditX-Ecosystem |
-| **Branch** | main |
+| **Branch** | main (auto-deploy enabled) |
 
 ---
 
 ## Architecture
 
-**Design**: Microservices in Single Container
+**Design**: Microservices in Single Hyperlift Container
 
 ```
-Hyperlift Container (PORT)
-├── nginx (entry point, routes externally)
-├── supervisor (manages all processes)
-├── Frontend (Next.js :3000)
-├── API Gateway (Express :4000)
-├── Agent Orchestrator (Python :8010)
-├── CreditX Service (Python :8000)
-├── Threat Service (Python :8001)
-└── Guardian Service (Python :8002)
+Hyperlift Container (PORT from environment)
+│
+├── nginx (entry point, routes to internal services)
+│   ├── /health → 200 OK (Hyperlift health check)
+│   ├── /api/* → API Gateway :4000
+│   ├── /agent/* → Agent Orchestrator :8010
+│   ├── /services/creditx/* → CreditX Service :8000
+│   └── /* → Frontend :3000
+│
+└── supervisor (process manager)
+    ├── frontend (Next.js :3000)
+    ├── api-gateway (Express :4000)
+    ├── agent-orchestrator (FastAPI :8010)
+    ├── creditx-service (FastAPI :8000)
+    ├── threat-service (FastAPI :8001)
+    └── guardian-service (FastAPI :8002)
 ```
 
 ---
 
-## Production Credentials
+## Credentials Location
 
-### API Keys (from .env file - DO NOT COMMIT ACTUAL KEYS)
+### API Keys (DO NOT COMMIT TO GIT)
 
-| Variable | Location |
-|----------|----------|
-| `OPENAI_API_KEY` | See `.env` file (line 147) |
-| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | See `.env` file (line 148) |
+| Variable | Location in `.env` |
+|----------|-------------------|
+| `OPENAI_API_KEY` | Line 147 (starts with `sk-proj-`) |
+| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | Line 148 (starts with `ck_pub_`) |
 
-> **Note**: Actual keys are in local `.env` file and Hyperlift Dashboard.
+### Infrastructure (From Spaceship - WAITING)
 
-### Infrastructure (Spaceship Managed)
-
-| Variable | Value |
-|----------|-------|
-| `CACHE_HOST` | `dragonfly-cache.internal` |
-| `DATABASE_URL` | `postgresql://ecosystem:CHANGE_ME@postgres.internal:5432/ecosystem` |
+| Variable | Status |
+|----------|--------|
+| `DATABASE_URL` | ⏳ Waiting on Hyperlift team |
+| `CACHE_HOST` | ⏳ Waiting on Hyperlift team |
 
 ---
 
-## Tech Stack
+## Completed Components (41/41)
 
-### Frontend (`apps/frontend`)
-- Next.js 14 (App Router, standalone output)
-- CopilotKit with OpenAI Adapter
-- TailwindCSS, shadcn/ui, Lucide icons
-- Multi-face: Consumer `/`, Partner `/partner`, Internal `/internal`
+### Infrastructure (8/8)
+- ✅ `Dockerfile` - Multi-stage, all 6 services
+- ✅ `docker/nginx.conf` - Routes PORT → internal services
+- ✅ `docker/supervisord.conf` - Process management
+- ✅ `docker/start.sh` - Startup + env validation
+- ✅ `hyperlift.yaml` - Domain, secrets, auto-deploy
+- ✅ `.github/workflows/deploy.yml` - CI/CD pipeline
+- ✅ `SKILLS.md` - AI agent memory
+- ✅ `AGENTS.md` - AI agent instructions
 
-### API Gateway (`apps/api`)
-- Express.js, TypeScript
-- JWT authentication middleware
-- Routes to backend services
+### Frontend (6/6)
+- ✅ Next.js 14 App Router (standalone output)
+- ✅ CopilotKit with OpenAI Adapter
+- ✅ Multi-face routing: `(consumer)/`, `(partner)/`, `(internal)/`
+- ✅ API Client with tenant headers
+- ✅ TailwindCSS, shadcn/ui, Lucide icons
+- ✅ `next.config.js` with rewrites
 
-### Agent Orchestrator (`apps/agent`)
-- FastAPI, Python 3.12
-- LangGraph, LangChain
-- OpenAI GPT-4 Turbo (NOT Anthropic)
+### API Gateway (9/9)
+- ✅ Express.js server (Port 4000)
+- ✅ JWT auth middleware (`middleware/auth.ts`)
+- ✅ API key authentication
+- ✅ Role-based access (`requireRole()`, `requireFace()`)
+- ✅ Health routes
+- ✅ Consumer routes
+- ✅ Partner routes
+- ✅ Internal routes
+- ✅ Agent proxy routes
 
-### Backend Services
-| Service | Port | Purpose |
-|---------|------|---------|
-| creditx-service | 8000 | Compliance, credit scoring |
-| threat-service | 8001 | AI threat detection |
-| guardian-service | 8002 | Device security |
+### Agent Orchestrator (5/5)
+- ✅ FastAPI server (Port 8010)
+- ✅ LangGraph integration
+- ✅ LangChain integration
+- ✅ OpenAI GPT-4 Turbo config
+- ✅ Health endpoints
+
+### Backend Services (6/6)
+- ✅ creditx-service (8000) - Compliance, credit scoring
+- ✅ threat-service (8001) - AI threat detection
+- ✅ guardian-service (8002) - Device security
+- ✅ apps-service (8003) - 91-Apps automation
+- ✅ phones-service (8004) - Stolen phone tracking
+- ✅ local-ai (8005) - Local model inference
+
+### Database (4/4)
+- ✅ Migration runner (`migrate.py`)
+- ✅ `001_initial_schema.sql` (18KB)
+- ✅ `002_materialized_views.sql` (11KB)
+- ✅ `003_module_tables.sql` (22KB)
+
+### Shared Libraries (3/3)
+- ✅ `packages/shared` - TypeScript types, Zod schemas
+- ✅ `services/shared/node` - Logger, cache, http-client
+- ✅ `services/shared/python` - core_ai, resilience, cache
 
 ---
 
-## Key Files
+## GitHub Secrets (Set When Hyperlift Ready)
+
+| Secret Name | Source |
+|-------------|--------|
+| `OPENAI_API_KEY` | `.env` line 147 |
+| `COPILOTKIT_API_KEY` | `.env` line 148 |
+| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | `.env` line 148 |
+| `DATABASE_URL` | From Spaceship managed PostgreSQL |
+| `CACHE_HOST` | From Spaceship managed Dragonfly |
+| `CACHE_PORT` | `6379` |
+| `JWT_SECRET` | Generate: `openssl rand -base64 32` |
+
+---
+
+## Key Technical Decisions
+
+1. **LLM Provider**: OpenAI GPT-4 Turbo at runtime
+   - Anthropic/Claude is NOT used in the app
+   - Claude is only used for development via Windsurf Cascade
+
+2. **Multi-tenancy**: Headers propagated through all services
+   - `x-tenant-id` - Tenant identifier
+   - `x-face` - consumer | partner | internal
+   - `x-request-id` - Correlation ID
+
+3. **Three Faces**: Same backend, different UI/permissions
+   - Consumer: End users (`/`)
+   - Partner: B2B clients (`/partner`)
+   - Internal: CreditX staff (`/internal`)
+
+4. **Single Container**: All services in one Hyperlift deployment
+   - Simpler deployment, lower cost
+   - Internal localhost communication (fast)
+   - nginx routes externally, supervisor manages processes
+
+---
+
+## File Quick Reference
 
 | File | Purpose |
 |------|---------|
-| `Dockerfile` | Unified build, all services |
-| `docker/nginx.conf` | Routes PORT to internal services |
+| `Dockerfile` | Unified build |
+| `docker/nginx.conf` | Route PORT → services |
 | `docker/supervisord.conf` | Process management |
-| `docker/start.sh` | Startup script |
-| `hyperlift.yaml` | Hyperlift configuration |
-| `.env` | Environment variables (has real keys) |
-| `AGENTS.md` | AI agent instructions |
+| `docker/start.sh` | Container startup |
+| `hyperlift.yaml` | Hyperlift config |
+| `.env` | Real API keys (local only) |
+| `AGENTS.md` | AI instructions |
+| `SKILLS.md` | AI memory (this file) |
+| `docs/BUILD_STATUS.md` | Full audit status |
 
 ---
 
-## GitHub Repository Secrets (Required)
+## Next Steps (When Hyperlift Reports Back)
 
-Hyperlift reads secrets from GitHub. Set these at:
-`GitHub → Repository → Settings → Secrets and variables → Actions`
-
-| Secret Name | Value Source |
-|-------------|--------------|
-| `OPENAI_API_KEY` | `.env` line 147 |
-| `COPILOTKIT_API_KEY` | `.env` line 148 |
-| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | `.env` line 148 (same as above) |
-| `DATABASE_URL` | `postgresql://ecosystem:CHANGE_ME@postgres.internal:5432/ecosystem` |
-| `CACHE_HOST` | `dragonfly-cache.internal` |
-| `CACHE_PORT` | `6379` |
-| `JWT_SECRET` | Generate with `openssl rand -base64 32` |
-| `HYPERLIFT_WEBHOOK_URL` | From Hyperlift Dashboard |
+1. Get `DATABASE_URL` from managed PostgreSQL
+2. Get `CACHE_HOST` from managed Dragonfly
+3. Generate `JWT_SECRET`: `openssl rand -base64 32`
+4. Set all 7 secrets in GitHub repository settings
+5. Push to main → Hyperlift auto-deploys
+6. Verify at https://creditx.credit
 
 ---
 
-## Deployment Status
-
-- [x] Hyperlift Medium plan connected
-- [x] GitHub repo connected
-- [x] Domain creditx.credit connected
-- [x] Unified Dockerfile created
-- [x] nginx/supervisor configs created
-- [x] hyperlift.yaml configured with secrets references
-- [ ] GitHub repository secrets set
-- [ ] First production deploy
-
----
-
-## Important Notes
-
-1. **LLM Provider**: OpenAI GPT-4 Turbo at runtime (NOT Anthropic)
-2. **Build Tool**: Claude via Windsurf Cascade (development only)
-3. **Multi-tenancy**: x-tenant-id, x-face, x-request-id headers
-4. **Three faces**: Consumer, Partner, Internal (same backend)
-
----
-
-*This file exists for AI agent memory persistence. Update when project state changes.*
+*This file exists for AI agent memory persistence.*  
+*Update when project state changes.*  
+*Last audit: January 19, 2026 @ 2:05 PM MST*
