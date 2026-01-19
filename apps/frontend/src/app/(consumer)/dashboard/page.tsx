@@ -18,6 +18,7 @@ export default function ConsumerDashboard() {
   useCopilotAction({
     name: "explainCreditScore",
     description: "Explain the user's credit score and what affects it",
+    parameters: [],
     handler: async () => {
       return `Your credit score of ${creditScore} is considered Good. Key factors affecting your score include payment history, credit utilization, and length of credit history.`;
     },

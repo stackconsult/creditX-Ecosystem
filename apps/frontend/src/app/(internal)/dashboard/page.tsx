@@ -45,6 +45,7 @@ export default function InternalDashboard() {
   useCopilotAction({
     name: "getSystemStatus",
     description: "Get detailed system status and health metrics",
+    parameters: [],
     handler: async () => {
       const healthyCount = services.filter(s => s.status === "healthy").length;
       return `System Status: ${healthyCount}/${services.length} services healthy. ${stats.activeAgents} agents active. ${stats.pendingHitl} HITL requests pending. Compliance score: ${stats.complianceScore}%.`;

@@ -1,0 +1,39 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_TELEMETRY_DISABLED = "1"
+  NEXT_BUILD_STANDALONE = "true"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self' https://creditx.credit; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://creditx.credit wss://creditx.credit https://api.openai.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/api/backend/*"
+  to = "https://creditx.credit/api/v1/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/agents/*"
+  to = "https://creditx.credit/api/agents/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/health"
+  to = "https://creditx.credit/health"
+  status = 200
+  force = true

@@ -19,6 +19,7 @@ export default function PartnerDashboard() {
   useCopilotAction({
     name: "analyzePortfolio",
     description: "Analyze the current portfolio risk and performance",
+    parameters: [],
     handler: async () => {
       return `Portfolio Analysis: Total assets under management: $${(portfolioStats.totalAssets / 1000000).toFixed(1)}M. Default rate of ${portfolioStats.defaultRate}% is within acceptable range. Average borrower score of ${portfolioStats.avgScore} indicates moderate risk profile.`;
     },

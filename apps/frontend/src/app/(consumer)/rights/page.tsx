@@ -21,6 +21,7 @@ export default function RightsPage() {
   useCopilotAction({
     name: "requestDataExport",
     description: "Help the user request an export of their data",
+    parameters: [],
     handler: async () => {
       return "I'll help you request a data export. Under CCPA/GDPR, you have the right to receive a copy of all personal data we hold about you. The export typically takes 2-3 business days to prepare. Would you like me to initiate this request?";
     },
@@ -29,6 +30,7 @@ export default function RightsPage() {
   useCopilotAction({
     name: "requestDataDeletion",
     description: "Help the user request deletion of their data",
+    parameters: [],
     handler: async () => {
       return "I can help you request data deletion. Please note that some data may need to be retained for legal compliance (e.g., financial records). Would you like me to explain what data can be deleted and what must be retained?";
     },

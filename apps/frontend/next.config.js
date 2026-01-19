@@ -7,15 +7,29 @@ const nextConfig = {
     },
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000",
-    NEXT_PUBLIC_DOMAIN: process.env.DOMAIN || "creditx.credit",
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "https://creditx.credit",
+    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL || "wss://creditx.credit/ws",
+    NEXT_PUBLIC_COPILOT_API: process.env.NEXT_PUBLIC_COPILOT_API || "https://creditx.credit/api/copilot",
+    NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN || "creditx.credit",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "creditx.credit",
+      },
+    ],
   },
   async rewrites() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://creditx.credit";
     return [
       {
-        // Proxy API calls to internal API Gateway
         source: "/api/backend/:path*",
-        destination: `${process.env.API_GATEWAY_URL || "http://127.0.0.1:4000"}/api/v1/:path*`,
+        destination: `${apiUrl}/api/v1/:path*`,
+      },
+      {
+        source: "/api/agents/:path*",
+        destination: `${apiUrl}/api/agents/:path*`,
       },
     ];
   },
