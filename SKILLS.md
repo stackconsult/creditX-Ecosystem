@@ -7,17 +7,23 @@
 
 ## 🚦 Current Status
 
-**ALL CODE COMPLETE** - Waiting on Hyperlift technical team for:
-- Dashboard access
-- Managed PostgreSQL provisioning
-- Managed Dragonfly provisioning
-- GitHub secrets integration confirmation
+**FRONTEND READY FOR NETLIFY** | **BACKEND WAITING ON HYPERLIFT**
 
-### Recent Fixes (Jan 19, 2026)
-- ✅ **Next.js 14.2.15 → 14.2.35** - Fixed critical security vulnerability (9 CVEs)
-- ✅ **Python dependencies loosened** - Fixed langchain/aiohttp conflict in `apps/agent/requirements.txt`
-- ✅ **GitHub vulnerabilities: 15 → 6** - Remaining are low/moderate in transitive deps
-- ✅ **Deployment scripts added** - `scripts/verify-deployment.sh`, `scripts/local-docker-test.sh`
+### Deployment Architecture
+```
+Frontend (Netlify)              Backend (Hyperlift)
+creditx-frontend.netlify.app    creditx.credit
+├─ Next.js 14 SSR               ├─ 5 Microservices
+├─ CopilotKit AI UI             ├─ 21 AI Agents
+└─ $19/mo                       └─ $18/mo = $37/mo total
+```
+
+### Recent Updates (Jan 19, 2026 @ 4:45 PM)
+- ✅ **Netlify config added** - `apps/frontend/netlify.toml` with security headers + API proxy
+- ✅ **Production routing** - `next.config.js` wired to `https://creditx.credit`
+- ✅ **CopilotKit fixed** - All `useCopilotAction` calls have `parameters: []`
+- ✅ **Python deps aligned** - langchain versions unified across services
+- ✅ **Pushed to GitHub** - Commit `2d69b3e` on `main`
 
 ---
 
@@ -60,12 +66,22 @@ Hyperlift Container (PORT from environment)
 
 ## Credentials Location
 
-### API Keys (DO NOT COMMIT TO GIT)
+### API Keys (From `.env` - DO NOT COMMIT TO GIT)
 
-| Variable | Location in `.env` |
-|----------|-------------------|
-| `OPENAI_API_KEY` | Line 147 (starts with `sk-proj-`) |
-| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | Line 148 (starts with `ck_pub_`) |
+| Variable | Location | Use |
+|----------|----------|-----|
+| `OPENAI_API_KEY` | `.env` line 147 (starts with `sk-proj-MzF_`) | Backend AI |
+| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | `.env` line 148 (starts with `ck_pub_247`) | Frontend CopilotKit |
+
+### Netlify Environment Variables (Copy from local `.env`)
+
+```
+NEXT_PUBLIC_API_URL = https://creditx.credit
+OPENAI_API_KEY = (copy from .env line 147)
+NEXT_PUBLIC_COPILOTKIT_API_KEY = (copy from .env line 148)
+```
+
+**Note:** Keys stored in Cascade memory (MEMORY[d2a8c0be]) for auto-fill.
 
 ### Infrastructure (From Spaceship - WAITING)
 
