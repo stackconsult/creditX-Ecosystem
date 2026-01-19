@@ -18,8 +18,8 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     anthropic_api_key: str = ""
     
-    llm_provider: str = "anthropic"
-    llm_model: str = "claude-3-sonnet-20240229"
+    llm_provider: str = "openai"
+    llm_model: str = "gpt-4-turbo-preview"
     llm_temperature: float = 0.1
     llm_max_tokens: int = 4096
     
