@@ -12,6 +12,11 @@ project: creditx-ecosystem
 # ==========================================================================
 # Build Configuration
 # ==========================================================================
+# Note: Each service has its own Dockerfile for independent Hyperlift apps
+# - apps/frontend/Dockerfile
+# - apps/api/Dockerfile  
+# - apps/agent/Dockerfile
+# - Dockerfile (creditx-service - root)
 build:
   dockerfile: Dockerfile
   context: .

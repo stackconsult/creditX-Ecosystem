@@ -1,6 +1,7 @@
 # ============================================================================
 # creditX Ecosystem - Primary Production Container
-# Multi-stage build for the main application service
+# Multi-stage build for Spaceship Hyperlift deployment
+# Follows Hyperlift best practices: PORT env var, dumb-init, non-root user
 # ============================================================================
 
 FROM python:3.12-slim AS base
@@ -26,11 +27,12 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Production stage
 FROM python:3.12-slim AS runner
 
-# Install runtime dependencies only
+# Install runtime dependencies and dumb-init for signal handling
 RUN apt-get update && apt-get install -y \
     libpcap0.8 \
     libpq5 \
     curl \
+    dumb-init \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -51,11 +53,17 @@ COPY --chown=creditx:creditx services/creditx-service/app ./app
 
 USER creditx
 
+# Default port (Hyperlift will override via PORT env var)
+ENV PORT=8000
+
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:8000/health/live || exit 1
+# Health check using PORT env var
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:${PORT}/health/live || exit 1
 
-# Run with uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+# Use dumb-init for proper signal handling (SIGTERM on deployment)
+ENTRYPOINT ["dumb-init", "--"]
+
+# Run with uvicorn using PORT env var
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT} --workers 4"]
