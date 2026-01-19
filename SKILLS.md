@@ -96,6 +96,24 @@ Hyperlift Container (PORT)
 
 ---
 
+## GitHub Repository Secrets (Required)
+
+Hyperlift reads secrets from GitHub. Set these at:
+`GitHub → Repository → Settings → Secrets and variables → Actions`
+
+| Secret Name | Value Source |
+|-------------|--------------|
+| `OPENAI_API_KEY` | `.env` line 147 |
+| `COPILOTKIT_API_KEY` | `.env` line 148 |
+| `NEXT_PUBLIC_COPILOTKIT_API_KEY` | `.env` line 148 (same as above) |
+| `DATABASE_URL` | `postgresql://ecosystem:CHANGE_ME@postgres.internal:5432/ecosystem` |
+| `CACHE_HOST` | `dragonfly-cache.internal` |
+| `CACHE_PORT` | `6379` |
+| `JWT_SECRET` | Generate with `openssl rand -base64 32` |
+| `HYPERLIFT_WEBHOOK_URL` | From Hyperlift Dashboard |
+
+---
+
 ## Deployment Status
 
 - [x] Hyperlift Medium plan connected
@@ -103,7 +121,8 @@ Hyperlift Container (PORT)
 - [x] Domain creditx.credit connected
 - [x] Unified Dockerfile created
 - [x] nginx/supervisor configs created
-- [ ] Environment variables set in Hyperlift dashboard
+- [x] hyperlift.yaml configured with secrets references
+- [ ] GitHub repository secrets set
 - [ ] First production deploy
 
 ---

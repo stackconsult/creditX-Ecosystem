@@ -180,6 +180,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       
       - name: Build Frontend
+        env:
+          NEXT_PUBLIC_COPILOTKIT_API_KEY: ${{ secrets.NEXT_PUBLIC_COPILOTKIT_API_KEY }}
         run: |
           cd apps/frontend
           npm ci
