@@ -1,0 +1,31 @@
+# ============================================================================
+# CreditX Ecosystem - Code Owners
+# ============================================================================
+# These owners will be requested for review on pull requests.
+# Documentation: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# ============================================================================
+
+# Default owners for everything
+* @stackconsult
+
+# Frontend
+/apps/frontend/ @stackconsult
+
+# API Gateway
+/apps/api/ @stackconsult
+
+# Agent Orchestrator
+/apps/agent/ @stackconsult
+
+# Backend Services
+/services/ @stackconsult
+
+# Infrastructure
+/infrastructure/ @stackconsult
+/hyperlift.yaml @stackconsult
+
+# Shared packages
+/packages/ @stackconsult
+
+# CI/CD
+/.github/ @stackconsult

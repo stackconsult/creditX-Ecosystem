@@ -1,0 +1,186 @@
+# ============================================================================
+# Spaceship Hyperlift Configuration
+# Auto-deploy configuration for CreditX Ecosystem
+# ============================================================================
+# Hyperlift reads this file from the repo to configure deployments.
+# Documentation: https://docs.spaceship.com/hyperlift
+# ============================================================================
+
+version: "1.0"
+project: creditx-ecosystem
+
+# ==========================================================================
+# Build Configuration
+# ==========================================================================
+build:
+  dockerfile: Dockerfile
+  context: .
+  args:
+    NODE_VERSION: "20"
+    PYTHON_VERSION: "3.12"
+
+# ==========================================================================
+# Services
+# ==========================================================================
+services:
+  # Frontend - Next.js
+  frontend:
+    path: apps/frontend
+    port: 3000
+    healthcheck:
+      path: /api/health
+      interval: 30s
+      timeout: 5s
+    resources:
+      cpu: 0.5
+      memory: 512Mi
+    autoscale:
+      min: 2
+      max: 10
+      target_cpu: 70
+
+  # API Gateway - Express.js
+  api-gateway:
+    path: apps/api
+    port: 4000
+    healthcheck:
+      path: /health
+      interval: 30s
+      timeout: 5s
+    resources:
+      cpu: 0.5
+      memory: 512Mi
+    autoscale:
+      min: 2
+      max: 8
+      target_cpu: 70
+
+  # Agent Orchestrator - FastAPI
+  agent-orchestrator:
+    path: apps/agent
+    port: 8010
+    healthcheck:
+      path: /health
+      interval: 30s
+      timeout: 5s
+    resources:
+      cpu: 1.0
+      memory: 1Gi
+    autoscale:
+      min: 2
+      max: 6
+      target_cpu: 70
+
+  # CreditX Service - FastAPI
+  creditx-service:
+    path: services/creditx-service
+    port: 8000
+    healthcheck:
+      path: /health
+      interval: 30s
+      timeout: 5s
+    resources:
+      cpu: 0.5
+      memory: 512Mi
+    autoscale:
+      min: 2
+      max: 8
+      target_cpu: 70
+
+  # Threat Service - FastAPI
+  threat-service:
+    path: services/threat-service
+    port: 8001
+    healthcheck:
+      path: /health
+      interval: 30s
+      timeout: 5s
+    resources:
+      cpu: 0.5
+      memory: 512Mi
+    autoscale:
+      min: 1
+      max: 4
+      target_cpu: 70
+
+# ==========================================================================
+# Environments
+# ==========================================================================
+environments:
+  production:
+    branch: main
+    auto_deploy: true
+    url: https://ecosystem.ai
+    env_vars:
+      - NODE_ENV=production
+      - ENVIRONMENT=production
+    secrets:
+      - OPENAI_API_KEY
+      - COPILOTKIT_API_KEY
+      - DATABASE_URL
+      - CACHE_HOST
+
+  staging:
+    branch: develop
+    auto_deploy: true
+    url: https://staging.ecosystem.ai
+    env_vars:
+      - NODE_ENV=staging
+      - ENVIRONMENT=staging
+    secrets:
+      - OPENAI_API_KEY
+      - DATABASE_URL
+      - CACHE_HOST
+
+# ==========================================================================
+# Deployment Strategy
+# ==========================================================================
+deployment:
+  strategy: blue-green
+  rollback:
+    enabled: true
+    on_failure: true
+    error_rate_threshold: 5
+    latency_threshold_ms: 2000
+  notifications:
+    on_success: true
+    on_failure: true
+
+# ==========================================================================
+# Database (Managed by Spaceship)
+# ==========================================================================
+database:
+  type: postgres
+  version: "17"
+  size: standard
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"
+    retention_days: 30
+
+# ==========================================================================
+# Cache (Managed by Spaceship)
+# ==========================================================================
+cache:
+  type: dragonfly
+  size: standard
+  ha: true
+
+# ==========================================================================
+# Ingress / Routing
+# ==========================================================================
+ingress:
+  - host: ecosystem.ai
+    paths:
+      - path: /
+        service: frontend
+      - path: /api
+        service: api-gateway
+      - path: /agent
+        service: agent-orchestrator
+    tls:
+      enabled: true
+      auto_cert: true
+    rate_limit:
+      requests_per_minute: 1000
+      burst: 100
