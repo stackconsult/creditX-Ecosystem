@@ -71,19 +71,52 @@
 
 ## Remaining Work
 
-### High Priority
-1. **Database Migrations** - PostgreSQL schema setup
-2. **Authentication** - JWT/OAuth middleware implementation
-3. **Create GitHub Environment** - Settings → Environments → `production`
+### 🔴 High Priority (Pre-Production)
 
-### Medium Priority  
-4. **End-to-end Testing** - Verify all service integrations
-5. **API Documentation** - OpenAPI/Swagger specs
-6. **Monitoring Setup** - Observability dashboards
+| Task | Effort | Blocker? |
+|------|--------|----------|
+| Database Migrations | Medium | Yes |
+| Authentication (JWT/OAuth) | Medium | Yes |
+| Create GitHub `production` environment | 5 min | Yes |
+| Create 4 Hyperlift apps | 30 min | Yes |
+| Configure Hyperlift secrets | 15 min | Yes |
 
-### Low Priority
-7. **Performance Optimization** - Caching, query optimization
-8. **Security Hardening** - Rate limiting, input validation audit
+### 🟡 Medium Priority (Post-MVP)
+
+| Task | Effort | Notes |
+|------|--------|-------|
+| End-to-end testing | Medium | Integration tests |
+| API Documentation (OpenAPI) | Low | FastAPI auto-generates |
+| Monitoring dashboards | Low | Datadog/New Relic |
+| Additional backend services | Medium | threat, guardian, apps, phones |
+
+### 🟢 Low Priority (Optimization)
+
+| Task | Effort | Notes |
+|------|--------|-------|
+| Performance tuning | Low | After load testing |
+| Security audit | Medium | Penetration testing |
+| CDN configuration | Low | Static assets |
+
+## Hyperlift Deployment Status
+
+| Component | Dockerfile | Health Endpoint | Ready? |
+|-----------|------------|-----------------|--------|
+| Frontend | ✅ `apps/frontend/Dockerfile` | ✅ `/api/health` | ✅ |
+| API Gateway | ✅ `apps/api/Dockerfile` | ✅ `/health/live` | ✅ |
+| Agent Orchestrator | ✅ `apps/agent/Dockerfile` | ✅ `/health` | ✅ |
+| CreditX Service | ✅ `Dockerfile` (root) | ✅ `/health/live` | ✅ |
+| Threat Service | ⏳ Needs Dockerfile | ✅ `/health/live` | 🔄 |
+| Guardian Service | ⏳ Needs Dockerfile | ✅ `/health/live` | 🔄 |
+
+## Documentation
+
+| Document | Status |
+|----------|--------|
+| `AGENTS.md` | ✅ Created |
+| `BUILD_STATUS.md` | ✅ Created |
+| `DEPLOYMENT_PLAN.md` | ✅ Created |
+| `README.md` | ✅ Exists |
 
 ---
 
