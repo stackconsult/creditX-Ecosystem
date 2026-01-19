@@ -13,6 +13,8 @@ import partnerRoutes from './routes/partner';
 import internalRoutes from './routes/internal';
 import agentRoutes from './routes/agents';
 import healthRoutes from './routes/health';
+import authRoutes from './routes/auth';
+import { authMiddleware, optionalAuth } from './middleware/auth';
 
 const app = express();
 
@@ -36,11 +38,15 @@ app.use(limiter);
 
 app.use(requestLogger);
 
+// Public routes (no auth required)
 app.use('/health', healthRoutes);
-app.use('/api/v1/consumer', consumerRoutes);
-app.use('/api/v1/partner', partnerRoutes);
-app.use('/api/v1/internal', internalRoutes);
-app.use('/api/v1/agents', agentRoutes);
+app.use('/api/v1/auth', authRoutes);
+
+// Protected routes (auth required)
+app.use('/api/v1/consumer', authMiddleware, consumerRoutes);
+app.use('/api/v1/partner', authMiddleware, partnerRoutes);
+app.use('/api/v1/internal', authMiddleware, internalRoutes);
+app.use('/api/v1/agents', authMiddleware, agentRoutes);
 
 app.use(errorHandler);
 
