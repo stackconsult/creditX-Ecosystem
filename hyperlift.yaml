@@ -102,7 +102,7 @@ environments:
   production:
     branch: main
     auto_deploy: true
-    url: https://ecosystem.ai
+    url: https://creditx.credit
     env_vars:
       - NODE_ENV=production
       - ENVIRONMENT=production
@@ -116,7 +116,7 @@ environments:
   staging:
     branch: develop
     auto_deploy: true
-    url: https://staging.ecosystem.ai
+    url: https://staging.creditx.credit
     env_vars:
       - NODE_ENV=staging
       - ENVIRONMENT=staging
@@ -163,9 +163,9 @@ cache:
 # Domain Configuration
 # ==========================================================================
 domain:
-  primary: ecosystem.ai
+  primary: creditx.credit
   aliases:
-    - www.ecosystem.ai
+    - www.creditx.credit
   tls:
     enabled: true
     auto_cert: true

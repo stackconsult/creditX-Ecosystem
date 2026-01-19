@@ -8,18 +8,18 @@ export const config = {
   corsOrigins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'],
   
   services: {
-    creditx: process.env.CREDITX_SERVICE_URL || 'http://localhost:8000',
-    threat: process.env.THREAT_SERVICE_URL || 'http://localhost:8001',
-    guardian: process.env.GUARDIAN_SERVICE_URL || 'http://localhost:8002',
-    apps: process.env.APPS_SERVICE_URL || 'http://localhost:8003',
-    phones: process.env.PHONES_SERVICE_URL || 'http://localhost:8004',
-    agent: process.env.AGENT_SERVICE_URL || 'http://localhost:8010',
+    creditx: process.env.CREDITX_SERVICE_URL || 'http://127.0.0.1:8000',
+    threat: process.env.THREAT_SERVICE_URL || 'http://127.0.0.1:8001',
+    guardian: process.env.GUARDIAN_SERVICE_URL || 'http://127.0.0.1:8002',
+    apps: process.env.APPS_SERVICE_URL || 'http://127.0.0.1:8003',
+    phones: process.env.PHONES_SERVICE_URL || 'http://127.0.0.1:8004',
+    agent: process.env.AGENT_SERVICE_URL || 'http://127.0.0.1:8010',
   },
   
   cache: {
-    host: process.env.DRAGONFLY_HOST || 'localhost',
-    port: parseInt(process.env.DRAGONFLY_PORT || '6379', 10),
-    password: process.env.DRAGONFLY_PASSWORD || undefined,
+    host: process.env.CACHE_HOST || process.env.DRAGONFLY_HOST || 'localhost',
+    port: parseInt(process.env.CACHE_PORT || process.env.DRAGONFLY_PORT || '6379', 10),
+    password: process.env.CACHE_PASSWORD || process.env.DRAGONFLY_PASSWORD || undefined,
   },
   
   rateLimit: {
