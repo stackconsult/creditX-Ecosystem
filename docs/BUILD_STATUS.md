@@ -100,14 +100,27 @@
 
 ## Hyperlift Deployment Status
 
-| Component | Dockerfile | Health Endpoint | Ready? |
-|-----------|------------|-----------------|--------|
-| Frontend | ✅ `apps/frontend/Dockerfile` | ✅ `/api/health` | ✅ |
-| API Gateway | ✅ `apps/api/Dockerfile` | ✅ `/health/live` | ✅ |
-| Agent Orchestrator | ✅ `apps/agent/Dockerfile` | ✅ `/health` | ✅ |
-| CreditX Service | ✅ `Dockerfile` (root) | ✅ `/health/live` | ✅ |
-| Threat Service | ⏳ Needs Dockerfile | ✅ `/health/live` | 🔄 |
-| Guardian Service | ⏳ Needs Dockerfile | ✅ `/health/live` | 🔄 |
+### Single-App Architecture (Completed)
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Unified Dockerfile | ✅ | All services in one container |
+| docker/nginx.conf | ✅ | Routes PORT to internal services |
+| docker/supervisord.conf | ✅ | Manages all processes |
+| docker/start.sh | ✅ | Startup with migrations |
+| hyperlift.yaml | ✅ | Single-app configuration |
+
+### Internal Services (All in one container)
+
+| Service | Internal Port | Health Endpoint | Status |
+|---------|---------------|-----------------|--------|
+| nginx (entry) | PORT | `/health` | ✅ |
+| Frontend | 3000 | via nginx | ✅ |
+| API Gateway | 4000 | `/health/live` | ✅ |
+| Agent Orchestrator | 8010 | `/health` | ✅ |
+| CreditX Service | 8000 | `/health/live` | ✅ |
+| Threat Service | 8001 | `/health/live` | ✅ |
+| Guardian Service | 8002 | `/health/live` | ✅ |
 
 ## Documentation
 

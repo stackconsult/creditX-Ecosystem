@@ -7,13 +7,73 @@
 
 ## Table of Contents
 
-1. [Pre-Deployment Checklist](#pre-deployment-checklist)
-2. [Service Architecture](#service-architecture)
-3. [Hyperlift App Setup Procedures](#hyperlift-app-setup-procedures)
+1. [Architecture Overview](#architecture-overview)
+2. [Pre-Deployment Checklist](#pre-deployment-checklist)
+3. [Single App Deployment](#single-app-deployment)
 4. [Environment Variables Configuration](#environment-variables-configuration)
 5. [Domain & SSL Setup](#domain--ssl-setup)
 6. [Post-Deployment Verification](#post-deployment-verification)
 7. [Rollback Procedures](#rollback-procedures)
+
+---
+
+## Architecture Overview
+
+### Design: Microservices in Single Container
+
+CreditX Ecosystem uses a **microservices architecture** deployed as a **single Hyperlift application**.
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    HYPERLIFT CONTAINER                               │
+│                    (Single App, Single PORT)                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  nginx (PORT from Hyperlift)                                 │   │
+│  │  Routes: / → Frontend, /api → Gateway, /agent → Orchestrator│   │
+│  │  Health: /health → 200 OK                                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                              │                                       │
+│         ┌────────────────────┼────────────────────┐                 │
+│         ▼                    ▼                    ▼                 │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐           │
+│  │  Frontend   │     │ API Gateway │     │   Agent     │           │
+│  │  Next.js    │     │  Express    │     │ Orchestrator│           │
+│  │  :3000      │     │  :4000      │     │  :8010      │           │
+│  └─────────────┘     └──────┬──────┘     └─────────────┘           │
+│                              │                                       │
+│         ┌────────────────────┼────────────────────┐                 │
+│         ▼                    ▼                    ▼                 │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐           │
+│  │  CreditX    │     │   Threat    │     │  Guardian   │           │
+│  │  Service    │     │   Service   │     │  Service    │           │
+│  │  :8000      │     │   :8001     │     │  :8002      │           │
+│  └─────────────┘     └─────────────┘     └─────────────┘           │
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  supervisor - manages all processes                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+      ┌───────────────┐           ┌───────────────┐
+      │  PostgreSQL   │           │   Dragonfly   │
+      │  (Managed)    │           │   (Managed)   │
+      └───────────────┘           └───────────────┘
+```
+
+### Why This Architecture?
+
+| Benefit | Description |
+|---------|-------------|
+| **Microservices** | Services are logically separated, can be developed independently |
+| **Single Deployment** | One Hyperlift app = simpler ops, lower cost, unified health |
+| **Internal Comms** | Services communicate via localhost (no network overhead) |
+| **Unified Entry** | Single domain, nginx routes to appropriate service |
+| **Easy Scaling** | Scale the whole app horizontally with Hyperlift |
 
 ---
 
@@ -23,15 +83,17 @@
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Dockerfiles created | ✅ | 4 service-specific Dockerfiles |
+| Unified Dockerfile | ✅ | Single container with all services |
+| docker/nginx.conf | ✅ | Routes PORT to internal services |
+| docker/supervisord.conf | ✅ | Manages all processes |
+| docker/start.sh | ✅ | Startup script with migrations |
 | .dockerignore | ✅ | Excludes node_modules, .git, .env |
-| PORT env var support | ✅ | All services use `${PORT}` |
-| dumb-init for SIGTERM | ✅ | All Dockerfiles |
-| Non-root users | ✅ | Security best practice |
-| Health endpoints | ✅ | `/health/live`, `/health/ready` |
-| Multi-stage builds | ✅ | Smaller images |
-| Next.js standalone | ✅ | `output: "standalone"` in next.config.js |
-| hyperlift.yaml | ✅ | Configuration file |
+| PORT env var support | ✅ | nginx accepts PORT from Hyperlift |
+| dumb-init for SIGTERM | ✅ | Graceful shutdown |
+| Health endpoint | ✅ | `/health` returns 200 |
+| Multi-stage builds | ✅ | Smaller final image |
+| Next.js standalone | ✅ | `output: "standalone"` |
+| hyperlift.yaml | ✅ | Single-app configuration |
 | CI/CD workflow | ✅ | GitHub Actions |
 
 ### ⏳ Pending Items (Pre-Deploy)
@@ -39,60 +101,27 @@
 | Item | Priority | Action Required |
 |------|----------|-----------------|
 | Create GitHub `production` environment | 🔴 High | GitHub Settings → Environments |
-| Configure secrets in GitHub | 🔴 High | OPENAI_API_KEY, DATABASE_URL |
-| Create Hyperlift apps | 🔴 High | 4 apps in Hyperlift Dashboard |
-| Configure Hyperlift env vars | 🔴 High | Per-app secrets |
-| Connect domains | 🟡 Medium | DNS CNAME records |
+| Configure secrets in GitHub | 🔴 High | OPENAI_API_KEY, DATABASE_URL, etc. |
+| Create Hyperlift app | 🔴 High | ONE app in Hyperlift Dashboard |
+| Configure Hyperlift env vars | 🔴 High | All secrets |
+| Connect domain | 🟡 Medium | DNS CNAME to Hyperlift LB |
 
 ---
 
-## Service Architecture
+## Single App Deployment
 
-### Deployment Topology
+### Hyperlift App Configuration
 
-```
-                    ┌─────────────────────────────────────┐
-                    │         Hyperlift Load Balancer     │
-                    │         (SSL Termination)           │
-                    └─────────────────┬───────────────────┘
-                                      │
-        ┌─────────────────────────────┼─────────────────────────────┐
-        │                             │                             │
-        ▼                             ▼                             ▼
-┌───────────────┐           ┌───────────────┐           ┌───────────────┐
-│   Frontend    │           │  API Gateway  │           │    Agent      │
-│   (Next.js)   │           │  (Express)    │           │ Orchestrator  │
-│   Port: 3000  │           │   Port: 4000  │           │  Port: 8010   │
-└───────────────┘           └───────┬───────┘           └───────────────┘
-                                    │
-                    ┌───────────────┼───────────────┐
-                    │               │               │
-                    ▼               ▼               ▼
-            ┌───────────┐   ┌───────────┐   ┌───────────┐
-            │ CreditX   │   │  Threat   │   │ Guardian  │
-            │ Service   │   │  Service  │   │ Service   │
-            │ Port:8000 │   │ Port:8001 │   │ Port:8002 │
-            └───────────┘   └───────────┘   └───────────┘
-                    │               │               │
-                    └───────────────┴───────────────┘
-                                    │
-                    ┌───────────────┴───────────────┐
-                    │                               │
-                    ▼                               ▼
-            ┌───────────────┐           ┌───────────────┐
-            │   PostgreSQL  │           │   Dragonfly   │
-            │   (Database)  │           │   (Cache)     │
-            └───────────────┘           └───────────────┘
-```
-
-### Hyperlift Apps to Create
-
-| App Name | Dockerfile Path | Port | Domain |
-|----------|-----------------|------|--------|
-| `creditx-frontend` | `apps/frontend/Dockerfile` | 3000 | ecosystem.ai |
-| `creditx-api` | `apps/api/Dockerfile` | 4000 | api.ecosystem.ai |
-| `creditx-agent` | `apps/agent/Dockerfile` | 8010 | agent.ecosystem.ai |
-| `creditx-service` | `Dockerfile` (root) | 8000 | service.ecosystem.ai |
+| Setting | Value |
+|---------|-------|
+| **App Name** | creditx-ecosystem |
+| **Repository** | github.com/stackconsult/creditX-Ecosystem |
+| **Branch** | main |
+| **Dockerfile** | Dockerfile (root) |
+| **Build Context** | . (root) |
+| **Plan** | Medium or Large (2+ vCPU, 4+ GB RAM) |
+| **Instances** | 2 (for HA) |
+| **Health Check** | /health |
 
 ---
 

@@ -1,9 +1,29 @@
 # ============================================================================
 # Spaceship Hyperlift Configuration
-# Auto-deploy configuration for CreditX Ecosystem
+# CreditX Ecosystem - Single App Deployment
 # ============================================================================
 # Hyperlift reads this file from the repo to configure deployments.
 # Documentation: https://docs.spaceship.com/hyperlift
+# ============================================================================
+#
+# ARCHITECTURE: Microservices in Single Container
+# ─────────────────────────────────────────────────
+# All services run within ONE Hyperlift container:
+#   - nginx (PORT) → routes to internal services
+#   - Next.js Frontend (:3000)
+#   - Express API Gateway (:4000)
+#   - Agent Orchestrator (:8010)
+#   - CreditX Service (:8000)
+#   - Threat Service (:8001)
+#   - Guardian Service (:8002)
+#
+# This design provides:
+#   ✓ Microservices architecture (internal service separation)
+#   ✓ Single deployment unit (one Hyperlift app)
+#   ✓ Internal localhost communication (fast, no network overhead)
+#   ✓ Unified health endpoint for Hyperlift
+#   ✓ Single domain with path-based routing
+#
 # ============================================================================
 
 version: "1.0"
@@ -12,11 +32,6 @@ project: creditx-ecosystem
 # ==========================================================================
 # Build Configuration
 # ==========================================================================
-# Note: Each service has its own Dockerfile for independent Hyperlift apps
-# - apps/frontend/Dockerfile
-# - apps/api/Dockerfile  
-# - apps/agent/Dockerfile
-# - Dockerfile (creditx-service - root)
 build:
   dockerfile: Dockerfile
   context: .
@@ -25,88 +40,60 @@ build:
     PYTHON_VERSION: "3.12"
 
 # ==========================================================================
-# Services
+# Application Configuration (Single App)
 # ==========================================================================
-services:
-  # Frontend - Next.js
+app:
+  name: creditx-ecosystem
+  port: 3000  # Hyperlift will override via PORT env var
+  
+  healthcheck:
+    path: /health
+    interval: 30s
+    timeout: 5s
+    start_period: 60s
+    retries: 3
+  
+  resources:
+    cpu: 2.0
+    memory: 4Gi
+  
+  autoscale:
+    min: 2
+    max: 10
+    target_cpu: 70
+
+# ==========================================================================
+# Internal Services (for documentation - managed by supervisor)
+# ==========================================================================
+# These services run internally within the container.
+# nginx routes external requests to appropriate internal service.
+internal_services:
   frontend:
-    path: apps/frontend
-    port: 3000
-    healthcheck:
-      path: /api/health
-      interval: 30s
-      timeout: 5s
-    resources:
-      cpu: 0.5
-      memory: 512Mi
-    autoscale:
-      min: 2
-      max: 10
-      target_cpu: 70
-
-  # API Gateway - Express.js
-  api-gateway:
-    path: apps/api
-    port: 4000
-    healthcheck:
-      path: /health
-      interval: 30s
-      timeout: 5s
-    resources:
-      cpu: 0.5
-      memory: 512Mi
-    autoscale:
-      min: 2
-      max: 8
-      target_cpu: 70
-
-  # Agent Orchestrator - FastAPI
-  agent-orchestrator:
-    path: apps/agent
-    port: 8010
-    healthcheck:
-      path: /health
-      interval: 30s
-      timeout: 5s
-    resources:
-      cpu: 1.0
-      memory: 1Gi
-    autoscale:
-      min: 2
-      max: 6
-      target_cpu: 70
-
-  # CreditX Service - FastAPI
-  creditx-service:
-    path: services/creditx-service
-    port: 8000
-    healthcheck:
-      path: /health
-      interval: 30s
-      timeout: 5s
-    resources:
-      cpu: 0.5
-      memory: 512Mi
-    autoscale:
-      min: 2
-      max: 8
-      target_cpu: 70
-
-  # Threat Service - FastAPI
-  threat-service:
-    path: services/threat-service
-    port: 8001
-    healthcheck:
-      path: /health
-      interval: 30s
-      timeout: 5s
-    resources:
-      cpu: 0.5
-      memory: 512Mi
-    autoscale:
-      min: 1
-      max: 4
-      target_cpu: 70
+    internal_port: 3000
+    path: /
+    description: "Next.js Frontend (Consumer, Partner, Internal faces)"
+  
+  api_gateway:
+    internal_port: 4000
+    path: /api
+    description: "Express.js API Gateway (BFF layer)"
+  
+  agent_orchestrator:
+    internal_port: 8010
+    path: /agent
+    description: "FastAPI Agent Orchestrator (LangGraph/LangChain)"
+  
+  creditx_service:
+    internal_port: 8000
+    description: "CreditX Core Service (compliance, credit scoring)"
+  
+  threat_service:
+    internal_port: 8001
+    description: "Threat Detection Service"
+  
+  guardian_service:
+    internal_port: 8002
+    description: "Device Guardian Service"
 
 # ==========================================================================
 # Environments
@@ -124,6 +111,7 @@ environments:
       - COPILOTKIT_API_KEY
       - DATABASE_URL
       - CACHE_HOST
+      - JWT_SECRET
 
   staging:
     branch: develop
@@ -172,20 +160,15 @@ cache:
   ha: true
 
 # ==========================================================================
-# Ingress / Routing
+# Domain Configuration
 # ==========================================================================
-ingress:
-  - host: ecosystem.ai
-    paths:
-      - path: /
-        service: frontend
-      - path: /api
-        service: api-gateway
-      - path: /agent
-        service: agent-orchestrator
-    tls:
-      enabled: true
-      auto_cert: true
-    rate_limit:
-      requests_per_minute: 1000
-      burst: 100
+domain:
+  primary: ecosystem.ai
+  aliases:
+    - www.ecosystem.ai
+  tls:
+    enabled: true
+    auto_cert: true
+  rate_limit:
+    requests_per_minute: 1000
+    burst: 100
