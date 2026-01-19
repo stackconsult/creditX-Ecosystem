@@ -1,7 +1,7 @@
 # SKILLS.md - AI Agent Memory Document
 
 > Persistent context for Windsurf Cascade to remember project state  
-> **Updated: January 19, 2026 @ 2:05 PM MST**
+> **Updated: January 19, 2026 @ 2:30 PM MST**
 
 ---
 
@@ -12,6 +12,12 @@
 - Managed PostgreSQL provisioning
 - Managed Dragonfly provisioning
 - GitHub secrets integration confirmation
+
+### Recent Fixes (Jan 19, 2026)
+- ✅ **Next.js 14.2.15 → 14.2.35** - Fixed critical security vulnerability (9 CVEs)
+- ✅ **Python dependencies loosened** - Fixed langchain/aiohttp conflict in `apps/agent/requirements.txt`
+- ✅ **GitHub vulnerabilities: 15 → 6** - Remaining are low/moderate in transitive deps
+- ✅ **Deployment scripts added** - `scripts/verify-deployment.sh`, `scripts/local-docker-test.sh`
 
 ---
 
