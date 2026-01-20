@@ -15,7 +15,7 @@ const runtime = new CopilotRuntime({
         { name: "agentId", type: "string", description: "The agent ID to execute", required: true },
         { name: "inputData", type: "object", description: "Input data for the agent", required: true },
       ],
-      handler: async ({ agentId, inputData }: { agentId: string; inputData: Record<string, unknown> }) => {
+      handler: async (args: { agentId: string; inputData: object }) => {
         const response = await fetch(`${BACKEND_URL}/api/v1/agents/execute`, {
           method: "POST",
           headers: { 
@@ -23,7 +23,7 @@ const runtime = new CopilotRuntime({
             "x-tenant-id": "default",
             "x-face": "consumer",
           },
-          body: JSON.stringify({ agent_id: agentId, input_data: inputData }),
+          body: JSON.stringify({ agent_id: args.agentId, input_data: args.inputData }),
         });
         if (!response.ok) {
           throw new Error(`Agent execution failed: ${response.statusText}`);
