@@ -21,7 +21,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'creditx-dev-secret-change-in-produ
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 
 export function generateToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  // Use any to bypass TypeScript overload issues
+  return (jwt.sign as any)(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
 export function verifyToken(token: string): JWTPayload {
