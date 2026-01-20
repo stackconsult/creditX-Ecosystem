@@ -4,6 +4,7 @@
 # Platform: Spaceship Hyperlift
 
 set -e
+set -x  # Debug output
 
 echo "=============================================="
 echo "CreditX Ecosystem - Starting Services"
@@ -20,8 +21,8 @@ chmod 755 /app/logs
 # Environment variables are injected by Hyperlift Dashboard
 # No need to load from file - Hyperlift injects them at container runtime
 
-# Substitute PORT in nginx config
-export PORT=${PORT:-3000}
+# Substitute PORT in nginx config (Hyperlift default is 8080)
+export PORT=${PORT:-8080}
 envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 # Validate critical environment variables

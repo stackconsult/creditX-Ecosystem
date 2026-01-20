@@ -69,16 +69,13 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM python:3.12-slim AS runner
 WORKDIR /app
 
-# Install Node.js, nginx, runtime deps, and dumb-init
-RUN apt-get update && apt-get install -y \
-    curl \
+# Install curl and dumb-init for health checks and signal handling
+RUN apt-get update && apt-get install -y curl dumb-init && rm -rf /var/lib/apt/lists/* \
     libpq5 \
-    dumb-init \
     nginx \
     gettext-base \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /app/logs \
     && mkdir -p /etc/supervisor/conf.d
 
