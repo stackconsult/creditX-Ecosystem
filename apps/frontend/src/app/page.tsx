@@ -8,8 +8,7 @@ export default function HomePage() {
     {
       name: "Consumer OS",
       description: "Manage your credit, file disputes, and protect your data rights",
-      href: "/dashboard",
-      layout: "(consumer)",
+      href: "/consumer/dashboard",
       icon: Users,
       color: "bg-consumer",
       gradient: "from-emerald-500 to-emerald-600",
@@ -17,8 +16,7 @@ export default function HomePage() {
     {
       name: "Partner OS",
       description: "Portfolio management, underwriting, and compliance for lenders",
-      href: "/dashboard",
-      layout: "(partner)",
+      href: "/partner/dashboard",
       icon: Building2,
       color: "bg-partner",
       gradient: "from-indigo-500 to-indigo-600",
@@ -26,8 +24,7 @@ export default function HomePage() {
     {
       name: "Internal OS",
       description: "System administration, agent management, and HITL approvals",
-      href: "/dashboard",
-      layout: "(internal)",
+      href: "/internal/dashboard",
       icon: Settings,
       color: "bg-internal",
       gradient: "from-amber-500 to-amber-600",
@@ -53,7 +50,7 @@ export default function HomePage() {
             return (
               <Link
                 key={face.name}
-                href={`/${face.layout.replace(/[()]/g, "")}${face.href}`}
+                href={face.href}
                 className="group relative bg-slate-800/50 border border-slate-700 rounded-2xl p-8 hover:border-slate-500 transition-all duration-300 hover:scale-105"
               >
                 <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${face.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>

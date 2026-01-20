@@ -18,12 +18,12 @@ export default function PartnerLayout({
             <span className="font-semibold text-lg">Partner OS</span>
           </div>
           <nav className="flex items-center gap-6">
-            <a href="/dashboard" className="hover:opacity-80">Dashboard</a>
-            <a href="/portfolio" className="hover:opacity-80">Portfolio</a>
-            <a href="/underwriting" className="hover:opacity-80">Underwriting</a>
-            <a href="/analytics" className="hover:opacity-80">Analytics</a>
-            <a href="/compliance" className="hover:opacity-80">Compliance</a>
-            <a href="/settings" className="hover:opacity-80">Settings</a>
+            <a href="/partner/dashboard" className="hover:opacity-80">Dashboard</a>
+            <a href="/partner/portfolio" className="hover:opacity-80">Portfolio</a>
+            <a href="/partner/underwriting" className="hover:opacity-80">Underwriting</a>
+            <a href="/partner/analytics" className="hover:opacity-80">Analytics</a>
+            <a href="/partner/compliance" className="hover:opacity-80">Compliance</a>
+            <a href="/partner/settings" className="hover:opacity-80">Settings</a>
           </nav>
         </div>
       </header>

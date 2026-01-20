@@ -18,13 +18,13 @@ export default function InternalLayout({
             <span className="font-semibold text-lg">Internal OS</span>
           </div>
           <nav className="flex items-center gap-6">
-            <a href="/dashboard" className="hover:opacity-80">Dashboard</a>
-            <a href="/agents" className="hover:opacity-80">Agents</a>
-            <a href="/hitl" className="hover:opacity-80">HITL</a>
-            <a href="/services" className="hover:opacity-80">Services</a>
-            <a href="/audit" className="hover:opacity-80">Audit</a>
-            <a href="/tenants" className="hover:opacity-80">Tenants</a>
-            <a href="/settings" className="hover:opacity-80">Settings</a>
+            <a href="/internal/dashboard" className="hover:opacity-80">Dashboard</a>
+            <a href="/internal/agents" className="hover:opacity-80">Agents</a>
+            <a href="/internal/hitl" className="hover:opacity-80">HITL</a>
+            <a href="/internal/services" className="hover:opacity-80">Services</a>
+            <a href="/internal/audit" className="hover:opacity-80">Audit</a>
+            <a href="/internal/tenants" className="hover:opacity-80">Tenants</a>
+            <a href="/internal/settings" className="hover:opacity-80">Settings</a>
           </nav>
         </div>
       </header>
