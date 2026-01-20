@@ -48,7 +48,8 @@ export function DataTable<T extends Record<string, unknown>>({
   });
 
   const getValue = (row: T, key: string): unknown => {
-    return key.split(".").reduce((obj, k) => (obj as Record<string, unknown>)?.[k], row);
+    // explicit initial value and typed accumulator to satisfy TS
+    return key.split(".").reduce((obj: any, k: string) => obj?.[k], row as any);
   };
 
   if (data.length === 0) {
