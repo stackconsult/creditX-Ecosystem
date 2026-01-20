@@ -1,7 +1,7 @@
 # SKILLS.md - AI Agent Memory Document
 
 > Persistent context for Windsurf Cascade to remember project state  
-> **Updated: January 19, 2026 @ 2:30 PM MST**
+> **Updated: January 19, 2026 @ 5:15 PM MST**
 
 ---
 
@@ -18,12 +18,17 @@ creditx-frontend.netlify.app    creditx.credit
 └─ $19/mo                       └─ $18/mo = $37/mo total
 ```
 
-### Recent Updates (Jan 19, 2026 @ 4:45 PM)
-- ✅ **Netlify config added** - `apps/frontend/netlify.toml` with security headers + API proxy
-- ✅ **Production routing** - `next.config.js` wired to `https://creditx.credit`
+### Recent Updates (Jan 19, 2026 @ 5:15 PM)
+- ✅ **Route groups converted** - `(consumer)` → `consumer`, `(internal)` → `internal`, `(partner)` → `partner`
+- ✅ **Navigation links updated** - All layouts use new `/consumer/*`, `/internal/*`, `/partner/*` paths
+- ✅ **Node version 20** - `.nvmrc`, `netlify.toml`, `package.json` all aligned
+- ✅ **Root netlify.toml** - Added at repo root with `base = "apps/frontend"`
 - ✅ **CopilotKit fixed** - All `useCopilotAction` calls have `parameters: []`
-- ✅ **Python deps aligned** - langchain versions unified across services
-- ✅ **Pushed to GitHub** - Commit `2d69b3e` on `main`
+- ✅ **Latest commit** - `ab0ee6a` on `main`
+
+### Netlify Deployment
+- **Site:** moonlit-yeot-c72ff2.netlify.app
+- **Status:** Deploying (auto-triggered by push)
 
 ---
 
@@ -107,7 +112,7 @@ NEXT_PUBLIC_COPILOTKIT_API_KEY = (copy from .env line 148)
 ### Frontend (6/6)
 - ✅ Next.js 14 App Router (standalone output)
 - ✅ CopilotKit with OpenAI Adapter
-- ✅ Multi-face routing: `(consumer)/`, `(partner)/`, `(internal)/`
+- ✅ Multi-face routing: `consumer/`, `partner/`, `internal/` (no parentheses)
 - ✅ API Client with tenant headers
 - ✅ TailwindCSS, shadcn/ui, Lucide icons
 - ✅ `next.config.js` with rewrites
@@ -177,9 +182,9 @@ NEXT_PUBLIC_COPILOTKIT_API_KEY = (copy from .env line 148)
    - `x-request-id` - Correlation ID
 
 3. **Three Faces**: Same backend, different UI/permissions
-   - Consumer: End users (`/`)
-   - Partner: B2B clients (`/partner`)
-   - Internal: CreditX staff (`/internal`)
+   - Consumer: End users (`/consumer/*`)
+   - Partner: B2B clients (`/partner/*`)
+   - Internal: CreditX staff (`/internal/*`)
 
 4. **Single Container**: All services in one Hyperlift deployment
    - Simpler deployment, lower cost
@@ -217,4 +222,4 @@ NEXT_PUBLIC_COPILOTKIT_API_KEY = (copy from .env line 148)
 
 *This file exists for AI agent memory persistence.*  
 *Update when project state changes.*  
-*Last audit: January 19, 2026 @ 2:05 PM MST*
+*Last audit: January 19, 2026 @ 5:15 PM MST*
