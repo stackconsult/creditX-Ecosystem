@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.config import get_settings
-from app.routes import agents, executions, chat, health
+from app.routes import agents, executions, chat, health, copilotkit
 from app.services.cache import CacheService
 
 
@@ -64,6 +64,7 @@ app.include_router(health.router, prefix="/health", tags=["Health"])
 app.include_router(agents.router, prefix="/api/v1/agents", tags=["Agents"])
 app.include_router(executions.router, prefix="/api/v1/executions", tags=["Executions"])
 app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
+app.include_router(copilotkit.router, prefix="/api/v1/copilotkit", tags=["CopilotKit"])
 
 
 if __name__ == "__main__":

@@ -20,6 +20,7 @@ export default function ConsumerLayout({
           <nav className="flex items-center gap-6">
             <a href="/consumer/dashboard" className="hover:opacity-80">Dashboard</a>
             <a href="/consumer/credit" className="hover:opacity-80">Credit</a>
+            <a href="/consumer/apply" className="hover:opacity-80">Apply</a>
             <a href="/consumer/disputes" className="hover:opacity-80">Disputes</a>
             <a href="/consumer/plans" className="hover:opacity-80">Plans</a>
             <a href="/consumer/rights" className="hover:opacity-80">Rights</a>

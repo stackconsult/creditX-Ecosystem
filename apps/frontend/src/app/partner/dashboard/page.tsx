@@ -1,7 +1,7 @@
 "use client";
 
-import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
-import { useState } from "react";
+import { useCopilotAction, useCopilotReadable, useAgent } from "@copilotkit/react-core";
+import { useState, useEffect } from "react";
 
 export default function PartnerDashboard() {
   const [portfolioStats, setPortfolioStats] = useState({
@@ -10,6 +10,42 @@ export default function PartnerDashboard() {
     avgScore: 680,
     defaultRate: 2.3,
   });
+  
+  // Use the useAgent hook for real-time agent status
+  const agent = useAgent({ agentId: "partner-dashboard" });
+  const [agentStatus, setAgentStatus] = useState({
+    isAnalyzing: false,
+    lastAnalysis: null as string | null,
+    queuedTasks: 0,
+  });
+
+  // Subscribe to agent events
+  useEffect(() => {
+    if (!agent) return;
+
+    const unsubscribe = agent.subscribe({
+      onRunStartedEvent: () => {
+        setAgentStatus(prev => ({ ...prev, isAnalyzing: true }));
+      },
+      onRunFinalized: () => {
+        setAgentStatus(prev => ({ ...prev, isAnalyzing: false }));
+      },
+      onCustomEvent: (event: any) => {
+        if (event.name === "analysis_complete") {
+          setAgentStatus(prev => ({ 
+            ...prev, 
+            lastAnalysis: event.value.result,
+            isAnalyzing: false 
+          }));
+        }
+        if (event.name === "task_queued") {
+          setAgentStatus(prev => ({ ...prev, queuedTasks: prev.queuedTasks + 1 }));
+        }
+      },
+    });
+
+    return () => unsubscribe();
+  }, [agent]);
 
   useCopilotReadable({
     description: "Partner's portfolio statistics and performance metrics",
@@ -21,6 +57,14 @@ export default function PartnerDashboard() {
     description: "Analyze the current portfolio risk and performance",
     parameters: [],
     handler: async () => {
+      // Trigger agent analysis
+      if (agent) {
+        await agent.setState({
+          ...agent.state,
+          analysisRequested: true,
+          timestamp: new Date().toISOString()
+        });
+      }
       return `Portfolio Analysis: Total assets under management: $${(portfolioStats.totalAssets / 1000000).toFixed(1)}M. Default rate of ${portfolioStats.defaultRate}% is within acceptable range. Average borrower score of ${portfolioStats.avgScore} indicates moderate risk profile.`;
     },
   });
@@ -30,7 +74,23 @@ export default function PartnerDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-slate-800 mb-8">Partner Dashboard</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-slate-800">Partner Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <div className={`px-3 py-1 rounded-full text-sm ${
+            agentStatus.isAnalyzing 
+              ? "bg-amber-100 text-amber-700" 
+              : "bg-emerald-100 text-emerald-700"
+          }`}>
+            {agentStatus.isAnalyzing ? "Analyzing..." : "Ready"}
+          </div>
+          {agentStatus.queuedTasks > 0 && (
+            <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+              {agentStatus.queuedTasks} tasks queued
+            </div>
+          )}
+        </div>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow-sm border p-6">
@@ -53,6 +113,13 @@ export default function PartnerDashboard() {
           <div className="text-3xl font-bold text-orange-500">{portfolioStats.defaultRate}%</div>
         </div>
       </div>
+
+      {agentStatus.lastAnalysis && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-8 border border-blue-200">
+          <h3 className="text-lg font-semibold text-blue-900 mb-2">Latest AI Analysis</h3>
+          <p className="text-blue-800">{agentStatus.lastAnalysis}</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl shadow-sm border p-6">
