@@ -17,4 +17,4 @@ anthropic==0.39.0
 langchain==0.3.7
 langchain-anthropic==0.3.0
 
-orjson==3.10.7
+orjson==3.11.6
